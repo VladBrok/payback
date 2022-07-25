@@ -10,8 +10,8 @@ export default function Main() {
         label="Find category"
         onChange={e => console.log(e.target.value)}
       />
-      <Section title="categories" Icon={FcFinePrint}></Section>
-      <Section title="premium products" Icon={FcRating}></Section>
+      <Section title="Categories" Icon={FcFinePrint}></Section>
+      <Section title="Premium products" Icon={FcRating}></Section>
     </main>
   );
 }
