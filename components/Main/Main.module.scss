@@ -1,7 +1,9 @@
 @use "../../styles/breakpoints.scss" as b;
+@use "../../styles/colors.scss" as c;
 
 .container {
   padding: 1rem;
+  color: c.$text-primary;
 
   @media (min-width: b.$menu) {
     margin-left: 6rem;
