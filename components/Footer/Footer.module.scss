@@ -1,0 +1,10 @@
+@use "../../styles/colors.scss" as c;
+
+.container {
+  padding: 0 1rem;
+  border-top: 0.5rem solid c.$background-highlight;
+
+  .copyright {
+    color: c.$text-secondary;
+  }
+}
