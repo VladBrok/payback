@@ -1,0 +1,9 @@
+@use "../../styles/breakpoints.scss" as b;
+
+.container {
+  padding: 1rem;
+
+  @media (min-width: b.$menu) {
+    margin-left: 6rem;
+  }
+}

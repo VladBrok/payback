@@ -1,20 +1,16 @@
 import styles from "./index.module.scss";
 import Menu from "../components/Menu";
-import SearchBar from "../components/SearchBar";
+import Main from "../components/Main";
 import menuItems from "../data/menuItems";
+import { useEffect, useRef } from "react";
 
 menuItems[0].isActive = true;
 
 export default function Home() {
   return (
     <>
-      <main style={{ padding: "0 1rem" }}>
-        <SearchBar
-          label="Find category"
-          onChange={e => console.log(e.target.value)}
-        />
-      </main>
       <Menu itemsData={menuItems} />
+      <Main />
     </>
   );
 }

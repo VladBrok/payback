@@ -13,12 +13,6 @@
   box-shadow: 0 0 0.15rem 0 c.$text-secondary;
   transform: translateY(-100%);
 
-  @media (min-width: b.$md) {
-    flex-direction: column;
-    width: fit-content;
-    height: 100vh;
-  }
-
   @mixin item {
     display: flex;
     flex: 1 1 0;
@@ -58,5 +52,11 @@
     &:hover {
       color: c.$highlight;
     }
+  }
+
+  @media (min-width: b.$menu) {
+    flex-direction: column;
+    width: fit-content;
+    height: 100vh;
   }
 }
