@@ -1,0 +1,21 @@
+@mixin title {
+  font-weight: bold;
+}
+
+$init-font: 1.6rem;
+$decrease: 0.8;
+
+@mixin title-3xl {
+  @include title;
+  font-size: $init-font;
+}
+
+@mixin title-2xl {
+  @include title;
+  font-size: calc($init-font * $decrease);
+}
+
+@mixin title-xl {
+  @include title;
+  font-size: calc($init-font * ($decrease * 2));
+}

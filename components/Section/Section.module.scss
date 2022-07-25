@@ -1,0 +1,17 @@
+@use "../../styles/mixins.scss" as m;
+
+.container {
+  margin: 1.2rem 0;
+
+  .title {
+    @include m.title-2xl;
+    display: flex;
+    align-items: center;
+    text-transform: capitalize;
+
+    .icon {
+      display: block;
+      margin-right: 0.3rem;
+    }
+  }
+}
