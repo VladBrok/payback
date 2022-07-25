@@ -1,7 +1,7 @@
 import styles from "./Main.module.scss";
 import SearchBar from "../SearchBar";
 import Section from "../Section";
-import { FcFinePrint } from "react-icons/fc";
+import { FcFinePrint, FcRating } from "react-icons/fc";
 
 export default function Main() {
   return (
@@ -11,6 +11,7 @@ export default function Main() {
         onChange={e => console.log(e.target.value)}
       />
       <Section title="categories" Icon={FcFinePrint}></Section>
+      <Section title="premium products" Icon={FcRating}></Section>
     </main>
   );
 }
