@@ -1,0 +1,27 @@
+@use "../../styles/colors.scss" as c;
+
+.container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  color: c.$text-secondary;
+
+  $input-px: 0.7rem;
+
+  .icon {
+    position: absolute;
+    left: $input-px;
+    font-size: 1.2rem;
+  }
+
+  .input {
+    display: block;
+    width: 100%;
+    padding: $input-px calc($input-px * 1.3);
+    padding-left: calc($input-px * 2 + 1rem);
+    line-height: 1.3;
+    background: c.$background-highlight;
+    border: none;
+    border-radius: 0.4rem;
+  }
+}
