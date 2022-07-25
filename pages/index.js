@@ -1,5 +1,9 @@
 import styles from "./index.module.scss";
+import Menu from "../components/Menu";
+import menuItems from "../data/menuItems";
+
+menuItems[0].isActive = true;
 
 export default function Home() {
-  return <h1>Home</h1>;
+  return <Menu itemsData={menuItems} />;
 }
