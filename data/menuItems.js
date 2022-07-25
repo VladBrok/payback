@@ -1,7 +1,7 @@
 import { AiOutlineSearch } from "react-icons/ai";
 import { IoAddCircleOutline } from "react-icons/io5";
+import { IoPersonOutline } from "react-icons/io5";
 import { BsChatDots } from "react-icons/bs";
-import { CgProfile } from "react-icons/cg";
 
 const menuItems = [
   {
@@ -18,7 +18,7 @@ const menuItems = [
   },
   {
     name: "profile",
-    Icon: CgProfile,
+    Icon: IoPersonOutline,
   },
 ];
 
