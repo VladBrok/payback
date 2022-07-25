@@ -17,7 +17,6 @@
     flex-direction: column;
     width: fit-content;
     height: 100vh;
-    padding: 0 0.4rem;
   }
 
   @mixin item {
@@ -25,6 +24,10 @@
     flex: 1 1 0;
     align-items: center;
     justify-content: center;
+
+    @media (min-width: b.$md) {
+      padding: 0 0.4rem;
+    }
   }
 
   .item {
@@ -34,6 +37,7 @@
   .active-item {
     @include item;
     color: c.$highlight;
+    background: c.$background-highlight;
   }
 
   .link {
@@ -43,11 +47,16 @@
     align-items: center;
     justify-content: center;
     padding: min(0.8rem, 2vh);
+
     text-transform: capitalize;
     cursor: pointer;
 
     .icon {
       font-size: 1.5rem;
+    }
+
+    &:hover {
+      color: c.$highlight;
     }
   }
 }
