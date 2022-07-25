@@ -15,5 +15,9 @@ export default function Menu({ itemsData }) {
     </li>
   ));
 
-  return <ul className={styles.container}>{items}</ul>;
+  return (
+    <nav>
+      <ul className={styles.container}>{items}</ul>
+    </nav>
+  );
 }
