@@ -1,0 +1,19 @@
+@use "../../styles/breakpoints.scss" as b;
+
+.container {
+  $img-height: 10rem;
+
+  .image-wrapper {
+    position: relative;
+    height: $img-height;
+
+    @media (min-width: b.$sm) {
+      height: calc($img-height * 1.2);
+    }
+  }
+
+  .price {
+    font-weight: bold;
+    font-size: 1.2rem;
+  }
+}
