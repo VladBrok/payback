@@ -1,0 +1,6 @@
+[
+  { "name": "electronics", "imageUrl": "/images/electronics.jpg" },
+  { "name": "jewelery", "imageUrl": "/images/jewelery.jpg" },
+  { "name": "men's clothing", "imageUrl": "/images/men.jpg" },
+  { "name": "women's clothing", "imageUrl": "/images/women.jpg" }
+]

@@ -13,6 +13,7 @@
 }
 
 $init-title-font: 1.6rem;
+$init-text-font: 1.2rem;
 $decrease: 0.8;
 
 @mixin title-3xl {
@@ -35,5 +36,25 @@ $decrease: 0.8;
 
   @media (min-width: b.$sm) {
     font-size: calc($init-title-font * $decrease);
+  }
+}
+
+@mixin text-lg {
+  font-size: $init-text-font;
+}
+
+@mixin text-md {
+  font-size: calc($init-text-font * $decrease);
+
+  @media (min-width: b.$sm) {
+    font-size: $init-text-font;
+  }
+}
+
+@mixin text-sm {
+  font-size: calc($init-text-font * $decrease * $decrease);
+
+  @media (min-width: b.$sm) {
+    font-size: calc($init-text-font * $decrease);
   }
 }
