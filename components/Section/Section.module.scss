@@ -1,7 +1,7 @@
 @use "../../styles/mixins.scss" as m;
 
 .container {
-  margin: 1.2rem 0;
+  margin: 1.8rem 0;
 
   .title {
     @include m.title-2xl;
