@@ -2,11 +2,11 @@ import styles from "./Category.module.scss";
 import Link from "next/link";
 import Image from "next/image";
 
-export default function Category({ imageUrl, name }) {
+export default function Category({ imageUrl, name, flexDirection }) {
   return (
     <li className={styles.container} key={imageUrl}>
       <Link href={`/categories/${encodeURIComponent(name)}`}>
-        <a className={styles.link}>
+        <a className={styles.link} style={{ flexDirection }}>
           <div className={styles["image-wrapper"]}>
             <Image
               src={imageUrl}
