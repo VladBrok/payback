@@ -4,6 +4,7 @@ import categoriesData from "../../data/categories.json";
 import Product from "../Product";
 import Category from "../Category/";
 import { byName } from "../../lib/categoryFinders";
+import Link from "next/link";
 
 export default function ProductList({ filter }) {
   const products = productsData.filter(filter).map(d => (
@@ -14,7 +15,11 @@ export default function ProductList({ filter }) {
         name={d.category}
         imageUrl={categoriesData.find(byName(d.category)).imageUrl}
       />
-      <Product image={d.image} price={d.price} title={d.title} />
+      <Link href={`/products/${d.id}`}>
+        <a>
+          <Product image={d.image} price={d.price} title={d.title} />
+        </a>
+      </Link>
     </div>
   ));
 
