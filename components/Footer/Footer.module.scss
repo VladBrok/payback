@@ -1,11 +1,17 @@
 @use "../../styles/colors.scss" as c;
 @use "../../styles/mixins.scss" as m;
+@use "../../styles/breakpoints.scss" as b;
 
 .container {
   @include m.container;
+  margin-bottom: 6rem;
   border-top: 0.5rem solid c.$background-highlight;
 
   .copyright {
     color: c.$text-secondary;
+  }
+
+  @media (min-width: b.$menu) {
+    margin-bottom: 0;
   }
 }
