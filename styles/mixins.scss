@@ -12,20 +12,28 @@
   font-weight: bold;
 }
 
-$init-font: 1.6rem;
+$init-title-font: 1.6rem;
 $decrease: 0.8;
 
 @mixin title-3xl {
   @include title;
-  font-size: $init-font;
+  font-size: $init-title-font;
 }
 
 @mixin title-2xl {
   @include title;
-  font-size: calc($init-font * $decrease);
+  font-size: calc($init-title-font * $decrease);
+
+  @media (min-width: b.$sm) {
+    font-size: $init-title-font;
+  }
 }
 
 @mixin title-xl {
   @include title;
-  font-size: calc($init-font * ($decrease * 2));
+  font-size: calc($init-title-font * $decrease * $decrease);
+
+  @media (min-width: b.$sm) {
+    font-size: calc($init-title-font * $decrease);
+  }
 }
