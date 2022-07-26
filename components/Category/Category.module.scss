@@ -3,13 +3,11 @@
 
 .container {
   $img-size: 3.2rem;
-  $img-size-increase: 1.5rem;
-  width: $img-size;
 
   .link {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: start;
     text-align: center;
 
     .image-wrapper {
@@ -18,13 +16,13 @@
       height: $img-size;
 
       @media (min-width: b.$xsm) {
-        width: calc($img-size + $img-size-increase);
-        height: calc($img-size + $img-size-increase);
+        width: calc($img-size + var(--img-size-increase));
+        height: calc($img-size + var(--img-size-increase));
       }
 
       @media (min-width: b.$lg) {
-        width: calc($img-size + $img-size-increase * 2);
-        height: calc($img-size + $img-size-increase * 2);
+        width: calc($img-size + var(--img-size-increase) * 2);
+        height: calc($img-size + var(--img-size-increase) * 2);
       }
     }
 
