@@ -1,45 +1,6 @@
-@use "../../styles/breakpoints.scss" as b;
-@use "../../styles/mixins.scss" as m;
-
 .container {
-  $img-size: 3.2rem;
-  $img-size-increase: 1.5rem;
-
   display: flex;
   gap: 0.6rem;
   justify-content: space-around;
   margin: 1rem 0;
-
-  .category {
-    width: $img-size;
-
-    .link {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: space-between;
-      text-align: center;
-
-      .image-wrapper {
-        position: relative;
-        width: $img-size;
-        height: $img-size;
-
-        @media (min-width: b.$xsm) {
-          width: calc($img-size + $img-size-increase);
-          height: calc($img-size + $img-size-increase);
-        }
-
-        @media (min-width: b.$lg) {
-          width: calc($img-size + $img-size-increase * 2);
-          height: calc($img-size + $img-size-increase * 2);
-        }
-      }
-
-      .category-name {
-        @include m.text-sm;
-        text-transform: capitalize;
-      }
-    }
-  }
 }
