@@ -3,7 +3,7 @@ import SearchBar from "../SearchBar";
 import Section from "../Section";
 import CategoryList from "../CategoryList";
 import ProductList from "../ProductList";
-import { filterByPremium } from "../../lib/productFilters";
+import { byPremium } from "../../lib/productFilters";
 import { FcFinePrint, FcRating } from "react-icons/fc";
 
 export default function Main() {
@@ -19,7 +19,7 @@ export default function Main() {
       </Section>
 
       <Section title="Premium products" Icon={FcRating}>
-        <ProductList filter={filterByPremium} />
+        <ProductList filter={byPremium} />
       </Section>
     </main>
   );

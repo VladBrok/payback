@@ -3,7 +3,7 @@ import productsData from "../../data/products.json";
 import categoriesData from "../../data/categories.json";
 import Product from "../Product";
 import Category from "../Category/";
-import { findByName } from "../../lib/categoryFinders";
+import { byName } from "../../lib/categoryFinders";
 
 export default function ProductList({ filter }) {
   const products = productsData.filter(filter).map(d => (
@@ -12,7 +12,7 @@ export default function ProductList({ filter }) {
         flexDirection="row"
         imageSizeIncrease="0px"
         name={d.category}
-        imageUrl={categoriesData.find(findByName(d.category)).imageUrl}
+        imageUrl={categoriesData.find(byName(d.category)).imageUrl}
       />
       <Product image={d.image} price={d.price} title={d.title} />
     </div>
