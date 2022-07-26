@@ -1,7 +1,8 @@
 @use "../../styles/colors.scss" as c;
+@use "../../styles/mixins.scss" as m;
 
 .container {
-  padding: 0 1rem;
+  @include m.container;
   border-top: 0.5rem solid c.$background-highlight;
 
   .copyright {

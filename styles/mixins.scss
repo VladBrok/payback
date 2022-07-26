@@ -1,3 +1,13 @@
+@use "./breakpoints.scss" as b;
+
+@mixin container {
+  padding: 1rem;
+
+  @media (min-width: b.$menu) {
+    margin-left: 6rem;
+  }
+}
+
 @mixin title {
   font-weight: bold;
 }
