@@ -1,7 +1,7 @@
 import styles from "./SearchBar.module.scss";
 import { AiOutlineSearch } from "react-icons/ai";
 
-export default function SearchBar({ label, onChange }) {
+export default function SearchBar({ label, ...props }) {
   return (
     <div className={styles.container}>
       <AiOutlineSearch className={styles.icon} />
@@ -9,7 +9,7 @@ export default function SearchBar({ label, onChange }) {
         className={styles.input}
         type="text"
         placeholder={label}
-        onChange={onChange}
+        {...props}
       />
     </div>
   );
