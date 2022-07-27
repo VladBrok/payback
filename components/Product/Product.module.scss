@@ -3,8 +3,7 @@
 .container {
   $img-height: 10rem;
 
-  .image-wrapper {
-    position: relative;
+  .image {
     height: $img-height;
 
     @media (min-width: b.$sm) {

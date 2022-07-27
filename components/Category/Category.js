@@ -1,6 +1,6 @@
 import styles from "./Category.module.scss";
 import Link from "next/link";
-import Image from "next/image";
+import Image from "../Image";
 
 export default function Category({
   imageUrl,
@@ -16,15 +16,14 @@ export default function Category({
     >
       <Link href={`/categories/${encodeURIComponent(name)}`}>
         <a className={styles.link} style={{ flexDirection }}>
-          <div className={styles["image-wrapper"]}>
-            <Image
-              src={imageUrl}
-              alt={name}
-              objectFit="scale-down"
-              layout="fill"
-              priority
-            />
-          </div>
+          <Image
+            className={styles.image}
+            src={imageUrl}
+            alt={name}
+            objectFit="scale-down"
+            layout="fill"
+            priority
+          />
           <span className={styles.name}>{name}</span>
         </a>
       </Link>
