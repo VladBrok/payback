@@ -23,5 +23,5 @@ export default function ProductList({ filter }) {
     </div>
   ));
 
-  return <ul className={styles.container}>{products}</ul>;
+  return <div className={styles.container}>{products}</div>;
 }

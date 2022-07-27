@@ -9,7 +9,7 @@ export default function Category({
   imageSizeIncrease,
 }) {
   return (
-    <li
+    <div
       className={styles.container}
       key={imageUrl}
       style={{ "--img-size-increase": imageSizeIncrease }}
@@ -28,6 +28,6 @@ export default function Category({
           <span className={styles.name}>{name}</span>
         </a>
       </Link>
-    </li>
+    </div>
   );
 }
