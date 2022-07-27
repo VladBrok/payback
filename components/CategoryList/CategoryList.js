@@ -6,7 +6,12 @@ import Category from "../Category";
 // todo: make generic list ?
 export default function CategoryList() {
   const categories = categoriesData.map(d => (
-    <Category flexDirection="column" imageSizeIncrease="1.5rem" {...d} />
+    <Category
+      key={d.name}
+      flexDirection="column"
+      imageSizeIncrease="1.5rem"
+      {...d}
+    />
   ));
 
   return <div className={styles.container}>{categories}</div>;
