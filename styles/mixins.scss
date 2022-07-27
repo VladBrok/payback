@@ -1,10 +1,12 @@
 @use "./breakpoints.scss" as b;
 
+$container-big-padding: 1.5rem;
+
 @mixin container-big {
-  padding: 1rem;
+  padding: $container-big-padding;
 
   @media (min-width: b.$menu) {
-    margin-left: 6rem;
+    padding-left: calc(5rem + $container-big-padding);
   }
 }
 
