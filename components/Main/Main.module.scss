@@ -2,6 +2,6 @@
 @use "../../styles/mixins.scss" as m;
 
 .container {
-  @include m.container;
+  @include m.container-big;
   color: c.$text-primary;
 }

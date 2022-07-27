@@ -1,6 +1,8 @@
+@use "../../styles/mixins.scss" as m;
+
 .container {
+  @include m.container;
   display: flex;
   gap: 0.6rem;
   justify-content: space-around;
-  margin: 1rem 0;
 }
