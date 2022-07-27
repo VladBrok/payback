@@ -3,7 +3,6 @@ import categoriesData from "../../data/categories.json";
 
 import Category from "../Category";
 
-// todo: make generic list ?
 export default function CategoryList() {
   const categories = categoriesData.map(d => (
     <Category
