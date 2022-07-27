@@ -4,7 +4,9 @@ import SocialMediaLink from "../SocialMediaLink/";
 import socialMediaLinks from "../../data/socialMediaLinks";
 
 export default function Footer() {
-  const links = socialMediaLinks.map(l => <SocialMediaLink {...l} />);
+  const links = socialMediaLinks.map(l => (
+    <SocialMediaLink key={l.name} {...l} />
+  ));
 
   return (
     <footer className={styles.container}>
