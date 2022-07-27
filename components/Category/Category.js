@@ -19,10 +19,9 @@ export default function Category({
           <Image
             className={styles.image}
             src={imageUrl}
-            alt={name}
+            alt=""
             objectFit="scale-down"
             layout="fill"
-            priority
           />
           <span className={styles.name}>{name}</span>
         </a>

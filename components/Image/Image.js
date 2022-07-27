@@ -1,10 +1,25 @@
 import styles from "./Image.module.scss";
 import { default as NextImage } from "next/image";
+import { useState } from "react";
 
 export default function Image({ className, ...props }) {
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  function handleLoadingComplete() {
+    setIsLoaded(true);
+  }
+
   return (
-    <div className={className} style={{ position: "relative" }}>
-      <NextImage {...props} />
+    <div
+      className={`${isLoaded ? "" : styles.loading} ${className}`}
+      style={{ position: "relative" }}
+    >
+      <NextImage
+        onError={handleLoadingComplete}
+        onLoad={handleLoadingComplete}
+        onLoadingComplete={handleLoadingComplete}
+        {...props}
+      />
     </div>
   );
 }
