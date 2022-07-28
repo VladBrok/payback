@@ -17,7 +17,9 @@ export default function ProductList({ filter }) {
       />
       <Link href={`/products/${d.id}`}>
         <a>
-          <Product image={d.image} price={d.price} title={d.title} />
+          <Product image={d.image} price={d.price}>
+            <h3>{d.title}</h3>
+          </Product>
         </a>
       </Link>
     </div>

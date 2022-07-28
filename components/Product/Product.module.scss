@@ -2,17 +2,33 @@
 
 .container {
   $img-height: 10rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 
   .image {
+    flex: 1 1 $img-height;
     height: $img-height;
+    margin: 0.4rem 0;
 
     @media (min-width: b.$sm) {
       height: calc($img-height * 1.2);
     }
   }
 
-  .price {
-    font-weight: bold;
-    font-size: 1.2rem;
+  .info {
+    display: flex;
+    flex: 1 1 0;
+    flex-direction: column;
+    gap: 0.4rem;
+
+    .price {
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+  }
+
+  @media (min-width: b.$sm) {
+    flex-direction: var(--flex-direction-expand);
   }
 }

@@ -1,6 +1,6 @@
 @use "./breakpoints.scss" as b;
 
-$container-big-padding: 1.5rem;
+$container-big-padding: 1.7rem;
 
 @mixin container-big {
   padding: $container-big-padding;

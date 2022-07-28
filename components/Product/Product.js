@@ -2,9 +2,17 @@ import styles from "./Product.module.scss";
 import Image from "../Image";
 import { formatPrice } from "../../lib/formatPrice";
 
-export default function Product({ title, price, image }) {
+export default function Product({
+  price,
+  image,
+  children,
+  flexDirectionWhenExpanded = "column",
+}) {
   return (
-    <div className={styles.container}>
+    <div
+      className={styles.container}
+      style={{ "--flex-direction-expand": flexDirectionWhenExpanded }}
+    >
       <Image
         className={styles.image}
         src={image}
@@ -12,8 +20,10 @@ export default function Product({ title, price, image }) {
         layout="fill"
         objectFit="contain"
       />
-      <p className={styles.price}>{formatPrice(price)}</p>
-      <h3>{title}</h3>
+      <div className={styles.info}>
+        <p className={styles.price}>{formatPrice(price)}</p>
+        {children}
+      </div>
     </div>
   );
 }
