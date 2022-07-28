@@ -4,12 +4,14 @@ import Subpage from "../../components/Subpage";
 import Category from "../../components/Category";
 import Section from "../../components/Section";
 import User from "../../components/User";
+import ProductList from "../../components/ProductList";
 import products from "../../data/products.json";
 import categories from "../../data/categories.json";
 import users from "../../data/users.json";
 import { byId as byProductId } from "../../lib/productFinders";
 import { byId as byUserId } from "../../lib/userFinders";
 import { byName } from "../../lib/categoryFinders";
+import { bySimilar } from "../../lib/productFilters";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
@@ -57,6 +59,10 @@ export default function ProductPage() {
             <User name={user.login.username} imageUrl={user.picture.large} />
           </a>
         </Link>
+      </Section>
+
+      <Section title="Similar products">
+        <ProductList filter={bySimilar(product)} />
       </Section>
     </Subpage>
   );
