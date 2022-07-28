@@ -2,6 +2,7 @@ import Product from "../../components/Product";
 import Button from "../../components/Button";
 import Subpage from "../../components/Subpage";
 import Category from "../../components/Category";
+import Section from "../../components/Section";
 import products from "../../data/products.json";
 import categories from "../../data/categories.json";
 import { byId } from "../../lib/productFinders";
@@ -40,6 +41,10 @@ export default function ProductPage() {
         <h2>{product.title}</h2>
         <Button onClick={buy}>Buy</Button>
       </Product>
+
+      <Section title="Description">
+        <p>{product.description}</p>
+      </Section>
     </Subpage>
   );
 }
