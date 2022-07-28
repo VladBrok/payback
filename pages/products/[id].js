@@ -14,6 +14,7 @@ import { byName } from "../../lib/categoryFinders";
 import { bySimilar } from "../../lib/productFilters";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import Head from "next/head";
 
 export default function ProductPage() {
   const router = useRouter();
@@ -30,40 +31,46 @@ export default function ProductPage() {
   const user = users.find(byUserId(product.userId));
 
   return (
-    <Subpage
-      title={
-        <Category
-          flexDirection="row"
-          imageSizeIncrease="0px"
-          name={product.category}
-          imageUrl={categories.find(byName(product.category)).imageUrl}
-        />
-      }
-    >
-      <Product
-        price={product.price}
-        image={product.image}
-        flexDirectionWhenExpanded="row"
+    <>
+      <Head>
+        <title>{product.title}</title>
+        <meta name="description" content={product.description} />
+      </Head>
+      <Subpage
+        title={
+          <Category
+            flexDirection="row"
+            imageSizeIncrease="0px"
+            name={product.category}
+            imageUrl={categories.find(byName(product.category)).imageUrl}
+          />
+        }
       >
-        <h2>{product.title}</h2>
-        <Button onClick={buy}>Buy</Button>
-      </Product>
+        <Product
+          price={product.price}
+          image={product.image}
+          flexDirectionWhenExpanded="row"
+        >
+          <h2>{product.title}</h2>
+          <Button onClick={buy}>Buy</Button>
+        </Product>
 
-      <Section title="Description">
-        <p>{product.description}</p>
-      </Section>
+        <Section title="Description">
+          <p>{product.description}</p>
+        </Section>
 
-      <Section title="Seller">
-        <Link href={`/users/${user.login.username}`}>
-          <a>
-            <User name={user.login.username} imageUrl={user.picture.large} />
-          </a>
-        </Link>
-      </Section>
+        <Section title="Seller">
+          <Link href={`/users/${user.login.username}`}>
+            <a>
+              <User name={user.login.username} imageUrl={user.picture.large} />
+            </a>
+          </Link>
+        </Section>
 
-      <Section title="Similar products">
-        <ProductList filter={bySimilar(product)} />
-      </Section>
-    </Subpage>
+        <Section title="Similar products">
+          <ProductList filter={bySimilar(product)} />
+        </Section>
+      </Subpage>
+    </>
   );
 }
