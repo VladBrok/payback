@@ -4,6 +4,7 @@ import Section from "../Section";
 import CategoryList from "../CategoryList";
 import ProductList from "../ProductList";
 import { byPremium } from "../../lib/productFilters";
+import { byNameSubstring } from "../../lib/categoryFilters";
 import { FcFinePrint, FcRating } from "react-icons/fc";
 import { useEffect, useState } from "react";
 import Modal from "react-modal";
@@ -12,6 +13,7 @@ Modal.setAppElement("#__next");
 
 export default function Main() {
   const [modalIsOpen, setIsOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState();
 
   // Simulate second click on the overlay, because modal stays open after first one
   useEffect(() => {
@@ -28,11 +30,16 @@ export default function Main() {
     return () => document.removeEventListener("click", handleClick);
   }, [modalIsOpen]);
 
-  function findCategories(e) {
-    console.log(e.target.value);
+  useEffect(() => {
+    document.body.style.overflow = modalIsOpen ? "hidden" : "unset";
+  }, [modalIsOpen]);
+
+  function handleSearchQueryChange(e) {
+    setSearchQuery(e.target.value);
   }
 
   function openModal() {
+    setSearchQuery();
     setIsOpen(true);
   }
 
@@ -53,7 +60,16 @@ export default function Main() {
         contentLabel="Find category"
         shouldReturnFocusAfterClose={false}
       >
-        <SearchBar label={searchBarLabel} onChange={findCategories} autoFocus />
+        <SearchBar
+          label={searchBarLabel}
+          onChange={handleSearchQueryChange}
+          autoFocus
+        />
+        <CategoryList
+          flexDirection="column"
+          filter={searchQuery ? byNameSubstring(searchQuery) : null}
+          fallback="Not found"
+        />
       </Modal>
 
       <Section title="Categories" Icon={FcFinePrint}>
