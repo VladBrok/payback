@@ -1,0 +1,12 @@
+@use "../../styles/colors.scss" as c;
+
+.container {
+  display: block;
+  width: 100%;
+  margin: 1.5rem 0;
+  padding: 0.7rem 1rem;
+  color: c.$background;
+  font-weight: bolder;
+  background: c.$highlight;
+  border-radius: 0.7rem;
+}

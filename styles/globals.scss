@@ -21,8 +21,17 @@ input {
   text-decoration: none;
 }
 
-input {
+input,
+button {
   font-size: inherit;
+}
+
+button {
+  border: none;
+}
+
+button:not(:disabled):hover {
+  cursor: pointer;
 }
 
 ul {
