@@ -21,7 +21,6 @@ export default function Category({
             src={imageUrl}
             alt=""
             objectFit="scale-down"
-            layout="fill"
           />
           <span className={styles.name}>{name}</span>
         </a>

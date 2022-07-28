@@ -13,13 +13,7 @@ export default function Product({
       className={styles.container}
       style={{ "--flex-direction-expand": flexDirectionWhenExpanded }}
     >
-      <Image
-        className={styles.image}
-        src={image}
-        alt=""
-        layout="fill"
-        objectFit="contain"
-      />
+      <Image className={styles.image} src={image} alt="" objectFit="contain" />
       <div className={styles.info}>
         <p className={styles.price}>{formatPrice(price)}</p>
         {children}

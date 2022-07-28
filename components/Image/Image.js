@@ -18,6 +18,7 @@ export default function Image({ className, ...props }) {
         onError={handleLoadingComplete}
         onLoad={handleLoadingComplete}
         onLoadingComplete={handleLoadingComplete}
+        layout="fill"
         {...props}
       />
     </div>
