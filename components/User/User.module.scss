@@ -1,0 +1,17 @@
+.container {
+  $image-size: 3.5rem;
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+
+  .image {
+    width: $image-size;
+    height: $image-size;
+    overflow: hidden;
+    border-radius: 50%;
+  }
+
+  .name {
+    font-weight: bolder;
+  }
+}
