@@ -7,7 +7,8 @@
     "category": "men's clothing",
     "image": "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
     "rating": { "rate": 3.9, "count": 120 },
-    "isPremium": true
+    "isPremium": true,
+    "userId": "redkoala286"
   },
   {
     "id": 2,
@@ -17,7 +18,8 @@
     "category": "men's clothing",
     "image": "https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg",
     "rating": { "rate": 4.1, "count": 259 },
-    "isPremium": true
+    "isPremium": true,
+    "userId": "sadpanda964"
   },
   {
     "id": 3,
@@ -27,7 +29,8 @@
     "category": "men's clothing",
     "image": "https://fakestoreapi.com/img/71li-ujtlUL._AC_UX679_.jpg",
     "rating": { "rate": 4.7, "count": 500 },
-    "isPremium": true
+    "isPremium": true,
+    "userId": "orangedog982"
   },
   {
     "id": 4,
@@ -37,7 +40,8 @@
     "category": "men's clothing",
     "image": "https://fakestoreapi.com/img/71YXzeOuslL._AC_UY879_.jpg",
     "rating": { "rate": 2.1, "count": 430 },
-    "isPremium": true
+    "isPremium": true,
+    "userId": "redkoala286"
   },
   {
     "id": 5,
@@ -47,7 +51,8 @@
     "category": "jewelery",
     "image": "https://fakestoreapi.com/img/71pWzhdJNwL._AC_UL640_QL65_ML3_.jpg",
     "rating": { "rate": 4.6, "count": 400 },
-    "isPremium": true
+    "isPremium": true,
+    "userId": "orangedog982"
   },
   {
     "id": 6,
@@ -57,7 +62,8 @@
     "category": "jewelery",
     "image": "https://fakestoreapi.com/img/61sbMiUnoGL._AC_UL640_QL65_ML3_.jpg",
     "rating": { "rate": 3.9, "count": 70 },
-    "isPremium": true
+    "isPremium": true,
+    "userId": "sadpanda964"
   },
   {
     "id": 7,
@@ -67,6 +73,7 @@
     "category": "jewelery",
     "image": "https://fakestoreapi.com/img/71YAIFU48IL._AC_UL640_QL65_ML3_.jpg",
     "rating": { "rate": 3, "count": 400 },
-    "isPremium": true
+    "isPremium": true,
+    "userId": "orangedog982"
   }
 ]

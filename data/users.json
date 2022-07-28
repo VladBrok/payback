@@ -1,0 +1,55 @@
+// https://randomuser.me/api/?seed=dsk&results=3&inc=login,registered,picture
+
+[
+  {
+    "login": {
+      "uuid": "c1230cab-ee74-4196-8082-fea1a2b0ed41",
+      "username": "orangedog982",
+      "password": "123456a",
+      "salt": "65CsfMBV",
+      "md5": "4f61d1e9cb3e048ab813622fd0a1f7bf",
+      "sha1": "77b23e0e8caa4e08c38b9aa1e138329ff24aee65",
+      "sha256": "84cdfcf853de65798d584d92b9b6e5543b093a660faefb053c6dc42a6c9304d2"
+    },
+    "registered": { "date": "2014-11-29T11:13:02.606Z", "age": 7 },
+    "picture": {
+      "large": "https://randomuser.me/api/portraits/men/7.jpg",
+      "medium": "https://randomuser.me/api/portraits/med/men/7.jpg",
+      "thumbnail": "https://randomuser.me/api/portraits/thumb/men/7.jpg"
+    }
+  },
+  {
+    "login": {
+      "uuid": "6208341a-581c-4665-b5fb-28a68873d4f0",
+      "username": "redkoala286",
+      "password": "dragoon",
+      "salt": "bYLRcH6C",
+      "md5": "126c25738350962cd22fbf8c1e626147",
+      "sha1": "7ff896a066942bc7640e754579488b4d82f54d8b",
+      "sha256": "1b91e25540fad407d85826b04710e4b00ba37f759adc1f154e4b533a355e8b2c"
+    },
+    "registered": { "date": "2003-08-31T14:33:51.716Z", "age": 18 },
+    "picture": {
+      "large": "https://randomuser.me/api/portraits/women/64.jpg",
+      "medium": "https://randomuser.me/api/portraits/med/women/64.jpg",
+      "thumbnail": "https://randomuser.me/api/portraits/thumb/women/64.jpg"
+    }
+  },
+  {
+    "login": {
+      "uuid": "b08e74a7-311a-4764-97bd-dda14589fd55",
+      "username": "sadpanda964",
+      "password": "snake",
+      "salt": "BMxAyWXm",
+      "md5": "cf02a58cac95295c1ebd5631f00bd89e",
+      "sha1": "9f8d640d043b9d549eb7e4933f947ead67343338",
+      "sha256": "673a5715d51479ad96cd177f4f3fb034eca68cefc7111c0dee909bf21a434c57"
+    },
+    "registered": { "date": "2013-06-10T14:32:56.581Z", "age": 9 },
+    "picture": {
+      "large": "https://randomuser.me/api/portraits/women/64.jpg",
+      "medium": "https://randomuser.me/api/portraits/med/women/64.jpg",
+      "thumbnail": "https://randomuser.me/api/portraits/thumb/women/64.jpg"
+    }
+  }
+]
