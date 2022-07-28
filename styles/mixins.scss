@@ -3,6 +3,7 @@
 $container-big-padding: 1.7rem;
 
 @mixin container-big {
+  margin-bottom: 5rem;
   padding: $container-big-padding;
 
   @media (min-width: b.$menu) {

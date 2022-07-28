@@ -4,7 +4,6 @@
 
 .container {
   @include m.container-big;
-  margin-bottom: 6rem;
   border-top: 0.5rem solid c.$background-highlight;
 
   .copyright {
