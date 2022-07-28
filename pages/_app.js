@@ -7,6 +7,7 @@ menuItems[0].isActive = true;
 export default function MyApp({ Component, pageProps }) {
   return (
     <>
+      {/* todo: wrap Component in Container ? */}
       <Component {...pageProps} />
       <Menu itemsData={menuItems} />
     </>
