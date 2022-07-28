@@ -9,6 +9,7 @@ import Link from "next/link";
 export default function ProductList({ filter }) {
   const products = productsData.filter(filter).map(d => (
     <div key={d.id}>
+      {/* fixme: dup with ProductPage */}
       <Category
         flexDirection="row"
         imageSizeIncrease="0px"
