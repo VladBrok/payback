@@ -1,4 +1,4 @@
-@use "../../styles/colors.scss" as c;
+@use "../../styles/mixins.scss" as m;
 @use "../../styles/breakpoints.scss" as b;
 
 .container {
@@ -6,25 +6,16 @@
   display: flex;
   align-items: center;
   margin: 0 0.2rem;
-  color: c.$text-secondary;
-
-  $input-px: 0.7rem;
 
   .icon {
     position: absolute;
-    left: $input-px;
+    left: 0.7rem;
     font-size: 1.2rem;
   }
 
   .input {
-    display: block;
-    width: 100%;
-    padding: $input-px calc($input-px * 1.3);
-    padding-left: calc($input-px * 2 + 1rem);
-    line-height: 1.3;
-    background: c.$background-highlight;
-    border: none;
-    border-radius: 0.4rem;
+    @include m.input;
+    padding-left: 2.4rem;
   }
 
   @media (min-width: b.$menu) {
