@@ -58,11 +58,16 @@ export default function CategorySearchModal({ isOpen, close, searchBarLabel }) {
       shouldReturnFocusAfterClose={false}
     >
       <Container>
-        <SearchBar
-          label={searchBarLabel}
-          onChange={handleSearchQueryChange}
-          autoFocus
-        />
+        <div className={styles["search-container"]}>
+          <SearchBar
+            label={searchBarLabel}
+            onChange={handleSearchQueryChange}
+            autoFocus
+          />
+          <button type="button" className={styles.button} onClick={handleClose}>
+            Cancel
+          </button>
+        </div>
         <CategoryList
           flexDirection="column"
           filter={searchQuery ? byNameSubstring(searchQuery) : null}

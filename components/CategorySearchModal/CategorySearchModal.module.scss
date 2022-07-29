@@ -1,13 +1,23 @@
 @use "../../styles/breakpoints.scss" as b;
 @use "../../styles/mixins.scss" as m;
+@use "../../styles/colors.scss" as c;
 
 .modal {
   @include m.modal;
   overflow-y: auto;
   background-color: white;
 
+  .search-container {
+    display: flex;
+    gap: 0.7rem;
+
+    .button {
+      color: c.$highlight;
+    }
+  }
+
   @media (min-width: b.$menu) {
-    height: 60vh;
+    height: 70vh;
   }
 }
 
