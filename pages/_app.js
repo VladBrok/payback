@@ -1,6 +1,6 @@
 import "../styles/globals.scss";
 import Menu from "../components/Menu";
-import PageContainer from "../components/PageContainer";
+import Container from "../components/Container";
 import menuItems from "../data/menuItems";
 
 menuItems[0].isActive = true;
@@ -8,9 +8,9 @@ menuItems[0].isActive = true;
 export default function MyApp({ Component: Page, pageProps }) {
   return (
     <>
-      <PageContainer>
+      <Container>
         <Page {...pageProps} />
-      </PageContainer>
+      </Container>
       <Menu itemsData={menuItems} />
     </>
   );
