@@ -12,6 +12,7 @@ import { byId as byProductId } from "../../lib/productFinders";
 import { byId as byUserId } from "../../lib/userFinders";
 import { byName } from "../../lib/categoryFinders";
 import { bySimilar } from "../../lib/productFilters";
+import { FcSearch } from "react-icons/fc";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import Head from "next/head";
@@ -67,7 +68,7 @@ export default function ProductPage() {
           </Link>
         </Section>
 
-        <Section title="Similar products">
+        <Section title="Similar products" Icon={FcSearch}>
           <ProductList filter={bySimilar(product)} />
         </Section>
       </Subpage>
