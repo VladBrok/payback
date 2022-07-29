@@ -1,5 +1,6 @@
 @use "../../styles/mixins.scss" as m;
 @use "../../styles/breakpoints.scss" as b;
+@use "../../styles/colors.scss" as c;
 
 .container {
   position: relative;
@@ -10,6 +11,7 @@
   .icon {
     position: absolute;
     left: 0.7rem;
+    color: c.$text-secondary;
     font-size: 1.2rem;
   }
 
