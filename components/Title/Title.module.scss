@@ -1,0 +1,8 @@
+@use "../../styles/mixins.scss" as m;
+
+.container {
+  @include m.title-2xl;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}

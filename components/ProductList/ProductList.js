@@ -1,7 +1,9 @@
 import styles from "./ProductList.module.scss";
-import productsData from "../../data/products.json";
 import Product from "../Product";
 import Category from "../Category/";
+import Empty from "../Empty";
+import productsData from "../../data/products.json";
+import { FcInTransit } from "react-icons/fc";
 import Link from "next/link";
 
 export default function ProductList({ filter, includeCategory = true }) {
@@ -17,6 +19,10 @@ export default function ProductList({ filter, includeCategory = true }) {
       </Link>
     </div>
   ));
+
+  if (!products.length) {
+    return <Empty title="Sold out" Icon={FcInTransit} hint="come back later" />;
+  }
 
   return <div className={styles.container}>{products}</div>;
 }

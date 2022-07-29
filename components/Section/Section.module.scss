@@ -3,15 +3,7 @@
 .container {
   margin: 2.2rem 0;
 
-  .title {
-    @include m.title-2xl;
-    display: flex;
-    align-items: center;
-    margin-bottom: 0.9rem;
-
-    .icon {
-      display: block;
-      margin-right: 0.3rem;
-    }
+  .children-container {
+    @include m.container;
   }
 }
