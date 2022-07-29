@@ -29,8 +29,14 @@ export default function CategorySearchModal({ isOpen, close, searchBarLabel }) {
   }, [isOpen]);
 
   useEffect(() => {
-    document.body.style.overflow = isOpen ? "hidden" : "unset";
-    document.body.style.marginRight = isOpen ? `${scrollBarWidth}px` : "unset";
+    const bodyStyle = document.body.style;
+    bodyStyle.overflow = isOpen ? "hidden" : "unset";
+    bodyStyle.marginRight = isOpen ? `${scrollBarWidth}px` : "unset";
+
+    return () => {
+      bodyStyle.overflow = "unset";
+      bodyStyle.marginRight = "unset";
+    };
   }, [isOpen]);
 
   function handleClose() {
