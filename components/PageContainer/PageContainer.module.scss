@@ -1,0 +1,14 @@
+@use "../../styles/breakpoints.scss" as b;
+
+$p: 1.7rem;
+$nav-size: 5rem;
+
+.container {
+  margin-bottom: $nav-size;
+  padding: $p;
+
+  @media (min-width: b.$menu) {
+    margin-bottom: 0;
+    padding-left: calc($nav-size + $p);
+  }
+}

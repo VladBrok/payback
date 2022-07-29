@@ -5,6 +5,7 @@ import SocialMediaLinkList from "../SocialMediaLinkList";
 export default function Footer() {
   return (
     <footer className={styles.container}>
+      <hr className={styles.line} />
       <Section title="We on social media">
         <SocialMediaLinkList />
       </Section>

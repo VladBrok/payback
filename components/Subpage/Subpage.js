@@ -12,7 +12,7 @@ export default function Subpage({ title, children }) {
   const buttonLabel = "go back";
 
   return (
-    <div className={styles.container}>
+    <>
       <header className={styles.header}>
         <button onClick={goBack} title={buttonLabel} aria-label={buttonLabel}>
           <ImArrowLeft2 className={styles["arrow-icon"]} />
@@ -20,6 +20,6 @@ export default function Subpage({ title, children }) {
         {title}
       </header>
       <main className={styles.main}>{children}</main>
-    </div>
+    </>
   );
 }

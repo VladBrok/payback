@@ -1,18 +1,5 @@
 @use "./breakpoints.scss" as b;
 
-$container-big-padding: 1.7rem;
-$nav-size: 5rem;
-
-@mixin container-big {
-  margin-bottom: $nav-size;
-  padding: $container-big-padding;
-
-  @media (min-width: b.$menu) {
-    margin-bottom: 0;
-    padding-left: calc($nav-size + $container-big-padding);
-  }
-}
-
 @mixin container {
   margin: 1.4rem 0;
 }
