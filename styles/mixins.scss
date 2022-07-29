@@ -1,8 +1,14 @@
 @use "./breakpoints.scss" as b;
 @use "./colors.scss" as c;
 
+$container-my: 1.2rem;
+
 @mixin container {
-  margin: 1.4rem 0;
+  margin: $container-my 0;
+
+  @media (min-width: b.$menu) {
+    margin: calc($container-my * 1.1) 0;
+  }
 }
 
 $input-px: 0.7rem;
