@@ -5,4 +5,8 @@
   display: flex;
   gap: 0.6rem;
   justify-content: space-around;
+
+  & > * {
+    flex: 1 1 0;
+  }
 }
