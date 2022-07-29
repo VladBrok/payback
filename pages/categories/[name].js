@@ -2,8 +2,6 @@ import Subpage from "../../components/Subpage";
 import Category from "../../components/Category";
 import ProductList from "../../components/ProductList";
 import PriceRange from "../../components/PriceRange";
-import categories from "../../data/categories.json";
-import { byName } from "../../lib/categoryFinders";
 import { byCategoryAndPrice } from "../../lib/productFilters";
 import { useState } from "react";
 import { useRouter } from "next/router";
@@ -28,17 +26,7 @@ export default function CategoryPage() {
       <Head>
         <title>Buy {categoryName}</title>
       </Head>
-      <Subpage
-        /* fixme: dup */
-        title={
-          <Category
-            flexDirection="row" // todo: make default
-            imageSizeIncrease="0px" // todo: make default
-            name={categoryName}
-            imageUrl={categories.find(byName(categoryName)).imageUrl} // todo: incapsulate
-          />
-        }
-      >
+      <Subpage title={<Category name={categoryName} />}>
         <PriceRange
           onMinChange={handleMinPriceChange}
           onMaxChange={handleMaxPriceChange}

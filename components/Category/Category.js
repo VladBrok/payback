@@ -1,12 +1,14 @@
 import styles from "./Category.module.scss";
-import Link from "next/link";
 import Image from "../Image";
+import categories from "../../data/categories.json";
+import { byName } from "../../lib/categoryFinders";
+import Link from "next/link";
 
 export default function Category({
-  imageUrl,
   name,
-  flexDirection,
-  imageSizeIncrease,
+  imageUrl = null,
+  flexDirection = "row",
+  imageSizeIncrease = "0px",
 }) {
   return (
     <div
@@ -18,7 +20,8 @@ export default function Category({
         <a className={styles.link} style={{ flexDirection }}>
           <Image
             className={styles.image}
-            src={imageUrl}
+            // fixme: wrap in useMemo or useCallback ?
+            src={imageUrl ?? categories.find(byName(name)).imageUrl}
             alt=""
             objectFit="scale-down"
           />

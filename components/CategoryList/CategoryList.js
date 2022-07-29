@@ -14,7 +14,8 @@ export default function CategoryList({
       key={d.name}
       flexDirection={categoryFlexDirection}
       imageSizeIncrease="1.5rem"
-      {...d}
+      name={d.name}
+      imageUrl={d.imageUrl}
     />
   ));
 

@@ -6,11 +6,9 @@ import Section from "../../components/Section";
 import User from "../../components/User";
 import ProductList from "../../components/ProductList";
 import products from "../../data/products.json";
-import categories from "../../data/categories.json";
 import users from "../../data/users.json";
 import { byId as byProductId } from "../../lib/productFinders";
 import { byId as byUserId } from "../../lib/userFinders";
-import { byName } from "../../lib/categoryFinders";
 import { bySimilar } from "../../lib/productFilters";
 import { FcSearch } from "react-icons/fc";
 import { useRouter } from "next/router";
@@ -37,16 +35,7 @@ export default function ProductPage() {
         <title>{product.title}</title>
         <meta name="description" content={product.description} />
       </Head>
-      <Subpage
-        title={
-          <Category
-            flexDirection="row"
-            imageSizeIncrease="0px"
-            name={product.category}
-            imageUrl={categories.find(byName(product.category)).imageUrl}
-          />
-        }
-      >
+      <Subpage title={<Category name={product.category} />}>
         <Product
           price={product.price}
           image={product.image}
