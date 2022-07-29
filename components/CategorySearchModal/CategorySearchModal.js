@@ -3,6 +3,7 @@ import SearchBar from "../SearchBar";
 import CategoryList from "../CategoryList";
 import Container from "../Container";
 import { byNameSubstring } from "../../lib/categoryFilters";
+import useScrollBarWidth from "../../hooks/useScrollBarWidth";
 import { useEffect, useState } from "react";
 import Modal from "react-modal";
 
@@ -10,6 +11,7 @@ Modal.setAppElement("#__next");
 
 export default function CategorySearchModal({ isOpen, close, searchBarLabel }) {
   const [searchQuery, setSearchQuery] = useState();
+  const scrollBarWidth = useScrollBarWidth();
 
   // Simulate second click on the overlay, because modal stays open after first one
   useEffect(() => {
@@ -28,6 +30,7 @@ export default function CategorySearchModal({ isOpen, close, searchBarLabel }) {
 
   useEffect(() => {
     document.body.style.overflow = isOpen ? "hidden" : "unset";
+    document.body.style.marginRight = isOpen ? `${scrollBarWidth}px` : "unset";
   }, [isOpen]);
 
   function handleClose() {
