@@ -1,17 +1,12 @@
 @use "../../styles/mixins.scss" as m;
 
 .container {
-  display: contents;
-
   .input-container {
     display: flex;
     gap: 0.6rem;
     align-items: center;
+    justify-content: space-between;
     padding: 0.4rem 0;
-
-    & > * {
-      min-width: 0;
-    }
 
     .input-wrapper {
       position: relative;
