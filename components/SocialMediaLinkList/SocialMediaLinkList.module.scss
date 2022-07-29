@@ -1,8 +1,6 @@
 @use "../../styles/breakpoints.scss" as b;
-@use "../../styles/mixins.scss" as m;
 
 .container {
-  @include m.container;
   display: flex;
   flex-direction: column;
   gap: 2rem;
