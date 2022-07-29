@@ -25,6 +25,10 @@ $input-px: 0.7rem;
   z-index: 999;
   width: 100%;
   height: 100vh;
+
+  @media (min-width: b.$menu) {
+    z-index: auto;
+  }
 }
 
 @mixin title {
