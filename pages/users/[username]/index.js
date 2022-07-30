@@ -9,6 +9,7 @@ import { byUserId } from "../../../lib/productFilters";
 import { FcInTransit } from "react-icons/fc";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import Head from "next/head";
 
 export default function UserPage() {
   const router = useRouter();
@@ -20,32 +21,37 @@ export default function UserPage() {
   const user = users.find(byId(username));
 
   return (
-    <Subpage
-      title={
-        <User
-          name={username}
-          imageUrl={user.picture.large}
-          rating={user.rating}
-          reviewCount={user.reviewCount}
-          reviewWrapper={children => (
-            <Link href={`/users/${username}/reviews`}>
-              <a className={styles.link}>{children}</a>
-            </Link>
-          )}
-        />
-      }
-    >
-      <ProductList
-        filter={byUserId(username)}
-        includeCategory={false}
-        fallback={
-          <Empty
-            title="No products"
-            Icon={FcInTransit}
-            hint="come back later"
+    <>
+      <Head>
+        <title>{username}</title>
+      </Head>
+      <Subpage
+        title={
+          <User
+            name={username}
+            imageUrl={user.picture.large}
+            rating={user.rating}
+            reviewCount={user.reviewCount}
+            reviewWrapper={children => (
+              <Link href={`/users/${username}/reviews`}>
+                <a className={styles.link}>{children}</a>
+              </Link>
+            )}
           />
         }
-      />
-    </Subpage>
+      >
+        <ProductList
+          filter={byUserId(username)}
+          includeCategory={false}
+          fallback={
+            <Empty
+              title="No products"
+              Icon={FcInTransit}
+              hint="come back later"
+            />
+          }
+        />
+      </Subpage>
+    </>
   );
 }
