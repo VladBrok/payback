@@ -4,7 +4,12 @@
   gap: 0.6rem;
   align-items: center;
 
+  & > * {
+    flex: 1 1 $image-size;
+  }
+
   .image {
+    flex-grow: 0;
     width: $image-size;
     height: $image-size;
     overflow: hidden;
