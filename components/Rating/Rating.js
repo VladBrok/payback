@@ -1,11 +1,6 @@
 import styles from "./Rating.module.scss";
+import Stars from "components/Stars";
 import { formatRating } from "lib/rating";
-import { FaStar } from "react-icons/fa";
-
-const MAX_RATING = 5;
-const stars = Array(MAX_RATING)
-  .fill(0)
-  .map((_, i) => <FaStar key={i} />);
 
 export default function Rating({
   value,
@@ -21,15 +16,7 @@ export default function Rating({
       <span className={styles.rating} style={{ fontSize: valueFontSize }}>
         {formatRating(value)}
       </span>
-      <div className={styles["star-container"]}>
-        <div className={styles["star-background"]}>{stars}</div>
-        <div
-          className={styles["star-foreground"]}
-          style={{ clipPath: `inset(0 ${MAX_RATING - value}rem 0 0)` }}
-        >
-          {stars}
-        </div>
-      </div>
+      <Stars count={value} />
       {reviewWrapper(review)}
     </div>
   );

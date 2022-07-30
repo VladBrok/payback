@@ -12,23 +12,6 @@
   color: c.$text-secondary;
   line-height: 1;
 
-  .star-container {
-    position: relative;
-
-    .star-background {
-      min-width: fit-content;
-      color: c.$text-faded;
-    }
-
-    .star-foreground {
-      position: absolute;
-      top: 0;
-      left: 0;
-      min-width: fit-content;
-      color: c.$highlight;
-    }
-  }
-
   .rating {
     color: c.$text-primary;
     font-weight: bolder;
