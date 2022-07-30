@@ -1,11 +1,10 @@
 import styles from "./Rating.module.scss";
+import ActionButton from "../ActionButton";
 import { formatRating } from "../../lib/rating";
 import { FaStar } from "react-icons/fa";
 
 const MAX_RATING = 5;
-const stars = Array(MAX_RATING)
-  .fill(0)
-  .map(() => <FaStar />);
+const stars = Array(MAX_RATING).fill(<FaStar />);
 
 export default function Rating({ value, reviewCount }) {
   const pluralModifier = reviewCount === 1 ? "" : "s";
@@ -20,11 +19,9 @@ export default function Rating({ value, reviewCount }) {
         {stars}
       </div>
       <span className={styles.rating}>{formatRating(value)}</span>
-      <span>
-        {" "}
-        {/* fixme: should look like 'cancel' button from Modal, but disabled ? */}
+      <ActionButton disabled>
         {reviewCount} {`review${pluralModifier}`}
-      </span>
+      </ActionButton>
     </div>
   );
 }

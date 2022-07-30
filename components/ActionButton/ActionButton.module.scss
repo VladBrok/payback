@@ -1,0 +1,9 @@
+@use "../../styles/colors.scss" as c;
+
+.container {
+  color: c.$highlight;
+
+  &:disabled {
+    color: c.$text-secondary;
+  }
+}
