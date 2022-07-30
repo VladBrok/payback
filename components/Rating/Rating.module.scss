@@ -2,18 +2,22 @@
 
 .container {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.4rem;
   align-items: flex-start;
+  max-width: max-content;
   margin: 0.2rem 0;
   color: c.$text-secondary;
   line-height: 1;
 
   .star-background {
+    min-width: fit-content;
     color: c.$text-faded;
   }
 
   .star-foreground {
     position: absolute;
+    min-width: fit-content;
     color: c.$highlight;
   }
 
