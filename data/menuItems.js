@@ -6,6 +6,7 @@ import { BsChatDots } from "react-icons/bs";
 const menuItems = [
   {
     name: "search",
+    path: "",
     Icon: AiOutlineSearch,
   },
   {
