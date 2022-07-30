@@ -1,8 +1,8 @@
 import { useRouter } from "next/router";
 
-export default function UserPage() {
+export default function ReviewsPage() {
   const router = useRouter();
   const { username } = router.query;
 
-  return <h1>{username}</h1>;
+  return <h1>Reviews for {username}</h1>;
 }

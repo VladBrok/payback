@@ -58,6 +58,7 @@ export default function ProductPage() {
                 imageUrl={user.picture.large}
                 rating={user.rating}
                 reviewCount={user.reviewCount}
+                reviewWrapper={children => children}
               />
             </a>
           </Link>

@@ -1,12 +1,13 @@
 import styles from "./Rating.module.scss";
-import ActionButton from "../ActionButton";
 import { formatRating } from "../../lib/rating";
 import { FaStar } from "react-icons/fa";
 
 const MAX_RATING = 5;
-const stars = Array(MAX_RATING).fill(<FaStar />);
+const stars = Array(MAX_RATING)
+  .fill(0)
+  .map((_, i) => <FaStar key={i} />);
 
-export default function Rating({ value, reviewCount }) {
+export default function Rating({ value, reviewCount, reviewWrapper }) {
   const pluralModifier = reviewCount === 1 ? "" : "s";
 
   return (
@@ -19,9 +20,7 @@ export default function Rating({ value, reviewCount }) {
         {stars}
       </div>
       <span className={styles.rating}>{formatRating(value)}</span>
-      <ActionButton disabled>
-        {reviewCount} {`review${pluralModifier}`}
-      </ActionButton>
+      {reviewWrapper(`${reviewCount} review${pluralModifier}`)}
     </div>
   );
 }

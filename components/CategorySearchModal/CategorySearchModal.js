@@ -2,7 +2,6 @@ import styles from "./CategorySearchModal.module.scss";
 import SearchBar from "../SearchBar";
 import CategoryList from "../CategoryList";
 import Container from "../Container";
-import ActionButton from "../ActionButton";
 import { byNameSubstring } from "../../lib/categoryFilters";
 import useScrollBarWidth from "../../hooks/useScrollBarWidth";
 import { useEffect, useState } from "react";
@@ -65,7 +64,9 @@ export default function CategorySearchModal({ isOpen, close, searchBarLabel }) {
             onChange={handleSearchQueryChange}
             autoFocus
           />
-          <ActionButton onClick={handleClose}>Cancel</ActionButton>
+          <button type="button" className={styles.button} onClick={handleClose}>
+            Cancel
+          </button>
         </div>
         <CategoryList
           flexDirection="column"

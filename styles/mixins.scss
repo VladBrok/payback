@@ -24,6 +24,10 @@ $input-px: 0.7rem;
   border-radius: 0.4rem;
 }
 
+@mixin button {
+  color: c.$highlight;
+}
+
 @mixin modal {
   position: fixed;
   top: 0;
