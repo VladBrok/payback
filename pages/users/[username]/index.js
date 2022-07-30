@@ -1,8 +1,11 @@
 import styles from "./index.module.scss";
 import Subpage from "../../../components/Subpage";
 import User from "../../../components/User";
+import Section from "../../../components/Section";
+import ProductList from "../../../components/ProductList";
 import users from "../../../data/users";
 import { byId } from "../../../lib/userFinders";
+import { byUserId } from "../../../lib/productFilters";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
@@ -30,6 +33,10 @@ export default function UserPage() {
           )}
         />
       }
-    ></Subpage>
+    >
+      <Section title="Products">
+        <ProductList filter={byUserId(username)} />
+      </Section>
+    </Subpage>
   );
 }
