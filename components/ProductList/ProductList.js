@@ -1,7 +1,7 @@
-import styles from "./ProductList.module.scss";
 import Product from "components/Product";
 import Category from "components/Category";
 import Empty from "components/Empty";
+import Grid from "components/Grid";
 import productsData from "data/products.json";
 import { FcInTransit } from "react-icons/fc";
 import Link from "next/link";
@@ -30,5 +30,5 @@ export default function ProductList({
     return <>{fallback}</>;
   }
 
-  return <div className={styles.container}>{products}</div>;
+  return <Grid>{products}</Grid>;
 }
