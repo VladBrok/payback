@@ -6,12 +6,10 @@ export default function Product({
   price,
   image,
   children,
-  isSold,
   flexDirectionWhenExpanded = "column",
 }) {
   return (
     <>
-      {isSold && <div className={styles.sold}>Sold</div>}
       <div
         className={styles.container}
         style={{ "--flex-direction-expand": flexDirectionWhenExpanded }}

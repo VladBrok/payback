@@ -1,3 +1,4 @@
+import styles from "./[id].module.scss";
 import Product from "components/Product";
 import CtaButton from "components/CtaButton";
 import Subpage from "components/Subpage";
@@ -14,6 +15,9 @@ import { bySimilar } from "lib/productFilters";
 import { FcSearch } from "react-icons/fc";
 import Link from "next/link";
 import Head from "next/head";
+
+// todo: move it (and other subpages) to components folder
+// so that it's easier to find them
 
 export default function ProductPage() {
   function buy() {
@@ -34,10 +38,10 @@ export default function ProductPage() {
               <meta name="description" content={product.description} />
             </Head>
             <Subpage title={<Category name={product.category} />}>
+              {product.isSold && <div className={styles.sold}>Sold</div>}
               <Product
                 price={product.price}
                 image={product.image}
-                isSold={product.isSold}
                 flexDirectionWhenExpanded="row"
               >
                 <h2>{product.title}</h2>
