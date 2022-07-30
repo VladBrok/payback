@@ -1,16 +1,33 @@
-import { useRouter } from "next/router";
+import Rating from "components/Rating";
+import Router from "components/Router";
+import Subpage from "components/Subpage";
+import users from "data/users.json";
+import { byId } from "lib/userFinders";
 import Head from "next/head";
 
 export default function ReviewsPage() {
-  const router = useRouter();
-  const { username } = router.query;
-
   return (
-    <>
-      <Head>
-        <title>{username} reviews</title>
-      </Head>
-      <h1>Reviews for {username}</h1>
-    </>
+    <Router>
+      {({ username }) => {
+        const user = users.find(byId(username));
+
+        return (
+          <>
+            <Head>
+              <title>{username} reviews</title>
+            </Head>
+            <Subpage
+              title={
+                <Rating
+                  reviewCount={user.reviewCount}
+                  value={user.rating}
+                  valueFontSize="2rem"
+                />
+              }
+            ></Subpage>
+          </>
+        );
+      }}
+    </Router>
   );
 }
