@@ -18,15 +18,20 @@ export default function ReviewList({ sellerId }) {
 
     return (
       <div className={styles.review} key={product.id}>
-        <User
-          imageUrl={buyer.picture.large} // fixme: dup (user.picture.large)
-          name={buyer.login.username}
-        >
-          <Stars count={d.rating} />
-        </User>
+        <header className={styles.header}>
+          <User
+            imageUrl={buyer.picture.large} // fixme: dup (user.picture.large)
+            name={buyer.login.username}
+          >
+            <Stars count={d.rating} />
+          </User>
+          <span className={styles.date}>{d.date}</span>
+        </header>
+
+        <p className={styles.text}>{d.text}</p>
 
         <Link href={`/products/${product.id}`}>
-          <a>
+          <a className={styles["product-link"]}>
             <Product
               image={product.image}
               price={product.price}

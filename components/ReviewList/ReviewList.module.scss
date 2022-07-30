@@ -1,7 +1,27 @@
 @use "styles/colors.scss" as c;
 
 .review {
+  display: flex;
+  flex-direction: column;
   padding: 1rem;
   background: c.$background-highlight;
   border-radius: 0.5rem;
+
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .text {
+    margin: 1rem 0;
+  }
+
+  .date {
+    color: c.$text-secondary;
+  }
+
+  .product-link {
+    margin-top: auto;
+  }
 }
