@@ -14,7 +14,9 @@
       "large": "https://randomuser.me/api/portraits/men/7.jpg",
       "medium": "https://randomuser.me/api/portraits/med/men/7.jpg",
       "thumbnail": "https://randomuser.me/api/portraits/thumb/men/7.jpg"
-    }
+    },
+    "rating": 5,
+    "reviewCount": 3
   },
   {
     "login": {
@@ -31,7 +33,9 @@
       "large": "https://randomuser.me/api/portraits/women/64.jpg",
       "medium": "https://randomuser.me/api/portraits/med/women/64.jpg",
       "thumbnail": "https://randomuser.me/api/portraits/thumb/women/64.jpg"
-    }
+    },
+    "rating": 3.5,
+    "reviewCount": 2
   },
   {
     "login": {
@@ -48,6 +52,8 @@
       "large": "https://randomuser.me/api/portraits/women/64.jpg",
       "medium": "https://randomuser.me/api/portraits/med/women/64.jpg",
       "thumbnail": "https://randomuser.me/api/portraits/thumb/women/64.jpg"
-    }
+    },
+    "rating": 4,
+    "reviewCount": 1
   }
 ]

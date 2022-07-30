@@ -26,6 +26,7 @@ export default function ProductPage() {
     console.log("buy");
   }
 
+  // fixme: use useMemo or useCallback ?
   const product = products.find(byProductId(id));
   const user = users.find(byUserId(product.userId));
 
@@ -52,7 +53,12 @@ export default function ProductPage() {
         <Section title="Seller">
           <Link href={`/users/${user.login.username}`}>
             <a>
-              <User name={user.login.username} imageUrl={user.picture.large} />
+              <User
+                name={user.login.username}
+                imageUrl={user.picture.large}
+                rating={user.rating}
+                reviewCount={user.reviewCount}
+              />
             </a>
           </Link>
         </Section>
