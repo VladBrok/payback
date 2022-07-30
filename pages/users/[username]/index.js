@@ -1,11 +1,12 @@
 import styles from "./index.module.scss";
 import Subpage from "../../../components/Subpage";
 import User from "../../../components/User";
-import Section from "../../../components/Section";
 import ProductList from "../../../components/ProductList";
+import Empty from "../../../components/Empty";
 import users from "../../../data/users";
 import { byId } from "../../../lib/userFinders";
 import { byUserId } from "../../../lib/productFilters";
+import { FcInTransit } from "react-icons/fc";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
@@ -34,9 +35,17 @@ export default function UserPage() {
         />
       }
     >
-      <Section title="Products">
-        <ProductList filter={byUserId(username)} />
-      </Section>
+      <ProductList
+        filter={byUserId(username)}
+        includeCategory={false}
+        fallback={
+          <Empty
+            title="No products"
+            Icon={FcInTransit}
+            hint="come back later"
+          />
+        }
+      />
     </Subpage>
   );
 }

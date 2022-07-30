@@ -6,7 +6,13 @@ import productsData from "../../data/products.json";
 import { FcInTransit } from "react-icons/fc";
 import Link from "next/link";
 
-export default function ProductList({ filter, includeCategory = true }) {
+export default function ProductList({
+  filter,
+  includeCategory = true,
+  fallback = (
+    <Empty title="Sold out" Icon={FcInTransit} hint="come back later" />
+  ),
+}) {
   const products = productsData.filter(filter).map(d => (
     <div key={d.id}>
       {includeCategory && <Category name={d.category} />}
@@ -21,7 +27,7 @@ export default function ProductList({ filter, includeCategory = true }) {
   ));
 
   if (!products.length) {
-    return <Empty title="Sold out" Icon={FcInTransit} hint="come back later" />;
+    return <>{fallback}</>;
   }
 
   return <div className={styles.container}>{products}</div>;
