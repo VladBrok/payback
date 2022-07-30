@@ -1,6 +1,6 @@
 import styles from "./Product.module.scss";
 import Image from "../Image";
-import { formatPrice } from "../../lib/formatPrice";
+import { formatPrice } from "../../lib/price";
 
 export default function Product({
   price,
