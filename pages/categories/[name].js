@@ -13,6 +13,10 @@ export default function CategoryPage() {
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
 
+  if (!categoryName) {
+    return;
+  }
+
   function handleMinPriceChange(e) {
     setMinPrice(extractValue(e));
   }
