@@ -7,20 +7,30 @@ const stars = Array(MAX_RATING)
   .fill(0)
   .map((_, i) => <FaStar key={i} />);
 
-export default function Rating({ value, reviewCount, reviewWrapper }) {
+export default function Rating({
+  value,
+  reviewCount,
+  reviewWrapper = children => children,
+  valueFontSize = "1rem",
+}) {
   const pluralModifier = reviewCount === 1 ? "" : "s";
+  const review = `${reviewCount} review${pluralModifier}`;
 
   return (
     <div className={styles.container}>
-      <div className={styles["star-background"]}>{stars}</div>
-      <div
-        className={styles["star-foreground"]}
-        style={{ clipPath: `inset(0 ${MAX_RATING - value}rem 0 0)` }}
-      >
-        {stars}
+      <span className={styles.rating} style={{ fontSize: valueFontSize }}>
+        {formatRating(value)}
+      </span>
+      <div className={styles["star-container"]}>
+        <div className={styles["star-background"]}>{stars}</div>
+        <div
+          className={styles["star-foreground"]}
+          style={{ clipPath: `inset(0 ${MAX_RATING - value}rem 0 0)` }}
+        >
+          {stars}
+        </div>
       </div>
-      <span className={styles.rating}>{formatRating(value)}</span>
-      {reviewWrapper(`${reviewCount} review${pluralModifier}`)}
+      {reviewWrapper(review)}
     </div>
   );
 }
