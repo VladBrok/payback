@@ -37,10 +37,11 @@ export default function ProductPage() {
               <Product
                 price={product.price}
                 image={product.image}
+                isSold={product.isSold}
                 flexDirectionWhenExpanded="row"
               >
                 <h2>{product.title}</h2>
-                <CtaButton onClick={buy}>Buy</CtaButton>
+                {!product.isSold && <CtaButton onClick={buy}>Buy</CtaButton>}
               </Product>
 
               <Section title="Description">

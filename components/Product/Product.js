@@ -6,18 +6,27 @@ export default function Product({
   price,
   image,
   children,
+  isSold,
   flexDirectionWhenExpanded = "column",
 }) {
   return (
-    <div
-      className={styles.container}
-      style={{ "--flex-direction-expand": flexDirectionWhenExpanded }}
-    >
-      <Image className={styles.image} src={image} alt="" objectFit="contain" />
-      <div className={styles.info}>
-        <p className={styles.price}>{formatPrice(price)}</p>
-        {children}
+    <>
+      {isSold && <div className={styles.sold}>Sold</div>}
+      <div
+        className={styles.container}
+        style={{ "--flex-direction-expand": flexDirectionWhenExpanded }}
+      >
+        <Image
+          className={styles.image}
+          src={image}
+          alt=""
+          objectFit="contain"
+        />
+        <div className={styles.info}>
+          <p className={styles.price}>{formatPrice(price)}</p>
+          {children}
+        </div>
       </div>
-    </div>
+    </>
   );
 }

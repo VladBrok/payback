@@ -18,7 +18,7 @@ export default function ProductList({
       {includeCategory && <Category name={d.category} />}
       <Link href={`/products/${d.id}`}>
         <a>
-          <Product image={d.image} price={d.price}>
+          <Product image={d.image} price={d.price} isSold={d.isSold}>
             <h3>{d.title}</h3>
           </Product>
         </a>

@@ -1,4 +1,16 @@
 @use "styles/breakpoints.scss" as b;
+@use "styles/colors.scss" as c;
+@use "styles/mixins.scss" as m;
+
+.sold {
+  @include m.title-3xl;
+  margin-bottom: 0.4rem;
+  padding: 0.8rem 1rem;
+  color: c.$text-secondary;
+  text-align: center;
+  background: c.$background-highlight;
+  border-radius: 0.7rem;
+}
 
 .container {
   $img-height: 10rem;
