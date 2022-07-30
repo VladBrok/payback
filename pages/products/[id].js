@@ -7,6 +7,7 @@ import Section from "components/Section";
 import User from "components/User";
 import ProductList from "components/ProductList";
 import Router from "components/Router";
+import Rating from "components/Rating";
 import products from "data/products.json";
 import users from "data/users.json";
 import { byId as byProductId } from "lib/productFinders";
@@ -37,6 +38,7 @@ export default function ProductPage() {
               <title>{product.title}</title>
               <meta name="description" content={product.description} />
             </Head>
+
             <Subpage title={<Category name={product.category} />}>
               {product.isSold && <div className={styles.sold}>Sold</div>}
               <Product
@@ -58,9 +60,12 @@ export default function ProductPage() {
                     <User
                       name={user.login.username}
                       imageUrl={user.picture.large}
-                      rating={user.rating}
-                      reviewCount={user.reviewCount}
-                    />
+                    >
+                      <Rating
+                        value={user.rating}
+                        reviewCount={user.reviewCount}
+                      />
+                    </User>
                   </a>
                 </Link>
               </Section>

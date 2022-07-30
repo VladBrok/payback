@@ -9,6 +9,7 @@ import { byId as byProductId } from "lib/productFinders";
 import { byId as byUserId } from "lib/userFinders";
 import { bySellerId } from "lib/reviewFilters";
 import Link from "next/link";
+import Stars from "components/Stars";
 
 export default function ReviewList({ sellerId }) {
   const reviews = reviewData.filter(bySellerId(sellerId)).map(d => {
@@ -20,9 +21,10 @@ export default function ReviewList({ sellerId }) {
         <User
           imageUrl={buyer.picture.large} // fixme: dup (user.picture.large)
           name={buyer.login.username}
-          rating={buyer.rating}
-          reviewCount={buyer.reviewCount}
-        />
+        >
+          <Stars count={d.rating} />
+        </User>
+
         <Link href={`/products/${product.id}`}>
           <a>
             <Product

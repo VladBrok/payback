@@ -4,6 +4,7 @@ import User from "components/User";
 import ProductList from "components/ProductList";
 import Empty from "components/Empty";
 import Router from "components/Router";
+import Rating from "components/Rating";
 import users from "data/users";
 import { byId } from "lib/userFinders";
 import { byUserId } from "lib/productFilters";
@@ -22,19 +23,20 @@ export default function UserPage() {
             <Head>
               <title>{username}</title>
             </Head>
+
             <Subpage
               title={
-                <User
-                  name={username}
-                  imageUrl={user.picture.large}
-                  rating={user.rating}
-                  reviewCount={user.reviewCount}
-                  reviewWrapper={children => (
-                    <Link href={`/users/${username}/reviews`}>
-                      <a className={styles.link}>{children}</a>
-                    </Link>
-                  )}
-                />
+                <User name={username} imageUrl={user.picture.large}>
+                  <Rating
+                    value={user.rating}
+                    reviewCount={user.reviewCount}
+                    reviewWrapper={children => (
+                      <Link href={`/users/${username}/reviews`}>
+                        <a className={styles.link}>{children}</a>
+                      </Link>
+                    )}
+                  />
+                </User>
               }
             >
               <ProductList
