@@ -1,6 +1,6 @@
-import styles from "./Button.module.scss";
+import styles from "./CtaButton.module.scss";
 
-export default function Button({ onClick, children }) {
+export default function CtaButton({ onClick, children }) {
   return (
     <button type="button" className={styles.container} onClick={onClick}>
       {children}
