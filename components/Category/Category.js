@@ -1,7 +1,7 @@
 import styles from "./Category.module.scss";
-import Image from "../Image";
-import categories from "../../data/categories.json";
-import { byName } from "../../lib/categoryFinders";
+import Image from "components/Image";
+import categories from "data/categories.json";
+import { byName } from "lib/categoryFinders";
 import Link from "next/link";
 
 export default function Category({

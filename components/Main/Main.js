@@ -1,10 +1,10 @@
 import styles from "./Main.module.scss";
-import SearchBar from "../SearchBar";
-import Section from "../Section";
-import CategoryList from "../CategoryList";
-import ProductList from "../ProductList";
-import CategorySearchModal from "../CategorySearchModal";
-import { byPremium } from "../../lib/productFilters";
+import SearchBar from "components/SearchBar";
+import Section from "components/Section";
+import CategoryList from "components/CategoryList";
+import ProductList from "components/ProductList";
+import CategorySearchModal from "components/CategorySearchModal";
+import { byPremium } from "lib/productFilters";
 import { FcFinePrint, FcRating } from "react-icons/fc";
 import { useState } from "react";
 

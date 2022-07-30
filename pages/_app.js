@@ -1,7 +1,7 @@
-import "../styles/globals.scss";
-import Menu from "../components/Menu";
-import Container from "../components/Container";
-import menuItems from "../data/menuItems";
+import "styles/globals.scss";
+import Menu from "components/Menu";
+import Container from "components/Container";
+import menuItems from "data/menuItems";
 import ProgressBar from "@badrap/bar-of-progress";
 import router from "next/router";
 

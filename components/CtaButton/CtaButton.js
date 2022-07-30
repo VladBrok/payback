@@ -1,5 +1,5 @@
 import styles from "./CtaButton.module.scss";
-import Button from "../Button";
+import Button from "components/Button";
 
 export default function CtaButton({ children, ...props }) {
   return (

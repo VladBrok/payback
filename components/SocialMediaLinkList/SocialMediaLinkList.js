@@ -1,6 +1,6 @@
 import styles from "./SocialMediaLinkList.module.scss";
-import SocialMediaLink from "../SocialMediaLink/";
-import socialMediaLinks from "../../data/socialMediaLinks";
+import SocialMediaLink from "components/SocialMediaLink";
+import socialMediaLinks from "data/socialMediaLinks";
 
 // todo: make generic list ?
 export default function SocialMediaLinkList() {

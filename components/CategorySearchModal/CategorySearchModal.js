@@ -1,9 +1,9 @@
 import styles from "./CategorySearchModal.module.scss";
-import SearchBar from "../SearchBar";
-import CategoryList from "../CategoryList";
-import Container from "../Container";
-import { byNameSubstring } from "../../lib/categoryFilters";
-import useScrollBarWidth from "../../hooks/useScrollBarWidth";
+import SearchBar from "components/SearchBar";
+import CategoryList from "components/CategoryList";
+import Container from "components/Container";
+import { byNameSubstring } from "lib/categoryFilters";
+import useScrollBarWidth from "hooks/useScrollBarWidth";
 import { useEffect, useState } from "react";
 import Modal from "react-modal";
 

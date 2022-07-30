@@ -1,8 +1,8 @@
 import styles from "./ProductList.module.scss";
-import Product from "../Product";
-import Category from "../Category/";
-import Empty from "../Empty";
-import productsData from "../../data/products.json";
+import Product from "components/Product";
+import Category from "components/Category";
+import Empty from "components/Empty";
+import productsData from "data/products.json";
 import { FcInTransit } from "react-icons/fc";
 import Link from "next/link";
 

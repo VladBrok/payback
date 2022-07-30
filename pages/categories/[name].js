@@ -1,9 +1,9 @@
-import Subpage from "../../components/Subpage";
-import Category from "../../components/Category";
-import ProductList from "../../components/ProductList";
-import PriceRange from "../../components/PriceRange";
-import Router from "../../components/Router";
-import { byCategoryAndPrice } from "../../lib/productFilters";
+import Subpage from "components/Subpage";
+import Category from "components/Category";
+import ProductList from "components/ProductList";
+import PriceRange from "components/PriceRange";
+import Router from "components/Router";
+import { byCategoryAndPrice } from "lib/productFilters";
 import { useState } from "react";
 import Head from "next/head";
 

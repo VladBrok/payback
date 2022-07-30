@@ -1,5 +1,5 @@
-@use "../../styles/breakpoints.scss" as b;
-@use "../../styles/mixins.scss" as m;
+@use "styles/breakpoints.scss" as b;
+@use "styles/mixins.scss" as m;
 
 .modal {
   @include m.modal;

@@ -1,6 +1,6 @@
 import styles from "./Footer.module.scss";
-import Section from "../Section";
-import SocialMediaLinkList from "../SocialMediaLinkList";
+import Section from "components/Section";
+import SocialMediaLinkList from "components/SocialMediaLinkList";
 
 export default function Footer() {
   return (

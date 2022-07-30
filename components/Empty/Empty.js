@@ -1,5 +1,5 @@
 import styles from "./Empty.module.scss";
-import Title from "../Title";
+import Title from "components/Title";
 
 export default function Empty({ title, Icon, hint }) {
   return (

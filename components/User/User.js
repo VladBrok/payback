@@ -1,6 +1,6 @@
 import styles from "./User.module.scss";
-import Image from "../Image";
-import Rating from "../Rating";
+import Image from "components/Image";
+import Rating from "components/Rating";
 
 export default function User({
   name,

@@ -1,5 +1,5 @@
 import styles from "./Section.module.scss";
-import Title from "../Title";
+import Title from "components/Title";
 
 export default function Section({ title, Icon = null, children }) {
   return (

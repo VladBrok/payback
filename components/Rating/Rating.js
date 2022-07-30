@@ -1,5 +1,5 @@
 import styles from "./Rating.module.scss";
-import { formatRating } from "../../lib/rating";
+import { formatRating } from "lib/rating";
 import { FaStar } from "react-icons/fa";
 
 const MAX_RATING = 5;

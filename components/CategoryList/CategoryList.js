@@ -1,6 +1,6 @@
 import styles from "./CategoryList.module.scss";
-import categoriesData from "../../data/categories.json";
-import Category from "../Category";
+import categoriesData from "data/categories.json";
+import Category from "components/Category";
 
 export default function CategoryList({
   fallback,
