@@ -1,0 +1,7 @@
+@use "styles/colors.scss" as c;
+
+.review {
+  padding: 1rem;
+  background: c.$background-highlight;
+  border-radius: 0.5rem;
+}

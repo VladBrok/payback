@@ -1,6 +1,7 @@
 import Rating from "components/Rating";
 import Router from "components/Router";
 import Subpage from "components/Subpage";
+import ReviewList from "components/ReviewList";
 import users from "data/users.json";
 import { byId } from "lib/userFinders";
 import Head from "next/head";
@@ -24,7 +25,9 @@ export default function ReviewsPage() {
                   valueFontSize="2rem"
                 />
               }
-            ></Subpage>
+            >
+              <ReviewList sellerId={username} />
+            </Subpage>
           </>
         );
       }}

@@ -16,6 +16,7 @@ export default function ProductList({
   const products = productsData.filter(filter).map(d => (
     <div key={d.id}>
       {includeCategory && <Category name={d.category} />}
+      {/* fixme: dup with ReviewList */}
       <Link href={`/products/${d.id}`}>
         <a>
           <Product image={d.image} price={d.price} isSold={d.isSold}>

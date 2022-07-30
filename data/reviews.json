@@ -1,41 +1,53 @@
 [
   {
-    "userId": "sadpanda964",
+    "id": 1,
+    "buyerId": "sadpanda964",
+    "sellerId": "sadpanda964",
     "productId": 14,
     "rating": 4,
     "text": "abo",
     "date": "19-19-19"
   },
   {
-    "userId": "sadpanda964",
+    "id": 2,
+    "buyerId": "sadpanda964",
+    "sellerId": "redkoala286",
     "productId": 13,
     "rating": 4,
     "text": "abo",
     "date": "19-19-19"
   },
   {
-    "userId": "redkoala286",
+    "id": 3,
+    "buyerId": "redkoala286",
+    "sellerId": "redkoala286",
     "productId": 12,
     "rating": 4,
     "text": "abo",
     "date": "19-19-19"
   },
   {
-    "userId": "redkoala286",
+    "id": 4,
+    "buyerId": "redkoala286",
+    "sellerId": "orangedog982",
     "productId": 11,
     "rating": 4,
     "text": "abo",
     "date": "19-19-19"
   },
   {
-    "userId": "sadpanda964",
+    "id": 5,
+    "buyerId": "sadpanda964",
+    "sellerId": "orangedog982",
     "productId": 10,
     "rating": 4,
     "text": "abo",
     "date": "19-19-19"
   },
   {
-    "userId": "redkoala286",
+    "id": 6,
+    "buyerId": "redkoala286",
+    "sellerId": "orangedog982",
     "productId": 9,
     "rating": 4,
     "text": "abo",
