@@ -1,0 +1,23 @@
+@use "../../styles/colors.scss" as c;
+
+.container {
+  display: flex;
+  gap: 0.4rem;
+  align-items: flex-start;
+  margin: 0.2rem 0;
+  line-height: 1;
+
+  .star-background {
+    color: c.$text-faded;
+  }
+
+  .star-foreground {
+    position: absolute;
+    color: c.$highlight;
+  }
+
+  .rating {
+    margin-right: 0.2rem;
+    font-weight: bolder;
+  }
+}
