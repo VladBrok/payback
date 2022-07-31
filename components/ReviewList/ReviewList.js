@@ -1,5 +1,4 @@
 import styles from "./ReviewList.module.scss";
-import Grid from "components/Grid";
 import Product from "components/Product";
 import User from "components/User";
 import reviewData from "data/reviews.json";
@@ -50,5 +49,5 @@ export default function ReviewList({ sellerId }) {
     );
   });
 
-  return <Grid>{reviews}</Grid>;
+  return <div className={styles.container}>{reviews}</div>;
 }
