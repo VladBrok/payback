@@ -6,6 +6,13 @@ body {
   line-height: 1.5;
 }
 
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  overflow-wrap: anywhere;
+}
+
 h1,
 h2,
 h3,
@@ -42,10 +49,4 @@ fieldset {
 
 ul {
   list-style: none;
-}
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
 }
