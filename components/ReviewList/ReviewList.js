@@ -8,6 +8,7 @@ import userData from "data/users.json";
 import { byId as byProductId } from "lib/productFinders";
 import { byId as byUserId } from "lib/userFinders";
 import { bySellerId } from "lib/reviewFilters";
+import { formatRelativeToNow } from "lib/date";
 import Link from "next/link";
 import Stars from "components/Stars";
 
@@ -25,7 +26,7 @@ export default function ReviewList({ sellerId }) {
           >
             <Stars count={d.rating} />
           </User>
-          <span className={styles.date}>{d.date}</span>
+          <span className={styles.date}>{formatRelativeToNow(d.date)}</span>
         </header>
 
         <p className={styles.text}>{d.text}</p>
