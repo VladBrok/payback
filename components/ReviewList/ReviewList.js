@@ -34,8 +34,12 @@ export default function ReviewList({ sellerId }) {
           <a className={styles["product-link"]}>
             <Product
               image={product.image}
+              imageSize="3rem"
               price={product.price}
               isSold={product.isSold}
+              flexDirection="row"
+              flexDirectionWhenExpanded="row"
+              alignItems="flex-start"
             >
               <h3>{product.title}</h3>
             </Product>

@@ -1,32 +1,39 @@
 @use "styles/breakpoints.scss" as b;
+@use "styles/mixins.scss" as m;
 
 .container {
-  $img-height: 10rem;
   display: flex;
-  flex-direction: column;
+  flex-direction: var(--flex-direction);
   gap: 1.5rem;
+  align-items: var(--align-items);
   max-width: 50rem;
-  margin: 0 auto;
+  margin: 0.4rem auto;
+
+  & > * {
+    flex: 1 1 0;
+  }
 
   .image {
-    flex: 1 1 $img-height;
-    height: $img-height;
-    margin: 0.4rem 0;
+    $grow: 1.4;
+    min-width: var(--img-size);
+    min-height: var(--img-size);
 
     @media (min-width: b.$sm) {
-      height: calc($img-height * 1.4);
+      min-width: calc(var(--img-size) * $grow);
+      min-height: calc(var(--img-size) * $grow);
     }
   }
 
   .info {
     display: flex;
-    flex: 1 1 0;
     flex-direction: column;
     gap: 0.4rem;
+    justify-content: center;
 
     .price {
       font-weight: bold;
       font-size: 1.2rem;
+      line-height: 1;
     }
   }
 

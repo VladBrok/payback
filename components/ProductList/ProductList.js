@@ -19,7 +19,12 @@ export default function ProductList({
       {/* fixme: dup with ReviewList */}
       <Link href={`/products/${d.id}`}>
         <a>
-          <Product image={d.image} price={d.price} isSold={d.isSold}>
+          <Product
+            image={d.image}
+            imageSize="10rem"
+            price={d.price}
+            isSold={d.isSold}
+          >
             <h3>{d.title}</h3>
           </Product>
         </a>

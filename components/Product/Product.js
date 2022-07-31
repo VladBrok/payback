@@ -6,13 +6,21 @@ export default function Product({
   price,
   image,
   children,
+  imageSize,
+  flexDirection = "column",
   flexDirectionWhenExpanded = "column",
+  alignItems = "stretch",
 }) {
   return (
     <>
       <div
         className={styles.container}
-        style={{ "--flex-direction-expand": flexDirectionWhenExpanded }}
+        style={{
+          "--flex-direction": flexDirection,
+          "--flex-direction-expand": flexDirectionWhenExpanded,
+          "--img-size": imageSize,
+          "--align-items": alignItems,
+        }}
       >
         <Image
           className={styles.image}

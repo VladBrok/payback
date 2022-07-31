@@ -44,6 +44,7 @@ export default function ProductPage() {
               <Product
                 price={product.price}
                 image={product.image}
+                imageSize="14rem"
                 flexDirectionWhenExpanded="row"
               >
                 <h2>{product.title}</h2>
