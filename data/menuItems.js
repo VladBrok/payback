@@ -6,19 +6,22 @@ import { BsChatDots } from "react-icons/bs";
 const menuItems = [
   {
     name: "search",
-    path: "",
+    path: "/",
     Icon: AiOutlineSearch,
   },
   {
     name: "sell",
+    path: "/sell",
     Icon: IoAddCircleOutline,
   },
   {
     name: "chats",
+    path: "/chats",
     Icon: BsChatDots,
   },
   {
     name: "profile",
+    path: "/profile",
     Icon: IoPersonOutline,
   },
 ];

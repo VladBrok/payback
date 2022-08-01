@@ -1,10 +1,14 @@
 import styles from "./Menu.module.scss";
+import itemsData from "data/menuItems";
 import Link from "next/link";
 
-export default function Menu({ itemsData }) {
-  const items = itemsData.map(({ name, path, Icon, isActive }) => (
-    <li key={name} className={isActive ? styles["active-item"] : styles.item}>
-      <Link href={`/${path == null ? name : path}`}>
+export default function Menu({ activePath }) {
+  const items = itemsData.map(({ name, path, Icon }) => (
+    <li
+      key={name}
+      className={path === activePath ? styles["active-item"] : styles.item}
+    >
+      <Link href={path}>
         <a className={styles.link}>
           <span className={styles.icon}>
             <Icon />
