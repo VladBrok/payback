@@ -1,0 +1,10 @@
+@use "styles/mixins" as m;
+@use "styles/colors" as c;
+
+.title {
+  @include m.title-2xl;
+}
+
+.list {
+  margin: 2rem 0;
+}

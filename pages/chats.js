@@ -1,3 +1,37 @@
-export default function ChatsPage() {
-  return <h1>Chats</h1>;
+import styles from "./chats.module.scss";
+import User from "components/User";
+import chatData from "data/chats.json";
+import { byUserEmail } from "lib/chatFilters";
+import { useSession } from "next-auth/react";
+import Head from "next/head";
+import Link from "next/link";
+
+function ChatsPage() {
+  const {
+    data: { user },
+  } = useSession();
+
+  const chats = chatData.filter(byUserEmail(user.email)).map(d => (
+    <li>
+      <Link href={`/chats/${d.id}`}>
+        <a>
+          <User name={d.name} imageUrl={d.image} />
+        </a>
+      </Link>
+    </li>
+  ));
+
+  return (
+    <>
+      <Head>
+        <title>Chats</title>
+      </Head>
+
+      <h1 className={styles.title}>Chats</h1>
+      <ul className={styles.list}>{chats}</ul>
+    </>
+  );
 }
+
+ChatsPage.auth = true;
+export default ChatsPage;
