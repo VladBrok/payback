@@ -1,4 +1,4 @@
-import styles from "./chats.module.scss";
+import styles from "./index.module.scss";
 import User from "components/User";
 import chatData from "data/chats.json";
 import { byUserEmail } from "lib/chatFilters";
@@ -12,7 +12,7 @@ function ChatsPage() {
   } = useSession();
 
   const chats = chatData.filter(byUserEmail(user.email)).map(d => (
-    <li>
+    <li key={d.id}>
       <Link href={`/chats/${d.id}`}>
         <a>
           <User name={d.name} imageUrl={d.image} />
