@@ -18,9 +18,12 @@ export const authOptions = {
   },
   callbacks: {
     async jwt({ token }) {
-      token.userRole = "admin";
       return token;
     },
+  },
+  pages: {
+    signIn: "/profile/signIn",
+    error: "/profile/signIn",
   },
 };
 

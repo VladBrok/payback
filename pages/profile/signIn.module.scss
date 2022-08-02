@@ -1,0 +1,41 @@
+@use "styles/mixins.scss" as m;
+@use "styles/colors.scss" as c;
+
+.container {
+  $gap: 1.3rem;
+  $img-size: 1.5rem;
+
+  .title {
+    @include m.title-3xl;
+    margin-bottom: calc($gap * 2);
+  }
+
+  .error {
+    margin-bottom: $gap;
+    color: c.$danger;
+  }
+
+  .image {
+    width: $img-size;
+    height: $img-size;
+  }
+
+  .list {
+    display: flex;
+    flex-direction: column;
+    gap: $gap;
+
+    .button {
+      @include m.button;
+      @include m.text-lg;
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      width: min(100%, 27rem);
+      padding: 1.2rem 1.5rem;
+      text-align: left;
+      background: c.$background-highlight;
+      border-radius: 0.5rem;
+    }
+  }
+}
