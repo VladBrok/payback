@@ -1,8 +1,11 @@
 import styles from "./Menu.module.scss";
 import itemsData from "data/menuItems";
+import { getRoot } from "lib/path";
 import Link from "next/link";
 
 export default function Menu({ activePath }) {
+  activePath = getRoot(activePath);
+
   const items = itemsData.map(({ name, path, Icon }) => (
     <li
       key={name}
