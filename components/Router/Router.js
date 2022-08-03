@@ -7,5 +7,5 @@ export default function Router({ children }) {
     return;
   }
 
-  return <>{children(router.query)}</>;
+  return <>{children(router.query, router.pathname)}</>;
 }
