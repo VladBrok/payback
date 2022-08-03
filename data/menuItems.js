@@ -21,7 +21,7 @@ const menuItems = [
   },
   {
     name: "profile",
-    path: "/profile",
+    path: "/profile/products",
     Icon: IoPersonOutline,
   },
 ];

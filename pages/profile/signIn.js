@@ -14,7 +14,7 @@ export default function SignInPage({ providers }) {
       <button
         type="button"
         className={utilStyles["button-secondary"]}
-        onClick={() => signIn(p.id, { callbackUrl: "/profile" })}
+        onClick={() => signIn(p.id, { callbackUrl: "/profile/products" })}
       >
         <Image
           className={styles.image}

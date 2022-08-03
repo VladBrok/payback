@@ -1,0 +1,21 @@
+@use "styles/mixins.scss" as m;
+@use "styles/breakpoints.scss" as b;
+
+.title {
+  @include m.title-2xl;
+}
+
+.container {
+  margin-top: 1.5rem;
+
+  .menu {
+    display: flex;
+    max-width: b.$menu;
+    margin: 1.5rem 0;
+
+    .menu-item {
+      @include m.text-lg;
+      border-radius: 0.5rem;
+    }
+  }
+}
