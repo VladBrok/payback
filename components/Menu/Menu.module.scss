@@ -14,45 +14,8 @@
   box-shadow: 0 0 0.15rem 0 c.$text-secondary;
   transform: translateY(-100%);
 
-  @mixin item {
-    display: flex;
-    flex: 1 1 0;
-    align-items: center;
-    justify-content: center;
-
-    @media (min-width: b.$md) {
-      padding: 0 0.4rem;
-    }
-  }
-
-  .item {
-    @include item;
-  }
-
-  .active-item {
-    @include item;
-    color: c.$highlight;
-    background: c.$background-highlight;
-  }
-
-  .link {
-    display: flex;
-    flex: 1 1 0;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: min(0.8rem, 2vh);
-
-    text-transform: capitalize;
-    cursor: pointer;
-
-    .icon {
-      font-size: 1.5rem;
-    }
-
-    &:hover {
-      color: c.$highlight;
-    }
+  .icon {
+    font-size: 1.5rem;
   }
 
   @media (min-width: b.$menu) {

@@ -1,0 +1,39 @@
+@use "styles/breakpoints.scss" as b;
+@use "styles/colors.scss" as c;
+
+@mixin item {
+  display: flex;
+  flex: 1 1 0;
+  align-items: center;
+  justify-content: center;
+  color: c.$text-secondary;
+
+  @media (min-width: b.$md) {
+    padding: 0 0.4rem;
+  }
+}
+
+.item {
+  @include item;
+}
+
+.active-item {
+  @include item;
+  color: c.$highlight;
+  background: c.$background-highlight;
+}
+
+.link {
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: min(0.8rem, 2vh);
+  text-transform: capitalize;
+  cursor: pointer;
+
+  &:hover {
+    color: c.$highlight;
+  }
+}

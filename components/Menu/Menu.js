@@ -1,30 +1,27 @@
 import styles from "./Menu.module.scss";
 import itemsData from "data/menuItems";
+import MenuItem from "components/MenuItem";
 import { getRoot } from "lib/path";
-import Link from "next/link";
 
 export default function Menu({ activePath }) {
   activePath = getRoot(activePath);
 
   const items = itemsData.map(({ name, path, Icon }) => (
-    <li
+    <MenuItem
       key={name}
-      className={path === activePath ? styles["active-item"] : styles.item}
+      isActive={getRoot(path) === activePath}
+      name={name}
+      href={path}
     >
-      <Link href={path}>
-        <a className={styles.link}>
-          <span className={styles.icon}>
-            <Icon />
-          </span>
-          <span>{name}</span>
-        </a>
-      </Link>
-    </li>
+      <span className={styles.icon}>
+        <Icon />
+      </span>
+    </MenuItem>
   ));
 
   return (
     <nav>
-      <ul className={styles.container}>{items}</ul>
+      <div className={styles.container}>{items}</div>
     </nav>
   );
 }
