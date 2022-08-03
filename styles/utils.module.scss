@@ -1,0 +1,43 @@
+@use "styles/colors.scss" as c;
+@use "styles/mixins.scss" as m;
+
+$button-padding: 0.8rem;
+
+@mixin button {
+  width: min(100%, 27rem);
+  padding: $button-padding calc($button-padding + 0.3rem);
+  border-radius: 0.7rem;
+}
+
+@mixin button-primary {
+  @include button;
+  display: block;
+  margin-top: 1.5rem;
+  color: c.$background;
+  font-weight: bolder;
+  background: c.$highlight;
+}
+
+.button-primary {
+  @include button-primary;
+}
+
+.button-primary-danger {
+  @include button-primary;
+  background: c.$danger;
+}
+
+.button-secondary {
+  @include button;
+  @include m.text-lg;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  color: c.$highlight;
+  text-align: left;
+  background: c.$background-highlight;
+}
+
+.button-tertiary {
+  color: c.$highlight;
+}

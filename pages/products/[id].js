@@ -1,6 +1,6 @@
 import styles from "./[id].module.scss";
+import utilStyles from "styles/utils.module.scss";
 import Product from "components/Product";
-import CtaButton from "components/CtaButton";
 import Subpage from "components/Subpage";
 import Category from "components/Category";
 import Section from "components/Section";
@@ -48,7 +48,15 @@ export default function ProductPage() {
                 flexDirectionWhenExpanded="row"
               >
                 <h2>{product.title}</h2>
-                {!product.isSold && <CtaButton onClick={buy}>Buy</CtaButton>}
+                {!product.isSold && (
+                  <button
+                    type="button"
+                    className={utilStyles["button-primary"]}
+                    onClick={buy}
+                  >
+                    Buy
+                  </button>
+                )}
               </Product>
 
               <Section title="Description">

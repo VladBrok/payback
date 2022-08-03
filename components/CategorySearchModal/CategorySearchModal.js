@@ -1,4 +1,5 @@
 import styles from "./CategorySearchModal.module.scss";
+import utilStyles from "styles/utils.module.scss";
 import SearchBar from "components/SearchBar";
 import CategoryList from "components/CategoryList";
 import Container from "components/Container";
@@ -64,7 +65,11 @@ export default function CategorySearchModal({ isOpen, close, searchBarLabel }) {
             onChange={handleSearchQueryChange}
             autoFocus
           />
-          <button type="button" className={styles.button} onClick={handleClose}>
+          <button
+            type="button"
+            className={utilStyles["button-tertiary"]}
+            onClick={handleClose}
+          >
             Cancel
           </button>
         </div>

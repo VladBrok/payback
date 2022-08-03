@@ -1,4 +1,4 @@
-import styles from "./index.module.scss";
+import utilStyles from "styles/utils.module.scss";
 import Subpage from "components/Subpage";
 import User from "components/User";
 import ProductList from "components/ProductList";
@@ -32,7 +32,9 @@ export default function UserPage() {
                     reviewCount={user.reviewCount}
                     reviewWrapper={children => (
                       <Link href={`/users/${username}/reviews`}>
-                        <a className={styles.link}>{children}</a>
+                        <a className={utilStyles["button-tertiary"]}>
+                          {children}
+                        </a>
                       </Link>
                     )}
                   />

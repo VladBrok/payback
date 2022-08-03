@@ -1,4 +1,4 @@
-import CtaButton from "components/CtaButton";
+import utilStyles from "styles/utils.module.scss";
 import { signOut } from "next-auth/react";
 
 function ProfilePage() {
@@ -6,7 +6,15 @@ function ProfilePage() {
     await signOut({ redirect: false });
   }
 
-  return <CtaButton onClick={handleSingOut}>Sign out</CtaButton>; // fixme: use same button as in signIn ?
+  return (
+    <button
+      type="button"
+      className={utilStyles["button-primary-danger"]}
+      onClick={handleSingOut}
+    >
+      Sign out
+    </button>
+  );
 }
 
 ProfilePage.auth = true;

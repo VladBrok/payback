@@ -1,5 +1,5 @@
 import styles from "./signIn.module.scss";
-import Button from "components/Button";
+import utilStyles from "styles/utils.module.scss";
 import Image from "components/Image";
 import providerData from "data/authProviders.json";
 import { getProviders, signIn } from "next-auth/react";
@@ -11,8 +11,9 @@ export default function SignInPage({ providers }) {
 
   const providerList = Object.values(providers).map(p => (
     <li key={p.id}>
-      <Button
-        className={styles.button}
+      <button
+        type="button"
+        className={utilStyles["button-secondary"]}
         onClick={() => signIn(p.id, { callbackUrl: "/profile" })}
       >
         <Image
@@ -22,7 +23,7 @@ export default function SignInPage({ providers }) {
           priority
         />{" "}
         Sign in with {p.name}
-      </Button>
+      </button>
     </li>
   ));
 
