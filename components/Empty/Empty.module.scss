@@ -1,12 +1,16 @@
 @use "styles/colors.scss" as c;
 
 .container {
-  width: fit-content;
+  max-width: 20rem;
   margin: 3rem auto;
   text-align: center;
-  transform: scale(1.3);
+  text-align: center;
 
-  .hint {
-    color: c.$text-secondary;
+  .inner {
+    transform: scale(1.2);
+
+    .hint {
+      color: c.$text-secondary;
+    }
   }
 }
