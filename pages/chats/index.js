@@ -2,6 +2,7 @@ import styles from "./index.module.scss";
 import User from "components/User";
 import chatData from "data/chats.json";
 import { byUserEmail } from "lib/chatFilters";
+import { FcApproval } from "react-icons/fc";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
@@ -15,7 +16,14 @@ function ChatsPage() {
     <li key={d.id}>
       <Link href={`/chats/${d.id}`}>
         <a>
-          <User name={d.name} imageUrl={d.image} />
+          <User
+            name={
+              <span className={styles.username}>
+                {d.name} <FcApproval className={styles.icon} />
+              </span>
+            }
+            imageUrl={d.image}
+          />
         </a>
       </Link>
     </li>
