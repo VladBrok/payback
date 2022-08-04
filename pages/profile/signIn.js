@@ -5,9 +5,15 @@ import providerData from "data/authProviders.json";
 import { getProviders, signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import Head from "next/head";
+import { useState, useEffect } from "react";
 
-export default function SignInPage({ providers }) {
+export default function SignInPage() {
+  const [providers, setProviders] = useState({});
   const { error } = useRouter().query;
+
+  useEffect(() => {
+    (async () => setProviders(await getProviders()))();
+  }, []);
 
   const providerList = Object.values(providers).map(p => (
     <li key={p.id}>
@@ -44,14 +50,4 @@ export default function SignInPage({ providers }) {
       </div>
     </>
   );
-}
-
-export async function getStaticProps() {
-  const providers = await getProviders();
-
-  return {
-    props: {
-      providers,
-    },
-  };
 }
