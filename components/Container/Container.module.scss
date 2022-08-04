@@ -2,13 +2,14 @@
 
 $p: 1.7rem;
 $nav-size: 5rem;
+$p-big: calc($nav-size + $p);
 
 .container {
-  margin-bottom: $nav-size;
-  padding: $p;
+  min-height: 100%;
+  padding: $p $p $p-big $p;
 
   @media (min-width: b.$menu) {
-    margin-bottom: 0;
-    padding-left: calc($nav-size + $p);
+    padding-bottom: $p;
+    padding-left: $p-big;
   }
 }

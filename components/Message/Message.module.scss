@@ -22,6 +22,7 @@ $br: 1rem;
   @include message;
   align-self: flex-end;
   color: c.$background;
+  text-align: right;
   background: c.$highlight;
   border-radius: $br 0 $br $br;
 }
@@ -30,9 +31,10 @@ $br: 1rem;
   @include message;
   align-self: flex-start;
   color: c.$text-primary;
-  background: c.$background;
+  background: c.$background-highlight;
   border-radius: 0 $br $br $br;
 }
 
 .time {
+  font-size: 0.8rem;
 }
