@@ -1,21 +1,16 @@
-@use "/styles/mixins.scss" as m;
-$border: 1rem;
+@use "styles/colors.scss" as c;
+
+$br: 1rem;
 
 @mixin message {
   max-width: 65%;
   margin: 0.25rem 0;
   padding: 0.6rem 1rem;
-  white-space: pre-wrap; /* CSS3 */
-  white-space: -moz-pre-wrap; /* Firefox */
-  white-space: -pre-wrap; /* Opera <7 */
-  white-space: -o-pre-wrap; /* Opera 7 */
-  word-wrap: break-word; /* IE */
 }
 
 .info-message {
-  @include m.small-text;
   margin: 0.4rem 0;
-  color: black;
+  color: c.$text-primary;
   text-align: center;
 
   .time {
@@ -26,30 +21,18 @@ $border: 1rem;
 .message-from-me {
   @include message;
   align-self: flex-end;
-  color: white;
-  background: var(--telekilogram-primary-color);
-  border-radius: $border 0 $border $border;
-
-  .user {
-    display: none;
-  }
+  color: c.$background;
+  background: c.$highlight;
+  border-radius: $br 0 $br $br;
 }
 
 .message-from-friend {
   @include message;
   align-self: flex-start;
-  color: black;
-  background: white;
-  border-radius: 0 $border $border $border;
-
-  .user {
-    display: inline-block;
-    margin-right: 0.3rem;
-    color: #b08ebf;
-    font-weight: 600;
-  }
+  color: c.$text-primary;
+  background: c.$background;
+  border-radius: 0 $br $br $br;
 }
 
 .time {
-  @include m.small-text;
 }
