@@ -3,7 +3,7 @@ import Subpage from "components/Subpage";
 import chats from "data/chats.json";
 import { byId } from "lib/chatFinders";
 
-export default function ChatPage() {
+function ChatPage() {
   return (
     <Router>
       {({ id: chatId }) => {
@@ -14,3 +14,6 @@ export default function ChatPage() {
     </Router>
   );
 }
+
+ChatPage.auth = true;
+export default ChatPage;
