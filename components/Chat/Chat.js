@@ -7,28 +7,42 @@ import { makeMessage } from "lib/chat/makeMessage";
 import { RiSendPlaneFill } from "react-icons/ri";
 import { useEffect, useRef, useState } from "react";
 
-export default function Chat({ useId }) {
+export default function Chat({ userId }) {
   const [messages, setMessages] = useState([]);
   const [error, setError] = useState(false);
+  const [shouldScrollToBottom, setShouldScrollToBottom] = useState(false);
   const inputRef = useRef();
 
   useEffect(
     () =>
       connect(
-        { name: useId },
+        { name: userId },
         message => {
+          setShouldScrollToBottom(
+            isScrolledToBottom() || message.from == userId
+          );
           setMessages(current => [...current, message]);
         },
         error => handleError(error, "connect")
       ),
     []
   );
-
   useEffect(() => {
-    document.documentElement.scroll(0, document.documentElement.scrollHeight); // fixme: scroll only if a user is in the bottom
+    if (shouldScrollToBottom) {
+      doc().scroll(0, doc().scrollHeight);
+    }
   }, [messages]);
-
   useEffect(focusOnInput, []);
+
+  function isScrolledToBottom() {
+    return (
+      Math.abs(doc().scrollHeight - doc().scrollTop - doc().offsetHeight) <= 3
+    );
+  }
+
+  function doc() {
+    return document.documentElement;
+  }
 
   function focusOnInput() {
     inputRef.current?.focus();
@@ -48,13 +62,13 @@ export default function Chat({ useId }) {
     }
 
     input.value = "";
-    post("send-message", makeMessage(messageText, useId)).catch(() =>
+    post("send-message", makeMessage(messageText, userId)).catch(() =>
       handleError(error, "post request")
     );
   }
 
   const messagesList = messages.map(m => (
-    <Message message={m} userId={useId} key={m.id} />
+    <Message message={m} userId={userId} key={m.id} />
   ));
 
   return (

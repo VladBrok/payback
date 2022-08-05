@@ -17,7 +17,7 @@ function ChatPage() {
 
         return (
           <Subpage title={chat.name}>
-            <Chat useId={user.email} /> {/* fixme: use id */}
+            <Chat userId={user.email} /> {/* fixme: use id */}
           </Subpage>
         );
       }}
