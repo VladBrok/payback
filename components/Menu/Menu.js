@@ -9,10 +9,10 @@ export default function Menu({ activePath }) {
 
   useEffect(() => {
     const menu = containerRef.current;
-    document.body.style["--menu-size"] = `${Math.min(
-      menu.offsetWidth,
-      menu.offsetHeight
-    )}px`;
+    document.body.style.setProperty(
+      "--menu-size",
+      `${Math.min(menu.offsetWidth, menu.offsetHeight)}px`
+    );
   }, []);
 
   activePath = getRoot(activePath);

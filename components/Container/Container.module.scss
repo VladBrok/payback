@@ -8,7 +8,6 @@ $p-big: calc(var(--menu-size) + $p);
   padding: $p $p $p-big $p;
 
   @media (min-width: b.$menu) {
-    padding-bottom: $p;
-    padding-left: $p-big;
+    padding: $p $p $p $p-big;
   }
 }
