@@ -68,6 +68,7 @@ export default function CategorySearchModal({ isOpen, close, searchBarLabel }) {
           <button
             type="button"
             className={utilStyles["button-tertiary"]}
+            style={{ overflowWrap: "normal" }}
             onClick={handleClose}
           >
             Cancel
