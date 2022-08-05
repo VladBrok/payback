@@ -17,23 +17,29 @@
   }
 }
 
+$form-offset: 1rem;
+$form-offset-big: calc(var(--menu-size) + $form-offset);
+
 .form {
   @include rounded;
   position: fixed;
-  bottom: 6rem; // fixme: use nav-size var
-  left: 50%;
+  bottom: $form-offset-big;
   display: flex;
-  width: 90%;
+  width: 87%;
   background: c.$background-highlight;
-  transform: translateX(-50%);
-  
+
   &::before {
     position: absolute;
     z-index: -5;
-    content: '';
     width: 200%;
     height: 200%;
     background: c.$background;
+    content: "";
+  }
+
+  @media (min-width: b.$menu) {
+    bottom: $form-offset;
+    left: $form-offset-big;
   }
 }
 
