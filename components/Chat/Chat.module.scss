@@ -24,9 +24,11 @@ $form-offset-big: calc(var(--menu-size) + $form-offset);
   @include rounded;
   position: fixed;
   bottom: $form-offset-big;
+  left: 50%;
   display: flex;
   width: 87%;
   background: c.$background-highlight;
+  transform: translateX(-50%);
 
   &::before {
     position: absolute;
@@ -40,6 +42,7 @@ $form-offset-big: calc(var(--menu-size) + $form-offset);
   @media (min-width: b.$menu) {
     bottom: $form-offset;
     left: $form-offset-big;
+    transform: unset;
   }
 }
 
@@ -50,8 +53,7 @@ $form-offset-big: calc(var(--menu-size) + $form-offset);
 }
 
 .send {
-  margin: 0 0.5rem;
-  margin-top: 0.6rem;
+  margin: 0.6rem 0 0 0.5rem;
   color: c.$highlight;
   font-size: 1.9rem;
 
