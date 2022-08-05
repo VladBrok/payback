@@ -58,7 +58,7 @@ export default function Chat({ useId }) {
   ));
 
   return (
-    <>
+    <div className={styles.container}>
       <ul className={styles.messages}>{messagesList}</ul>
 
       <Form className={styles.form} onSubmit={handleSubmit}>
@@ -73,6 +73,6 @@ export default function Chat({ useId }) {
           <RiSendPlaneFill />
         </button>
       </Form>
-    </>
+    </div>
   );
 }
