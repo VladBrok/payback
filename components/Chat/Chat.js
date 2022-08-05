@@ -4,26 +4,25 @@ import Message from "components/Message";
 import { connect } from "lib/chat/client";
 import { post } from "lib/api";
 import { makeMessage } from "lib/chat/makeMessage";
+import { RiSendPlaneFill } from "react-icons/ri";
 import { useEffect, useRef, useState } from "react";
 
 export default function Chat({ useId }) {
   const [messages, setMessages] = useState([]);
   const [error, setError] = useState(false);
-  const messagesRef = useRef();
   const inputRef = useRef();
 
-  useEffect(() => {
-    return connect(
+  useEffect(() =>  connect(
       { name: useId },
       message => {
         setMessages(current => [...current, message]);
       },
       error => handleError(error, "connect")
     );
-  }, []);
+  , []);
 
   useEffect(() => {
-    messagesRef.current.scroll(0, messagesRef.current.scrollHeight); // fixme: scroll only if a user is in the bottom
+    body.scroll(0, body.scrollHeight); // fixme: scroll only if a user is in the bottom
   }, [messages]);
 
   useEffect(focusOnInput, []);
@@ -57,7 +56,7 @@ export default function Chat({ useId }) {
 
   return (
     <>
-      <ul className={styles.messages} ref={messagesRef}>
+      <ul className={styles.messages}>
         {messagesList}
       </ul>
 
@@ -69,7 +68,9 @@ export default function Chat({ useId }) {
           name="message"
           ref={inputRef}
         />
-        <button className={styles.send}>Send</button>
+        <button className={styles.send} aria-label="send message">
+          <RiSendPlaneFill />
+        </button>
       </Form>
     </>
   );

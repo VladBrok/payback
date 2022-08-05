@@ -6,54 +6,50 @@
   border-radius: 0.6rem;
 }
 
-
-  .messages {
-    display: flex;
-    flex-direction: column;
-    padding-bottom: 1.5rem;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-    &::-webkit-scrollbar {
-      display: none;
-    }
+.messages {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 1.5rem;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
   }
+}
 
-  .form {
-    @include rounded;
-    position: fixed;
-    bottom: 6rem; // fixme: use nav-size var
-    left: 50%;
-    display: flex;
-    width: 90%;
-    background: c.$background-highlight;
-    transform: translateX(-50%);
-
-    &::before {
-      position: absolute;
-      z-index: -5;
-      content: '';
-      width: 200%;
-      height: 200%;
-      background: c.$background;
-    }
+.form {
+  @include rounded;
+  position: fixed;
+  bottom: 6rem; // fixme: use nav-size var
+  left: 50%;
+  display: flex;
+  width: 90%;
+  background: c.$background-highlight;
+  transform: translateX(-50%);
+  
+  &::before {
+    position: absolute;
+    z-index: -5;
+    content: '';
+    width: 200%;
+    height: 200%;
+    background: c.$background;
   }
+}
 
-  .input {
-    @include m.input;
-    @include rounded;
-    outline: none;
+.input {
+  @include m.input;
+  @include rounded;
+  outline: none;
+}
+
+.send {
+  margin: 0 0.5rem;
+  margin-top: 0.6rem;
+  color: c.$highlight;
+  font-size: 1.9rem;
+
+  &:active {
+    transform: scale(90%);
   }
-
-  .send {
-    margin: 0 0.5rem;
-    color: transparent;
-    background: center / contain no-repeat url("/images/paper-plane.png");
-
-    &:hover {
-      filter: drop-shadow(0 0 0.15rem c.$highlight);
-    }
-
-    &:active {
-      transform: scale(90%);
-    }
-  }
+}
