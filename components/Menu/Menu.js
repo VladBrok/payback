@@ -2,8 +2,19 @@ import styles from "./Menu.module.scss";
 import itemsData from "data/menuItems";
 import MenuItem from "components/MenuItem";
 import { getRoot } from "lib/path";
+import { useEffect, useRef } from "react";
 
 export default function Menu({ activePath }) {
+  const containerRef = useRef();
+
+  useEffect(() => {
+    const menu = containerRef.current;
+    document.body.style["--menu-size"] = `${Math.min(
+      menu.offsetWidth,
+      menu.offsetHeight
+    )}px`;
+  }, []);
+
   activePath = getRoot(activePath);
 
   const items = itemsData.map(({ name, path, Icon }) => (
@@ -21,7 +32,9 @@ export default function Menu({ activePath }) {
 
   return (
     <nav>
-      <div className={styles.container}>{items}</div>
+      <div className={styles.container} ref={containerRef}>
+        {items}
+      </div>
     </nav>
   );
 }

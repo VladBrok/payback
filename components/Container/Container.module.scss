@@ -1,8 +1,7 @@
 @use "styles/breakpoints.scss" as b;
 
 $p: 1.7rem;
-$nav-size: 5rem;
-$p-big: calc($nav-size + $p);
+$p-big: calc(var(--menu-size) + $p);
 
 .container {
   min-height: 100%;
