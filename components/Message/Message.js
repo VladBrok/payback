@@ -1,9 +1,9 @@
 import styles from "./Message.module.scss";
 
-export default function Message({ message, username }) {
+export default function Message({ message, userId }) {
   const style = !message.from
     ? "info-message"
-    : message.from === username
+    : message.from === userId
     ? "message-from-me"
     : "message-from-friend";
 
