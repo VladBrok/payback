@@ -12,17 +12,20 @@ export default function Chat({ useId }) {
   const [error, setError] = useState(false);
   const inputRef = useRef();
 
-  useEffect(() =>  connect(
-      { name: useId },
-      message => {
-        setMessages(current => [...current, message]);
-      },
-      error => handleError(error, "connect")
-    );
-  , []);
+  useEffect(
+    () =>
+      connect(
+        { name: useId },
+        message => {
+          setMessages(current => [...current, message]);
+        },
+        error => handleError(error, "connect")
+      ),
+    []
+  );
 
   useEffect(() => {
-    body.scroll(0, body.scrollHeight); // fixme: scroll only if a user is in the bottom
+    document.documentElement.scroll(0, document.documentElement.scrollHeight); // fixme: scroll only if a user is in the bottom
   }, [messages]);
 
   useEffect(focusOnInput, []);
@@ -56,9 +59,7 @@ export default function Chat({ useId }) {
 
   return (
     <>
-      <ul className={styles.messages}>
-        {messagesList}
-      </ul>
+      <ul className={styles.messages}>{messagesList}</ul>
 
       <Form className={styles.form} onSubmit={handleSubmit}>
         <input
