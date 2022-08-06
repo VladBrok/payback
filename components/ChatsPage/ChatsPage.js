@@ -4,6 +4,7 @@ import Router from "components/Router";
 import Subpage from "components/Subpage";
 import Chat from "components/Chat";
 import NewMessages from "components/NewMessages";
+import LinkToChat from "components/LinkToChat";
 import chatData from "data/chats.json";
 import { byId } from "lib/chatFinders";
 import { byUserId } from "lib/chatFilters";
@@ -11,7 +12,6 @@ import { EVENTS, CHANNELS } from "lib/chat/constants";
 import Pusher from "pusher-js/with-encryption";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
-import Link from "next/link";
 import { FcApproval } from "react-icons/fc";
 import { useEffect, useState } from "react";
 
@@ -68,19 +68,17 @@ function ChatsPage() {
 
   const chats = chatData.filter(byUserId(userId)).map(d => (
     <li key={d.id}>
-      <Link href={`/chats?id=${d.id}`} shallow>
-        <a className={styles["user-container"]}>
-          <User
-            name={
-              <span className={styles.username}>
-                {d.name} <FcApproval className={styles.icon} />{" "}
-                <NewMessages count={newMessageCount} />
-              </span>
-            }
-            imageUrl={d.image}
-          />
-        </a>
-      </Link>
+      <LinkToChat chatId={d.id} className={styles["user-container"]} shallow>
+        <User
+          name={
+            <span className={styles.username}>
+              {d.name} <FcApproval className={styles.icon} />{" "}
+              <NewMessages count={newMessageCount} />
+            </span>
+          }
+          imageUrl={d.image}
+        />
+      </LinkToChat>
     </li>
   ));
 
