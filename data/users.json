@@ -1,5 +1,6 @@
 [
   {
+    "id": 2,
     "login": {
       "uuid": "c1230cab-ee74-4196-8082-fea1a2b0ed41",
       "username": "orangedog982",
@@ -19,6 +20,7 @@
     "reviewCount": 3
   },
   {
+    "id": 3,
     "login": {
       "uuid": "6208341a-581c-4665-b5fb-28a68873d4f0",
       "username": "redkoala286",
@@ -38,6 +40,7 @@
     "reviewCount": 2
   },
   {
+    "id": 4,
     "login": {
       "uuid": "b08e74a7-311a-4764-97bd-dda14589fd55",
       "username": "sadpanda964",

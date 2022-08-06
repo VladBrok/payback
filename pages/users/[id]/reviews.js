@@ -9,13 +9,14 @@ import Head from "next/head";
 export default function ReviewsPage() {
   return (
     <Router>
-      {({ username }) => {
-        const user = users.find(byId(username));
+      {({ id }) => {
+        const user = users.find(byId(id));
+        const name = user.login?.username ?? user.name;
 
         return (
           <>
             <Head>
-              <title>{username} reviews</title>
+              <title>{name} reviews</title>
             </Head>
             <Subpage
               title={
@@ -26,7 +27,7 @@ export default function ReviewsPage() {
                 />
               }
             >
-              <ReviewList sellerId={username} />
+              <ReviewList sellerId={id} />
             </Subpage>
           </>
         );
