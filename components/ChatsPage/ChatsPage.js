@@ -1,4 +1,4 @@
-import styles from "./index.module.scss";
+import styles from "./ChatsPage.module.scss";
 import User from "components/User";
 import Router from "components/Router";
 import Subpage from "components/Subpage";
@@ -8,7 +8,7 @@ import chatData from "data/chats.json";
 import { byId } from "lib/chatFinders";
 import { byUserId } from "lib/chatFilters";
 import { EVENTS, CHANNELS } from "lib/chat/constants";
-import Pusher from "pusher-js";
+import Pusher from "pusher-js/with-encryption";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
@@ -23,23 +23,29 @@ function ChatsPage() {
   const {
     data: { user },
   } = useSession();
+  const userId = user.email; // fixme: use id instead of an email (requires db)
 
   useEffect(() => {
     const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY, {
       cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER,
+      authEndpoint: "api/auth/chat",
+      auth: {
+        params: { userId },
+      },
     });
 
-    const channel = pusher.subscribe(CHANNELS.TEST);
+    const channel = pusher.subscribe(CHANNELS.ENCRYPTED_TEST);
+    channel.bind("pusher:subscription_error", er =>
+      console.log("subscription error", er)
+    );
     channel.bind(EVENTS.MESSAGE, message => {
-      setShouldScrollToBottom(
-        isScrolledToBottom() || message.from == user.email
-      );
+      setShouldScrollToBottom(isScrolledToBottom() || message.from == userId);
       setMessages(current => [...current, message]);
       setNewMessageCount(current => current + 1);
     });
 
     return () => {
-      pusher.unsubscribe(CHANNELS.TEST);
+      pusher.unsubscribe(CHANNELS.ENCRYPTED_TEST);
       pusher.disconnect();
     };
   }, []);
@@ -60,8 +66,7 @@ function ChatsPage() {
     return document.documentElement;
   }
 
-  // fixme: use id instead of an email (requires db)
-  const chats = chatData.filter(byUserId(user.email)).map(d => (
+  const chats = chatData.filter(byUserId(userId)).map(d => (
     <li key={d.id}>
       <Link href={`/chats?id=${d.id}`} shallow>
         <a className={styles["user-container"]}>
@@ -105,7 +110,7 @@ function ChatsPage() {
           const chat = chatData.find(byId(chatId));
           return (
             <Subpage title={chat.name}>
-              <Chat userId={user.email} messages={messages} />
+              <Chat userId={userId} messages={messages} />
             </Subpage>
           );
         }}
