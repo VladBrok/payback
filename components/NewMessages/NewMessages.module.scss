@@ -1,15 +1,13 @@
 @use "styles/colors.scss" as c;
 
-$size: 1.2rem;
-
 .container {
   display: flex;
   flex-shrink: 0;
   align-items: center;
   justify-content: center;
-  width: $size;
-  height: $size;
+  min-width: 1.5rem;
   margin-left: auto;
+  padding: 0 0.2rem;
   color: c.$background;
   font-weight: normal;
   background: c.$highlight;
