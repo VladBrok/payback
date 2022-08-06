@@ -3,9 +3,10 @@ import Form from "components/Form";
 import Message from "components/Message";
 import { post } from "lib/api";
 import { makeMessage } from "lib/chat/makeMessage";
+import { EVENTS, CHANNELS } from "lib/chat/constants";
 import Pusher from "pusher-js";
 import { RiSendPlaneFill } from "react-icons/ri";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function Chat({ userId }) {
   const [messages, setMessages] = useState([]);
@@ -16,20 +17,20 @@ export default function Chat({ userId }) {
   useEffect(() => {
     // todo: handle error
     // error => handleError(error, "connect")
-
     console.log("effect");
+
     const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY, {
       cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER,
     });
 
-    const channel = pusher.subscribe("my-channel");
-    channel.bind("my-event", message => {
+    const channel = pusher.subscribe(CHANNELS.TEST);
+    channel.bind(EVENTS.MESSAGE, message => {
       setShouldScrollToBottom(isScrolledToBottom() || message.from == userId);
       setMessages(current => [...current, message]);
     });
 
     return () => {
-      pusher.unsubscribe("my-channel");
+      pusher.unsubscribe(CHANNELS.TEST);
       pusher.disconnect();
     };
   }, []);
