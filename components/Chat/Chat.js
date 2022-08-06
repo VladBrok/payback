@@ -1,7 +1,6 @@
 import styles from "./Chat.module.scss";
 import Form from "components/Form";
 import Message from "components/Message";
-import { connect } from "lib/chat/client";
 import { post } from "lib/api";
 import { makeMessage } from "lib/chat/makeMessage";
 import Pusher from "pusher-js";
@@ -13,28 +12,27 @@ export default function Chat({ userId }) {
   const [error, setError] = useState(false);
   const [shouldScrollToBottom, setShouldScrollToBottom] = useState(false);
   const inputRef = useRef();
-  const pusher = useMemo(() => {
-    console.log("memo");
-    return new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY, {
+
+  useEffect(() => {
+    // todo: handle error
+    // error => handleError(error, "connect")
+
+    console.log("effect");
+    const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY, {
       cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER,
     });
-  }, []);
 
-  useEffect(
-    () =>
-      connect(
-        pusher,
-        userId,
-        message => {
-          setShouldScrollToBottom(
-            isScrolledToBottom() || message.from == userId
-          );
-          setMessages(current => [...current, message]);
-        },
-        error => handleError(error, "connect")
-      ),
-    []
-  );
+    const channel = pusher.subscribe("my-channel");
+    channel.bind("my-event", message => {
+      setShouldScrollToBottom(isScrolledToBottom() || message.from == userId);
+      setMessages(current => [...current, message]);
+    });
+
+    return () => {
+      pusher.unsubscribe("my-channel");
+      pusher.disconnect();
+    };
+  }, []);
   useEffect(() => {
     if (shouldScrollToBottom) {
       doc().scroll(0, doc().scrollHeight);
