@@ -9,12 +9,18 @@
   margin: 2rem 0;
 }
 
-.username {
-  display: flex;
-  gap: 0.3rem;
-  align-items: center;
-}
+.user-container {
+  display: block;
+  max-width: 17rem;
 
-.icon {
-  margin-top: 0.2rem;
+  .username {
+    display: flex;
+    gap: 0.3rem;
+    align-items: center;
+  }
+
+  .icon {
+    flex-shrink: 0;
+    margin-top: 0.2rem;
+  }
 }

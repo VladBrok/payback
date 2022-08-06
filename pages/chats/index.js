@@ -1,5 +1,6 @@
 import styles from "./index.module.scss";
 import User from "components/User";
+import NewMessages from "components/NewMessages";
 import chatData from "data/chats.json";
 import { byUserId } from "lib/chatFilters";
 import { FcApproval } from "react-icons/fc";
@@ -16,11 +17,12 @@ function ChatsPage() {
   const chats = chatData.filter(byUserId(user.email)).map(d => (
     <li key={d.id}>
       <Link href={`/chats/${d.id}`}>
-        <a>
+        <a className={styles["user-container"]}>
           <User
             name={
               <span className={styles.username}>
-                {d.name} <FcApproval className={styles.icon} />
+                {d.name} <FcApproval className={styles.icon} />{" "}
+                <NewMessages count={1} />
               </span>
             }
             imageUrl={d.image}
