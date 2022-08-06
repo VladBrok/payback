@@ -35,7 +35,7 @@ function ChatsPage() {
     });
 
     const channel = pusher.subscribe(CHANNELS.ENCRYPTED_TEST);
-    channel.bind("pusher:subscription_error", er =>
+    channel.bind(EVENTS.SUBSCRIPTION_ERROR, er =>
       console.log("subscription error", er)
     );
     channel.bind(EVENTS.MESSAGE, message => {
