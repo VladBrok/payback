@@ -15,23 +15,24 @@ import Head from "next/head";
 export default function UserPage() {
   return (
     <Router>
-      {({ username }) => {
-        const user = users.find(byId(username));
+      {({ id }) => {
+        const user = users.find(byId(id));
+        const name = user.login?.username ?? user.name;
 
         return (
           <>
             <Head>
-              <title>{username}</title>
+              <title>{name}</title>
             </Head>
 
             <Subpage
               title={
-                <User name={username} imageUrl={user.picture.large}>
+                <User name={name} imageUrl={user.picture.large}>
                   <Rating
                     value={user.rating}
                     reviewCount={user.reviewCount}
                     reviewWrapper={children => (
-                      <Link href={`/users/${username}/reviews`}>
+                      <Link href={`/users/${id}/reviews`}>
                         <a className={utilStyles["button-tertiary"]}>
                           {children}
                         </a>
@@ -42,7 +43,7 @@ export default function UserPage() {
               }
             >
               <ProductList
-                filter={byUserId(username)}
+                filter={byUserId(id)}
                 includeCategory={false}
                 fallback={
                   <Empty

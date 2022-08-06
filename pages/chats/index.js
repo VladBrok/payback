@@ -1,7 +1,7 @@
 import styles from "./index.module.scss";
 import User from "components/User";
 import chatData from "data/chats.json";
-import { byUserEmail } from "lib/chatFilters";
+import { byUserId } from "lib/chatFilters";
 import { FcApproval } from "react-icons/fc";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
@@ -12,7 +12,8 @@ function ChatsPage() {
     data: { user },
   } = useSession();
 
-  const chats = chatData.filter(byUserEmail(user.email)).map(d => (
+  // fixme: use id instead of an email (requires db)
+  const chats = chatData.filter(byUserId(user.email)).map(d => (
     <li key={d.id}>
       <Link href={`/chats/${d.id}`}>
         <a>

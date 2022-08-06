@@ -28,7 +28,6 @@ export default function ProductPage() {
   return (
     <Router>
       {({ id }) => {
-        // fixme: use useMemo or useCallback ?
         const product = products.find(byProductId(id));
         const user = users.find(byUserId(product.userId));
 
@@ -64,10 +63,10 @@ export default function ProductPage() {
               </Section>
 
               <Section title="Seller">
-                <Link href={`/users/${user.login.username}`}>
+                <Link href={`/users/${user.id}`}>
                   <a>
                     <User
-                      name={user.login.username}
+                      name={user.login?.username ?? user.name} // fixme
                       imageUrl={user.picture.large}
                     >
                       <Rating

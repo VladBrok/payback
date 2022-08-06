@@ -1,6 +1,7 @@
 import styles from "./ReviewList.module.scss";
 import Product from "components/Product";
 import User from "components/User";
+import Stars from "components/Stars";
 import reviewData from "data/reviews.json";
 import productData from "data/products.json";
 import userData from "data/users.json";
@@ -9,7 +10,6 @@ import { byId as byUserId } from "lib/userFinders";
 import { bySellerId } from "lib/reviewFilters";
 import { formatRelativeToNow } from "lib/date";
 import Link from "next/link";
-import Stars from "components/Stars";
 
 export default function ReviewList({ sellerId }) {
   const reviews = reviewData.filter(bySellerId(sellerId)).map(d => {
@@ -20,8 +20,8 @@ export default function ReviewList({ sellerId }) {
       <div className={styles.review} key={product.id}>
         <header className={styles.header}>
           <User
-            imageUrl={buyer.picture.large} // fixme: dup (user.picture.large)
-            name={buyer.login.username}
+            imageUrl={buyer.picture.large}
+            name={buyer.login?.username ?? buyer.name}
           >
             <Stars count={d.rating} />
           </User>
