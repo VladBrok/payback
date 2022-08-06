@@ -1,10 +1,7 @@
-export default function handler(req, res) {
-  const message = req.body;
+import { pusher } from "lib/chat/server";
 
-  switch (req.method) {
-    case "POST":
-      res.socket.server.io.emit("message", message);
-      res.status(201).json("");
-      break;
-  }
+export default async function handler(req, res) {
+  const message = req.body;
+  await pusher.trigger("my-channel", "my-event", message);
+  res.status(200).json("");
 }

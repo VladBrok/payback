@@ -4,19 +4,27 @@ import Message from "components/Message";
 import { connect } from "lib/chat/client";
 import { post } from "lib/api";
 import { makeMessage } from "lib/chat/makeMessage";
+import Pusher from "pusher-js";
 import { RiSendPlaneFill } from "react-icons/ri";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 export default function Chat({ userId }) {
   const [messages, setMessages] = useState([]);
   const [error, setError] = useState(false);
   const [shouldScrollToBottom, setShouldScrollToBottom] = useState(false);
   const inputRef = useRef();
+  const pusher = useMemo(() => {
+    console.log("memo");
+    return new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY, {
+      cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER,
+    });
+  }, []);
 
   useEffect(
     () =>
       connect(
-        { name: userId },
+        pusher,
+        userId,
         message => {
           setShouldScrollToBottom(
             isScrolledToBottom() || message.from == userId
