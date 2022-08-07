@@ -5,6 +5,7 @@ import ProductList from "components/ProductList";
 import Empty from "components/Empty";
 import Router from "components/Router";
 import Rating from "components/Rating";
+import LinkToChat from "components/LinkToChat";
 import users from "data/users";
 import { byId } from "lib/userFinders";
 import { byUserId } from "lib/productFilters";
@@ -39,6 +40,7 @@ export default function UserPage() {
                       </Link>
                     )}
                   />
+                  <LinkToChat userId={id} />
                 </User>
               }
             >
