@@ -1,11 +1,39 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["referentialIntegrity"]
+  engineType      = "binary"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider             = "mysql"
+  url                  = env("DATABASE_URL")
+  referentialIntegrity = "prisma"
+}
+
+model Chat {
+  id    String     @id @unique(map: "id") @db.VarChar(70)
+  name  String     @db.VarChar(255)
+  image String     @db.VarChar(255)
+  users UserChat[]
+}
+
+model User {
+  id          Int        @id @default(autoincrement())
+  name        String     @db.VarChar(255)
+  image       String     @db.VarChar(255)
+  rating      Int?
+  reviewCount Int?
+  email       String?    @unique(map: "email") @db.VarChar(255)
+  chats       UserChat[]
+}
+
+model UserChat {
+  id     Int    @id @default(autoincrement())
+  userId Int
+  chatId String
+  user   User   @relation(fields: [userId], references: [id])
+  chat   Chat   @relation(fields: [chatId], references: [id])
+
+  @@index([chatId], map: "chatIdIdx")
+  @@index([userId], map: "userIdIdx")
 }
