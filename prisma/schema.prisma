@@ -25,6 +25,8 @@ model User {
   reviewCount Int?
   email       String?    @unique(map: "email") @db.VarChar(255)
   chats       UserChat[]
+
+  @@index([email])
 }
 
 model UserChat {
