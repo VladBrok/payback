@@ -1,7 +1,7 @@
 import { makeChatId } from "lib/chat/makeChatId";
 import prisma from "lib/prisma";
 
-const SUPPORT_CHAT_ID = "0";
+const SUPPORT_ID = "1";
 
 // todo: protect with next-auth
 export default async function handler(req, res) {
@@ -33,7 +33,7 @@ async function handlePost(req, res) {
 async function createUser(data) {
   // fixme: add chat after the user was created so that we know his actual id
   const userId = (await prisma.user.count()) + 1;
-  const chatId = makeChatId([SUPPORT_CHAT_ID, userId]);
+  const chatId = makeChatId([SUPPORT_ID, userId]);
 
   return await prisma.user.create({
     data: {
