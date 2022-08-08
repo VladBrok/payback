@@ -4,9 +4,6 @@ import Subpage from "components/Subpage";
 import Chat from "components/Chat";
 import NewMessages from "components/NewMessages";
 import LinkToChat from "components/LinkToChat";
-import chatData from "data/chats.json";
-import { byId } from "lib/chatFinders";
-import { byUserId } from "lib/chatFilters";
 import { isScrolledToBottom, scrollToBottom } from "lib/document";
 import { EVENTS, CHANNELS } from "lib/chat/constants";
 import Pusher from "pusher-js/with-encryption";
@@ -18,15 +15,30 @@ import { useEffect, useState } from "react";
 
 // todo: refactor (too large)
 function ChatsPage() {
+  const [chats, setChats] = useState([]);
   const [messages, setMessages] = useState([]);
   const [newMessageCount, setNewMessageCount] = useState(0);
   const [shouldScrollToBottom, setShouldScrollToBottom] = useState(true);
+
   const router = useRouter();
   const chatId = router.query?.id;
   const {
     data: { user },
   } = useSession();
   const userId = user.id;
+
+  useEffect(() => {
+    async function getChats() {
+      const response = await fetch(`/api/chat?userId=${userId}`);
+      if (!response.ok) {
+        console.log("failed to load chats");
+      } else {
+        setChats(await response.json());
+      }
+    }
+
+    getChats();
+  }, [userId]);
 
   useEffect(() => {
     const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY, {
@@ -69,17 +81,17 @@ function ChatsPage() {
     }
   }, [router.isReady, chatId]);
 
-  const chats = chatData.filter(byUserId(userId)).map(d => (
-    <li key={d.id}>
-      <LinkToChat chatId={d.id} className={styles["user-container"]} shallow>
+  const chatList = chats.map(c => (
+    <li key={c.id}>
+      <LinkToChat chatId={c.id} className={styles["user-container"]} shallow>
         <User
           name={
             <span className={styles.username}>
-              {d.name} <FcApproval className={styles.icon} />{" "}
+              {c.name} <FcApproval className={styles.icon} />{" "}
               <NewMessages count={newMessageCount} />
             </span>
           }
-          imageUrl={d.image}
+          imageUrl={c.image}
         />
       </LinkToChat>
     </li>
@@ -90,11 +102,11 @@ function ChatsPage() {
     content = (
       <>
         <h1 className={styles.title}>Chats</h1>
-        <ul className={styles.list}>{chats}</ul>
+        <ul className={styles.list}>{chatList}</ul>
       </>
     );
   } else {
-    const chat = chatData.find(byId(chatId));
+    const chat = chats.find(c => c.id == chatId);
     content = (
       <Subpage title={chat.name}>
         <Chat userId={userId} messages={messages} />
