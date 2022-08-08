@@ -1,7 +1,8 @@
 import styles from "./Loading.module.scss";
+import Image from "components/Image";
 
 export default function Loading() {
   return (
-    <img src="/images/loading.svg" alt="Loading" className={styles.image} />
+    <Image src="/images/loading.svg" alt="Loading" className={styles.image} />
   );
 }

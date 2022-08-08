@@ -38,7 +38,7 @@ export default function CategorySearchModal({ isOpen, close, searchBarLabel }) {
       bodyStyle.overflow = "unset";
       bodyStyle.marginRight = "unset";
     };
-  }, [isOpen]);
+  }, [isOpen, scrollBarWidth]);
 
   function handleClose() {
     setSearchQuery();

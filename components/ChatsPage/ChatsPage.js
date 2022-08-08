@@ -7,13 +7,14 @@ import LinkToChat from "components/LinkToChat";
 import chatData from "data/chats.json";
 import { byId } from "lib/chatFinders";
 import { byUserId } from "lib/chatFilters";
+import { isScrolledToBottom, scrollToBottom } from "lib/document";
 import { EVENTS, CHANNELS } from "lib/chat/constants";
 import Pusher from "pusher-js/with-encryption";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { FcApproval } from "react-icons/fc";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
 
 // todo: refactor (too large)
 function ChatsPage() {
@@ -22,7 +23,6 @@ function ChatsPage() {
   const [shouldScrollToBottom, setShouldScrollToBottom] = useState(true);
   const router = useRouter();
   const chatId = router.query?.id;
-  console.log(chatId);
   const {
     data: { user },
   } = useSession();
@@ -55,9 +55,9 @@ function ChatsPage() {
 
   useEffect(() => {
     if (shouldScrollToBottom) {
-      doc().scroll(0, doc().scrollHeight);
+      scrollToBottom();
     }
-  }, [messages]);
+  }, [messages, shouldScrollToBottom]);
 
   useEffect(() => {
     if (!router.isReady) {
@@ -68,16 +68,6 @@ function ChatsPage() {
       setNewMessageCount(0);
     }
   }, [router.isReady, chatId]);
-
-  function isScrolledToBottom() {
-    return (
-      Math.abs(doc().scrollHeight - doc().scrollTop - doc().offsetHeight) <= 3
-    );
-  }
-
-  function doc() {
-    return document.documentElement;
-  }
 
   const chats = chatData.filter(byUserId(userId)).map(d => (
     <li key={d.id}>
