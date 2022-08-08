@@ -66,7 +66,7 @@ export default function ProductPage() {
                 <Link href={`/users/${user.id}`}>
                   <a>
                     <User
-                      name={user.login?.username ?? user.name} // fixme
+                      name={user.login?.username ?? user.name} // fixme: use user.name
                       imageUrl={user.picture.large}
                     >
                       <Rating

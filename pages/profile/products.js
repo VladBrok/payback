@@ -11,7 +11,7 @@ function ProfileProductsPage() {
     <ProfilePage>
       {user => (
         <ProductList
-          filter={byUserId(user.email)} // fixme: use id
+          filter={byUserId(user.id)}
           fallback={
             <Empty
               title="No products"

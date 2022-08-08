@@ -10,8 +10,8 @@ import { byId } from "lib/chatFinders";
 import { byUserId } from "lib/chatFilters";
 import { EVENTS, CHANNELS } from "lib/chat/constants";
 import Pusher from "pusher-js/with-encryption";
-import { useSession } from "next-auth/react";
 import Head from "next/head";
+import { useSession } from "next-auth/react";
 import { FcApproval } from "react-icons/fc";
 import { useEffect, useState } from "react";
 
@@ -23,7 +23,7 @@ function ChatsPage() {
   const {
     data: { user },
   } = useSession();
-  const userId = user.email; // fixme: use id instead of an email (requires db)
+  const userId = user.id;
 
   useEffect(() => {
     const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY, {
@@ -48,7 +48,7 @@ function ChatsPage() {
       pusher.unsubscribe(CHANNELS.ENCRYPTED_TEST);
       pusher.disconnect();
     };
-  }, []);
+  }, [userId]);
 
   useEffect(() => {
     if (shouldScrollToBottom) {
