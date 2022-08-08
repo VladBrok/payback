@@ -39,8 +39,6 @@ async function createUser(data) {
     data: {
       ...data,
       id: userId,
-      rating: 0, // todo: make default
-      reviewCount: 0, // todo: make default
       chats: {
         create: [
           {

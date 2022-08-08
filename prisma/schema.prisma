@@ -21,18 +21,16 @@ model User {
   id          Int        @id @default(autoincrement())
   name        String     @db.VarChar(255)
   image       String     @db.VarChar(255)
-  rating      Int?
-  reviewCount Int?
+  rating      Int?       @default(0)
+  reviewCount Int?       @default(0)
   email       String?    @unique(map: "email") @db.VarChar(255)
   chats       UserChat[]
-
-  @@index([email])
 }
 
 model UserChat {
   id     Int    @id @default(autoincrement())
   userId Int
-  chatId String
+  chatId String @db.VarChar(255)
   user   User   @relation(fields: [userId], references: [id])
   chat   Chat   @relation(fields: [chatId], references: [id])
 
