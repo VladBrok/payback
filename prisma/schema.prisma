@@ -12,8 +12,6 @@ datasource db {
 
 model Chat {
   id    String     @id @unique(map: "id") @db.VarChar(70)
-  name  String     @db.VarChar(255)
-  image String     @db.VarChar(255)
   users UserChat[]
 }
 

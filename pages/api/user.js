@@ -42,7 +42,7 @@ async function createUser(data) {
       chats: {
         create: [
           {
-            chat: { create: { id: chatId, image: "", name: chatId } }, // todo: remove image and name
+            chat: { create: { id: chatId } },
           },
         ],
       },
