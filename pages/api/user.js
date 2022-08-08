@@ -31,21 +31,21 @@ async function handlePost(req, res) {
 }
 
 async function createUser(data) {
-  // fixme: add chat after the user was created so that we know his actual id
-  const userId = (await prisma.user.count()) + 1;
-  const chatId = makeChatId([SUPPORT_ID, userId]);
-
-  return await prisma.user.create({
+  const user = await prisma.user.create({
     data: {
-      ...data,
-      id: userId,
-      chats: {
-        create: [
-          {
-            chat: { create: { id: chatId } },
-          },
-        ],
-      },
+      name: data.name,
+      image: data.image,
+      email: data.email,
     },
   });
+
+  const chatId = makeChatId([SUPPORT_ID, user.id]);
+  await prisma.userChat.create({
+    data: {
+      chat: { create: { id: chatId } },
+      user: { connect: { id: user.id } },
+    },
+  });
+
+  return user;
 }
