@@ -29,6 +29,7 @@ async function handleGet(req, res) {
     where: { users: { some: { userId } } },
     select: {
       id: true,
+      messages: true,
       users: {
         where: { NOT: { userId } },
         select: { user: { select: { image: true, name: true } } },
@@ -39,6 +40,7 @@ async function handleGet(req, res) {
   res.status(200).json(
     chats.map(c => ({
       id: c.id,
+      messages: c.messages,
       image: c.users[0].user.image,
       name: c.users[0].user.name,
     }))

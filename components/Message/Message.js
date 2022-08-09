@@ -1,16 +1,18 @@
 import styles from "./Message.module.scss";
+import { formatDistanceToNow } from "lib/date";
 
 export default function Message({ message, userId }) {
-  const style = !message.from
+  // fixme: remove info message because it's not used ?
+  const style = !message.userId
     ? "info-message"
-    : message.from === userId
+    : message.userId == userId
     ? "message-from-me"
     : "message-from-friend";
 
   return (
     <li className={styles[style]}>
       <header>
-        <span className={styles.time}>{message.time}</span>
+        <span className={styles.time}>{formatDistanceToNow(message.time)}</span>
       </header>
       <p>{message.text}</p>
     </li>

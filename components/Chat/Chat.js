@@ -2,11 +2,10 @@ import styles from "./Chat.module.scss";
 import Form from "components/Form";
 import Message from "components/Message";
 import { post } from "lib/api";
-import { makeMessage } from "lib/chat/makeMessage";
 import { RiSendPlaneFill } from "react-icons/ri";
 import { useEffect, useRef, useState } from "react";
 
-export default function Chat({ userId, messages }) {
+export default function Chat({ userId, chatId, messages }) {
   const [error, setError] = useState(false);
   const inputRef = useRef();
 
@@ -30,7 +29,7 @@ export default function Chat({ userId, messages }) {
     }
 
     input.value = "";
-    post("send-message", makeMessage(messageText, userId)).catch(() =>
+    post("message", { text: messageText, userId, chatId }).catch(() =>
       handleError(error, "post request")
     );
   }

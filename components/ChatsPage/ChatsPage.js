@@ -18,8 +18,7 @@ import { useEffect, useState } from "react";
 // todo: refactor (too large)
 function ChatsPage() {
   const [chats, setChats] = useState([]);
-  const [messages, setMessages] = useState([]);
-  const [newMessageCount, setNewMessageCount] = useState(0);
+  const [newMessageCount, setNewMessageCount] = useState(0); // fixme: works badly
   const [shouldScrollToBottom, setShouldScrollToBottom] = useState(true);
 
   const router = useRouter();
@@ -80,9 +79,16 @@ function ChatsPage() {
       console.log("subscription error", er)
     );
     channel.bind(EVENTS.MESSAGE, message => {
-      setShouldScrollToBottom(isScrolledToBottom() || message.from == userId);
-      setMessages(current => [...current, message]);
-      setNewMessageCount(current => current + 1);
+      setShouldScrollToBottom(isScrolledToBottom() || message.userId == userId);
+      setChats(cur =>
+        cur.map(c => {
+          if (c.id == message.chatId) {
+            return { ...c, messages: [...c.messages, message] };
+          }
+          return c;
+        })
+      );
+      setNewMessageCount(cur => cur + 1);
     });
 
     return () => {
@@ -95,7 +101,7 @@ function ChatsPage() {
     if (shouldScrollToBottom) {
       scrollToBottom();
     }
-  }, [messages, shouldScrollToBottom]);
+  }, [chats, shouldScrollToBottom]);
 
   useEffect(() => {
     if (!router.isReady) {
@@ -135,7 +141,7 @@ function ChatsPage() {
     const chat = chats.find(c => c.id == chatId);
     content = chat ? (
       <Subpage title={chat.name}>
-        <Chat userId={userId} messages={messages} />
+        <Chat userId={userId} messages={chat.messages} chatId={chatId} />
       </Subpage>
     ) : (
       <Loading />
