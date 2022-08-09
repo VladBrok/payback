@@ -6,6 +6,9 @@
 }
 
 .list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
   margin: 2rem 0;
 }
 
