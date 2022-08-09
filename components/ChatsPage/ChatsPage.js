@@ -1,29 +1,61 @@
 import styles from "./ChatsPage.module.scss";
 import User from "components/User";
-import Router from "components/Router";
 import Subpage from "components/Subpage";
 import Chat from "components/Chat";
 import NewMessages from "components/NewMessages";
 import LinkToChat from "components/LinkToChat";
-import chatData from "data/chats.json";
-import { byId } from "lib/chatFinders";
-import { byUserId } from "lib/chatFilters";
+import Loading from "components/Loading";
+import { isScrolledToBottom, scrollToBottom } from "lib/document";
 import { EVENTS, CHANNELS } from "lib/chat/constants";
+import { post } from "lib/api";
 import Pusher from "pusher-js/with-encryption";
-import { useSession } from "next-auth/react";
 import Head from "next/head";
+import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 import { FcApproval } from "react-icons/fc";
 import { useEffect, useState } from "react";
 
 // todo: refactor (too large)
 function ChatsPage() {
-  const [messages, setMessages] = useState([]);
-  const [newMessageCount, setNewMessageCount] = useState(0);
-  const [shouldScrollToBottom, setShouldScrollToBottom] = useState(true);
+  const [chats, setChats] = useState([]);
+  const [newMessageCount, setNewMessageCount] = useState(0); // fixme: works badly
+  const [shouldScrollToBottom, setShouldScrollToBottom] = useState(true); // fixme: works badly
+
+  const router = useRouter();
+  const chatId = router.query?.id;
   const {
     data: { user },
   } = useSession();
-  const userId = user.email; // fixme: use id instead of an email (requires db)
+  const userId = user.id;
+
+  useEffect(() => {
+    async function getChats() {
+      const response = await fetch(`/api/chat?userId=${userId}`);
+      if (!response.ok) {
+        console.log("failed to load chats");
+      } else {
+        setChats(await response.json());
+      }
+    }
+
+    getChats();
+  }, [userId]);
+
+  useEffect(() => {
+    if (chatId == null) {
+      return;
+    }
+
+    if (!chats.length) {
+      return;
+    }
+
+    if (!chats.find(c => c.id == chatId)) {
+      post("chat", { chatId }).catch(() =>
+        console.log("failed to create a chat")
+      );
+    }
+  }, [chatId, chats]);
 
   useEffect(() => {
     const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY, {
@@ -34,85 +66,105 @@ function ChatsPage() {
       },
     });
 
-    const channel = pusher.subscribe(CHANNELS.ENCRYPTED_TEST);
-    channel.bind(EVENTS.SUBSCRIPTION_ERROR, er =>
+    chats.forEach(c => {
+      const messageChannel = pusher.subscribe(
+        `${CHANNELS.ENCRYPTED_BASE}${c.id}`
+      );
+      messageChannel.bind(EVENTS.SUBSCRIPTION_ERROR, er =>
+        console.log("subscription error", er)
+      );
+      messageChannel.bind(EVENTS.MESSAGE, message => {
+        setShouldScrollToBottom(
+          chatId != null && (isScrolledToBottom() || message.userId == userId)
+        );
+        setChats(cur =>
+          cur.map(c => {
+            if (c.id == message.chatId) {
+              return { ...c, messages: [...c.messages, message] };
+            }
+            return c;
+          })
+        );
+        setNewMessageCount(cur => cur + 1);
+      });
+    });
+
+    const chatChannelName = `${CHANNELS.ENCRYPTED_BASE}${userId}`;
+    const chatChannel = pusher.subscribe(chatChannelName);
+    chatChannel.bind(EVENTS.SUBSCRIPTION_ERROR, er =>
       console.log("subscription error", er)
     );
-    channel.bind(EVENTS.MESSAGE, message => {
-      setShouldScrollToBottom(isScrolledToBottom() || message.from == userId);
-      setMessages(current => [...current, message]);
-      setNewMessageCount(current => current + 1);
+    chatChannel.bind(EVENTS.CHAT, chat => {
+      setChats(cur => [...cur, chat]);
     });
 
     return () => {
-      pusher.unsubscribe(CHANNELS.ENCRYPTED_TEST);
       pusher.disconnect();
     };
-  }, []);
+  }, [userId, chatId, chats]);
 
   useEffect(() => {
     if (shouldScrollToBottom) {
-      doc().scroll(0, doc().scrollHeight);
+      scrollToBottom();
     }
-  }, [messages]);
+  }, [chats, shouldScrollToBottom]);
 
-  function isScrolledToBottom() {
-    return (
-      Math.abs(doc().scrollHeight - doc().scrollTop - doc().offsetHeight) <= 3
-    );
-  }
+  useEffect(() => {
+    if (!router.isReady) {
+      return;
+    }
 
-  function doc() {
-    return document.documentElement;
-  }
+    if (chatId == null) {
+      setNewMessageCount(0);
+    }
+  }, [router.isReady, chatId]);
 
-  const chats = chatData.filter(byUserId(userId)).map(d => (
-    <li key={d.id}>
-      <LinkToChat chatId={d.id} className={styles["user-container"]} shallow>
+  const chatList = chats.map(c => (
+    <li key={c.id}>
+      <LinkToChat chatId={c.id} className={styles["user-container"]} shallow>
         <User
           name={
             <span className={styles.username}>
-              {d.name} <FcApproval className={styles.icon} />{" "}
+              {c.name} {c.isVerified && <FcApproval className={styles.icon} />}{" "}
               <NewMessages count={newMessageCount} />
             </span>
           }
-          imageUrl={d.image}
+          imageUrl={c.image}
         />
       </LinkToChat>
     </li>
   ));
+
+  let content = "";
+  if (chatId == null) {
+    content = (
+      <>
+        <h1 className={styles.title}>Chats</h1>
+        <ul className={styles.list}>{chatList}</ul>
+      </>
+    );
+  } else {
+    const chat = chats.find(c => c.id == chatId);
+    content = chat ? (
+      <Subpage title={chat.name}>
+        <Chat
+          userId={userId}
+          messages={chat.messages}
+          chatId={chatId}
+          channelName={`${CHANNELS.ENCRYPTED_BASE}${chatId}`}
+        />
+      </Subpage>
+    ) : (
+      <Loading />
+    );
+  }
 
   return (
     <>
       <Head>
         <title>Chats</title>
       </Head>
-
-      <Router>
-        {({ id: chatId }) => {
-          useEffect(() => {
-            if (chatId == null) {
-              setNewMessageCount(0);
-            }
-          }, [chatId]);
-
-          if (chatId == null) {
-            return (
-              <>
-                <h1 className={styles.title}>Chats</h1>
-                <ul className={styles.list}>{chats}</ul>
-              </>
-            );
-          }
-
-          const chat = chatData.find(byId(chatId));
-          return (
-            <Subpage title={chat.name}>
-              <Chat userId={userId} messages={messages} />
-            </Subpage>
-          );
-        }}
-      </Router>
+      {content}
     </>
   );
 }

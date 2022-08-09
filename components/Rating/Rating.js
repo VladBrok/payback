@@ -3,8 +3,8 @@ import Stars from "components/Stars";
 import { formatRating } from "lib/rating";
 
 export default function Rating({
-  value,
-  reviewCount,
+  value = 0,
+  reviewCount = 0,
   reviewWrapper = children => children,
   valueFontSize = "1rem",
 }) {

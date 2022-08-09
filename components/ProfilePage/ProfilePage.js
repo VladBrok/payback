@@ -4,8 +4,8 @@ import Rating from "components/Rating";
 import MenuItem from "components/MenuItem";
 import Router from "components/Router";
 import profileMenuItems from "data/profileMenuItems.json";
-import Head from "next/head";
 import { useSession } from "next-auth/react";
+import Head from "next/head";
 
 function ProfilePage({ children }) {
   const {
@@ -26,8 +26,7 @@ function ProfilePage({ children }) {
 
       <main className={styles.container}>
         <User name={user.name} imageUrl={user.image}>
-          {/* fixme: get it from db */}
-          <Rating reviewCount={0} value={0} />
+          <Rating reviewCount={user.reviewCount} value={user.rating} />
         </User>
 
         <Router>

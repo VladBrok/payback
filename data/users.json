@@ -1,5 +1,12 @@
 [
   {
+    "id": 1,
+    "name": "support",
+    "image": "/images/support.png",
+    "rating": 0,
+    "reviewCount": 0
+  },
+  {
     "id": 2,
     "login": {
       "uuid": "c1230cab-ee74-4196-8082-fea1a2b0ed41",
