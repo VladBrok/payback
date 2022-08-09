@@ -34,7 +34,9 @@ async function handleGet(req, res) {
       messages: true,
       users: {
         where: { NOT: { userId } },
-        select: { user: { select: { image: true, name: true } } },
+        select: {
+          user: { select: { image: true, name: true, isVerified: true } },
+        },
       },
     },
   });
@@ -43,6 +45,7 @@ async function handleGet(req, res) {
     chats.map(c => ({
       id: c.id,
       messages: c.messages,
+      isVerified: c.users[0].user.isVerified,
       image: c.users[0].user.image,
       name: c.users[0].user.name,
     }))

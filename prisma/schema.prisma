@@ -23,6 +23,7 @@ model User {
   rating      Int?       @default(0)
   reviewCount Int?       @default(0)
   email       String?    @unique(map: "email") @db.VarChar(255)
+  isVerified  Boolean?   @default(false)
   chats       UserChat[]
   messages    Message[]
 }

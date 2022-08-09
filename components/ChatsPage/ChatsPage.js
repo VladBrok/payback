@@ -19,7 +19,7 @@ import { useEffect, useState } from "react";
 function ChatsPage() {
   const [chats, setChats] = useState([]);
   const [newMessageCount, setNewMessageCount] = useState(0); // fixme: works badly
-  const [shouldScrollToBottom, setShouldScrollToBottom] = useState(true);
+  const [shouldScrollToBottom, setShouldScrollToBottom] = useState(true); // fixme: works badly
 
   const router = useRouter();
   const chatId = router.query?.id;
@@ -125,7 +125,7 @@ function ChatsPage() {
         <User
           name={
             <span className={styles.username}>
-              {c.name} <FcApproval className={styles.icon} />{" "}
+              {c.name} {c.isVerified && <FcApproval className={styles.icon} />}{" "}
               <NewMessages count={newMessageCount} />
             </span>
           }
