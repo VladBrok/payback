@@ -1,4 +1,4 @@
-import { getUserIdsFromChatId } from "lib/chat/getUserIdsFromChatId";
+import { getUserIdsFromChatId } from "lib/chat/chatId";
 import prisma from "lib/prisma";
 
 // fixme: change error codes

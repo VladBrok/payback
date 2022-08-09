@@ -1,5 +1,5 @@
 import utilStyles from "styles/utils.module.scss";
-import { makeChatId } from "lib/chat/makeChatId";
+import { makeChatId } from "lib/chat/chatId";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 

@@ -1,4 +1,4 @@
-import { makeChatId } from "lib/chat/makeChatId";
+import { makeChatId } from "lib/chat/chatId";
 import prisma from "lib/prisma";
 
 const SUPPORT_ID = 1;
