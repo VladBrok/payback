@@ -4,8 +4,10 @@ import Subpage from "components/Subpage";
 import Chat from "components/Chat";
 import NewMessages from "components/NewMessages";
 import LinkToChat from "components/LinkToChat";
+import Loading from "components/Loading";
 import { isScrolledToBottom, scrollToBottom } from "lib/document";
 import { EVENTS, CHANNELS } from "lib/chat/constants";
+import { post } from "lib/api";
 import Pusher from "pusher-js/with-encryption";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -39,6 +41,30 @@ function ChatsPage() {
 
     getChats();
   }, [userId]);
+
+  useEffect(() => {
+    if (chatId == null) {
+      return;
+    }
+
+    if (!chats.length) {
+      return;
+    }
+
+    if (!chats.find(c => c.id == chatId)) {
+      async function createChat() {
+        const response = await post("chat", { chatId });
+        if (!response.ok) {
+          console.log("failed to create a chat");
+        } else {
+          const chat = await response.json();
+          setChats(cur => [...cur, chat]);
+        }
+      }
+
+      createChat();
+    }
+  }, [chatId, chats]);
 
   useEffect(() => {
     const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY, {
@@ -97,7 +123,7 @@ function ChatsPage() {
     </li>
   ));
 
-  let content;
+  let content = "";
   if (chatId == null) {
     content = (
       <>
@@ -107,10 +133,12 @@ function ChatsPage() {
     );
   } else {
     const chat = chats.find(c => c.id == chatId);
-    content = (
+    content = chat ? (
       <Subpage title={chat.name}>
         <Chat userId={userId} messages={messages} />
       </Subpage>
+    ) : (
+      <Loading />
     );
   }
 
