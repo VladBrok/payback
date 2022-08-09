@@ -51,17 +51,9 @@ function ChatsPage() {
     }
 
     if (!chats.find(c => c.id == chatId)) {
-      async function createChat() {
-        const response = await post("chat", { chatId });
-        if (!response.ok) {
-          console.log("failed to create a chat");
-        } else {
-          const chat = await response.json();
-          setChats(cur => [...cur, chat]);
-        }
-      }
-
-      createChat();
+      post("chat", { chatId }).catch(() =>
+        console.log("failed to create a chat")
+      );
     }
   }, [chatId, chats]);
 
@@ -74,11 +66,11 @@ function ChatsPage() {
       },
     });
 
-    const channel = pusher.subscribe(CHANNELS.ENCRYPTED_TEST);
-    channel.bind(EVENTS.SUBSCRIPTION_ERROR, er =>
+    const messageChannel = pusher.subscribe(CHANNELS.ENCRYPTED_TEST);
+    messageChannel.bind(EVENTS.SUBSCRIPTION_ERROR, er =>
       console.log("subscription error", er)
     );
-    channel.bind(EVENTS.MESSAGE, message => {
+    messageChannel.bind(EVENTS.MESSAGE, message => {
       setShouldScrollToBottom(isScrolledToBottom() || message.userId == userId);
       setChats(cur =>
         cur.map(c => {
@@ -91,8 +83,15 @@ function ChatsPage() {
       setNewMessageCount(cur => cur + 1);
     });
 
+    const chatChannelName = `${CHANNELS.ENCRYPTED_BASE}${userId}`;
+    const chatChannel = pusher.subscribe(chatChannelName);
+    chatChannel.bind(EVENTS.CHAT, chat => {
+      setChats(cur => [...cur, chat]);
+    });
+
     return () => {
       pusher.unsubscribe(CHANNELS.ENCRYPTED_TEST);
+      pusher.unsubscribe(chatChannelName);
       pusher.disconnect();
     };
   }, [userId]);

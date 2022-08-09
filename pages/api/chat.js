@@ -1,4 +1,6 @@
+import { pusher } from "lib/chat/server";
 import { getUserIdsFromChatId } from "lib/chat/chatId";
+import { EVENTS, CHANNELS } from "lib/chat/constants";
 import prisma from "lib/prisma";
 
 // fixme: change error codes
@@ -53,6 +55,10 @@ async function handlePost(req, res) {
   const chat = await prisma.chat.create({
     data: { id: chatId, users: { createMany: { data: userIds } } },
   });
-
-  res.status(200).json(chat);
+  await Promise.all(
+    userIds.map(({ userId }) =>
+      pusher.trigger(`${CHANNELS.ENCRYPTED_BASE}${userId}`, EVENTS.CHAT, chat)
+    )
+  );
+  res.status(200).json("");
 }
