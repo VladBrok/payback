@@ -11,8 +11,9 @@ datasource db {
 }
 
 model Chat {
-  id    String     @id @unique(map: "id") @db.VarChar(70)
-  users UserChat[]
+  id       String     @id @unique(map: "id") @db.VarChar(70)
+  users    UserChat[]
+  messages Message[]
 }
 
 model User {
@@ -23,6 +24,7 @@ model User {
   reviewCount Int?       @default(0)
   email       String?    @unique(map: "email") @db.VarChar(255)
   chats       UserChat[]
+  messages    Message[]
 }
 
 model UserChat {
@@ -31,6 +33,19 @@ model UserChat {
   chatId String @db.VarChar(255)
   user   User   @relation(fields: [userId], references: [id])
   chat   Chat   @relation(fields: [chatId], references: [id])
+
+  @@index([chatId], map: "chatIdIdx")
+  @@index([userId], map: "userIdIdx")
+}
+
+model Message {
+  id     Int       @id @default(autoincrement())
+  time   DateTime? @default(now()) @db.DateTime(0)
+  userId Int
+  chatId String    @db.VarChar(70)
+  text   String    @db.Text
+  user   User      @relation(fields: [userId], references: [id])
+  chat   Chat      @relation(fields: [chatId], references: [id])
 
   @@index([chatId], map: "chatIdIdx")
   @@index([userId], map: "userIdIdx")
