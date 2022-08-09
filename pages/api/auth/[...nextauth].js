@@ -3,15 +3,19 @@ import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import YandexProvider from "next-auth/providers/yandex";
 
+const TIMEOUT = { httpOptions: { timeout: 10000 } };
+
 export const authOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_ID,
       clientSecret: process.env.GOOGLE_SECRET,
+      ...TIMEOUT,
     }),
     YandexProvider({
       clientId: process.env.YANDEX_CLIENT_ID,
       clientSecret: process.env.YANDEX_CLIENT_SECRET,
+      ...TIMEOUT,
     }),
   ],
   callbacks: {
