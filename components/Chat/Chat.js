@@ -5,7 +5,7 @@ import { post } from "lib/api";
 import { RiSendPlaneFill } from "react-icons/ri";
 import { useEffect, useRef, useState } from "react";
 
-export default function Chat({ userId, chatId, messages }) {
+export default function Chat({ userId, chatId, channelName, messages }) {
   const [error, setError] = useState(false);
   const inputRef = useRef();
 
@@ -29,8 +29,8 @@ export default function Chat({ userId, chatId, messages }) {
     }
 
     input.value = "";
-    post("message", { text: messageText, userId, chatId }).catch(() =>
-      handleError(error, "post request")
+    post("message", { text: messageText, userId, chatId, channelName }).catch(
+      () => handleError(error, "post request")
     );
   }
 

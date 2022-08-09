@@ -66,23 +66,27 @@ function ChatsPage() {
       },
     });
 
-    const messageChannel = pusher.subscribe(CHANNELS.ENCRYPTED_TEST);
-    messageChannel.bind(EVENTS.SUBSCRIPTION_ERROR, er =>
-      console.log("subscription error", er)
-    );
-    messageChannel.bind(EVENTS.MESSAGE, message => {
-      setShouldScrollToBottom(
-        chatId != null && (isScrolledToBottom() || message.userId == userId)
+    chats.forEach(c => {
+      const messageChannel = pusher.subscribe(
+        `${CHANNELS.ENCRYPTED_BASE}${c.id}`
       );
-      setChats(cur =>
-        cur.map(c => {
-          if (c.id == message.chatId) {
-            return { ...c, messages: [...c.messages, message] };
-          }
-          return c;
-        })
+      messageChannel.bind(EVENTS.SUBSCRIPTION_ERROR, er =>
+        console.log("subscription error", er)
       );
-      setNewMessageCount(cur => cur + 1);
+      messageChannel.bind(EVENTS.MESSAGE, message => {
+        setShouldScrollToBottom(
+          chatId != null && (isScrolledToBottom() || message.userId == userId)
+        );
+        setChats(cur =>
+          cur.map(c => {
+            if (c.id == message.chatId) {
+              return { ...c, messages: [...c.messages, message] };
+            }
+            return c;
+          })
+        );
+        setNewMessageCount(cur => cur + 1);
+      });
     });
 
     const chatChannelName = `${CHANNELS.ENCRYPTED_BASE}${userId}`;
@@ -95,11 +99,13 @@ function ChatsPage() {
     });
 
     return () => {
-      pusher.unsubscribe(CHANNELS.ENCRYPTED_TEST);
+      chats.forEach(c =>
+        pusher.unsubscribe(`${CHANNELS.ENCRYPTED_BASE}${c.id}`)
+      );
       pusher.unsubscribe(chatChannelName);
       pusher.disconnect();
     };
-  }, [userId, chatId]);
+  }, [userId, chatId, chats]);
 
   useEffect(() => {
     if (shouldScrollToBottom) {
@@ -145,7 +151,12 @@ function ChatsPage() {
     const chat = chats.find(c => c.id == chatId);
     content = chat ? (
       <Subpage title={chat.name}>
-        <Chat userId={userId} messages={chat.messages} chatId={chatId} />
+        <Chat
+          userId={userId}
+          messages={chat.messages}
+          chatId={chatId}
+          channelName={`${CHANNELS.ENCRYPTED_BASE}${chatId}`}
+        />
       </Subpage>
     ) : (
       <Loading />
