@@ -71,7 +71,9 @@ function ChatsPage() {
       console.log("subscription error", er)
     );
     messageChannel.bind(EVENTS.MESSAGE, message => {
-      setShouldScrollToBottom(isScrolledToBottom() || message.userId == userId);
+      setShouldScrollToBottom(
+        chatId != null && (isScrolledToBottom() || message.userId == userId)
+      );
       setChats(cur =>
         cur.map(c => {
           if (c.id == message.chatId) {
@@ -85,6 +87,9 @@ function ChatsPage() {
 
     const chatChannelName = `${CHANNELS.ENCRYPTED_BASE}${userId}`;
     const chatChannel = pusher.subscribe(chatChannelName);
+    chatChannel.bind(EVENTS.SUBSCRIPTION_ERROR, er =>
+      console.log("subscription error", er)
+    );
     chatChannel.bind(EVENTS.CHAT, chat => {
       setChats(cur => [...cur, chat]);
     });
@@ -94,7 +99,7 @@ function ChatsPage() {
       pusher.unsubscribe(chatChannelName);
       pusher.disconnect();
     };
-  }, [userId]);
+  }, [userId, chatId]);
 
   useEffect(() => {
     if (shouldScrollToBottom) {
