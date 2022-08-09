@@ -99,10 +99,6 @@ function ChatsPage() {
     });
 
     return () => {
-      chats.forEach(c =>
-        pusher.unsubscribe(`${CHANNELS.ENCRYPTED_BASE}${c.id}`)
-      );
-      pusher.unsubscribe(chatChannelName);
       pusher.disconnect();
     };
   }, [userId, chatId, chats]);
