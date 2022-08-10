@@ -1,0 +1,8 @@
+@use "styles/colors" as c;
+@use "styles/mixins" as m;
+@use "styles/breakpoints" as b;
+
+.container {
+  max-width: b.$sm;
+  margin: 0 auto;
+}
