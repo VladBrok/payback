@@ -1,0 +1,8 @@
+@use "styles/mixins" as m;
+@use "styles/colors" as c;
+
+.hint {
+  @include m.text-md;
+  margin: 0.7rem 0 0 0.1rem;
+  color: c.$text-secondary;
+}
