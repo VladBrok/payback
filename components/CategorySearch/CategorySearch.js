@@ -4,7 +4,7 @@ import CategoryList from "components/CategoryList";
 import { byNameSubstring } from "lib/categoryFilters";
 import { useState } from "react";
 
-export default function CategorySearch({ children, searchBarLabel }) {
+export default function CategorySearch({ children, searchBarLabel, category }) {
   const [searchQuery, setSearchQuery] = useState();
 
   function handleSearchQueryChange(e) {
@@ -25,6 +25,7 @@ export default function CategorySearch({ children, searchBarLabel }) {
         flexDirection="column"
         filter={searchQuery ? byNameSubstring(searchQuery) : null}
         fallback="Not found"
+        category={category}
       />
     </>
   );
