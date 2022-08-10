@@ -41,3 +41,7 @@ $button-padding: 0.8rem;
 .button-tertiary {
   color: c.$highlight;
 }
+
+.input {
+  @include m.input;
+}
