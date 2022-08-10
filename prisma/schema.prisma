@@ -26,6 +26,8 @@ model User {
   isVerified  Boolean?   @default(false)
   chats       UserChat[]
   messages    Message[]
+  Review      Review[]
+  Product     Product[]
 }
 
 model UserChat {
@@ -50,4 +52,43 @@ model Message {
 
   @@index([chatId], map: "chatIdIdx")
   @@index([userId], map: "userIdIdx")
+}
+
+model Category {
+  id      Int       @id @default(autoincrement())
+  name    String    @db.VarChar(255)
+  image   String    @db.VarChar(255)
+  Product Product[]
+}
+
+model Product {
+  id          Int      @id @default(autoincrement())
+  title       String?  @db.VarChar(255)
+  description String?  @db.Text
+  categoryId  Int
+  userId      Int
+  image       String?  @db.VarChar(255)
+  price       Decimal? @db.Decimal(10, 2)
+  isPremium   Boolean? @default(false)
+  isSold      Boolean? @default(false)
+  user        User     @relation(fields: [userId], references: [id])
+  category    Category @relation(fields: [categoryId], references: [id])
+  Review      Review[]
+
+  @@index([categoryId], map: "categoryIdIdx")
+  @@index([userId], map: "userIdIdx")
+}
+
+model Review {
+  id        Int       @id @default(autoincrement())
+  buyerId   Int
+  productId Int
+  rating    Int
+  text      String?   @db.Text
+  date      DateTime? @default(now()) @db.DateTime(0)
+  buyer     User      @relation(fields: [buyerId], references: [id])
+  product   Product   @relation(fields: [productId], references: [id])
+
+  @@index([buyerId], map: "buyerIdIdx")
+  @@index([productId], map: "productIdIdx")
 }
