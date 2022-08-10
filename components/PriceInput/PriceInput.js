@@ -1,6 +1,6 @@
 import styles from "./PriceInput.module.scss";
 
-export default function PriceInput({ placeholder, value, onChange }) {
+export default function PriceInput({ placeholder, value = "", onChange }) {
   return (
     <div className={styles.container}>
       <input
