@@ -47,6 +47,10 @@ button:not(:disabled):hover {
   cursor: pointer;
 }
 
+textarea {
+  font: inherit;
+}
+
 fieldset {
   border: none;
 }
