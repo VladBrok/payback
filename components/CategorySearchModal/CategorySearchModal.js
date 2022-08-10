@@ -1,17 +1,13 @@
 import styles from "./CategorySearchModal.module.scss";
 import utilStyles from "styles/utils.module.scss";
-import SearchBar from "components/SearchBar";
-import CategoryList from "components/CategoryList";
-import Container from "components/Container";
-import { byNameSubstring } from "lib/categoryFilters";
+import CategorySearch from "components/CategorySearch";
 import useScrollBarWidth from "hooks/useScrollBarWidth";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Modal from "react-modal";
 
 Modal.setAppElement("#__next");
 
 export default function CategorySearchModal({ isOpen, close, searchBarLabel }) {
-  const [searchQuery, setSearchQuery] = useState();
   const scrollBarWidth = useScrollBarWidth();
 
   // Simulate second click on the overlay, because modal stays open after first one
@@ -41,12 +37,7 @@ export default function CategorySearchModal({ isOpen, close, searchBarLabel }) {
   }, [isOpen, scrollBarWidth]);
 
   function handleClose() {
-    setSearchQuery();
     close();
-  }
-
-  function handleSearchQueryChange(e) {
-    setSearchQuery(e.target.value);
   }
 
   return (
@@ -58,28 +49,16 @@ export default function CategorySearchModal({ isOpen, close, searchBarLabel }) {
       contentLabel="Find category"
       shouldReturnFocusAfterClose={false}
     >
-      <Container>
-        <div className={styles["search-container"]}>
-          <SearchBar
-            label={searchBarLabel}
-            onChange={handleSearchQueryChange}
-            autoFocus
-          />
-          <button
-            type="button"
-            className={utilStyles["button-tertiary"]}
-            style={{ overflowWrap: "normal" }}
-            onClick={handleClose}
-          >
-            Cancel
-          </button>
-        </div>
-        <CategoryList
-          flexDirection="column"
-          filter={searchQuery ? byNameSubstring(searchQuery) : null}
-          fallback="Not found"
-        />
-      </Container>
+      <CategorySearch searchBarLabel={searchBarLabel}>
+        <button
+          type="button"
+          className={utilStyles["button-tertiary"]}
+          style={{ overflowWrap: "normal" }}
+          onClick={handleClose}
+        >
+          Cancel
+        </button>
+      </CategorySearch>
     </Modal>
   );
 }

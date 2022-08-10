@@ -19,12 +19,6 @@
   overflow-y: auto;
   background-color: c.$background;
 
-  .search-container {
-    display: flex;
-    gap: 0.7rem;
-    margin-bottom: 1.3rem;
-  }
-
   @media (min-width: b.$menu) {
     height: 70vh;
   }

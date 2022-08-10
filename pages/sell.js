@@ -1,3 +1,8 @@
+import { useRouter } from "next/router";
+
 export default function SellPage() {
-  return <h1>Sell</h1>;
+  const pathname = useRouter().pathname;
+  console.log(pathname);
+
+  return <></>;
 }
