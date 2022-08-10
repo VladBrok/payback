@@ -1,6 +1,7 @@
 import styles from "./CategorySearchModal.module.scss";
 import utilStyles from "styles/utils.module.scss";
 import CategorySearch from "components/CategorySearch";
+import Container from "components/Container";
 import useScrollBarWidth from "hooks/useScrollBarWidth";
 import { useEffect } from "react";
 import Modal from "react-modal";
@@ -49,16 +50,18 @@ export default function CategorySearchModal({ isOpen, close, searchBarLabel }) {
       contentLabel="Find category"
       shouldReturnFocusAfterClose={false}
     >
-      <CategorySearch searchBarLabel={searchBarLabel}>
-        <button
-          type="button"
-          className={utilStyles["button-tertiary"]}
-          style={{ overflowWrap: "normal" }}
-          onClick={handleClose}
-        >
-          Cancel
-        </button>
-      </CategorySearch>
+      <Container>
+        <CategorySearch searchBarLabel={searchBarLabel}>
+          <button
+            type="button"
+            className={utilStyles["button-tertiary"]}
+            style={{ overflowWrap: "normal" }}
+            onClick={handleClose}
+          >
+            Cancel
+          </button>
+        </CategorySearch>
+      </Container>
     </Modal>
   );
 }

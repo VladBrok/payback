@@ -1,7 +1,6 @@
 import styles from "./CategorySearch.module.scss";
 import SearchBar from "components/SearchBar";
 import CategoryList from "components/CategoryList";
-import Container from "components/Container";
 import { byNameSubstring } from "lib/categoryFilters";
 import { useState } from "react";
 
@@ -13,7 +12,7 @@ export default function CategorySearch({ children, searchBarLabel }) {
   }
 
   return (
-    <Container>
+    <>
       <div className={styles["search-container"]}>
         <SearchBar
           label={searchBarLabel}
@@ -27,6 +26,6 @@ export default function CategorySearch({ children, searchBarLabel }) {
         filter={searchQuery ? byNameSubstring(searchQuery) : null}
         fallback="Not found"
       />
-    </Container>
+    </>
   );
 }
