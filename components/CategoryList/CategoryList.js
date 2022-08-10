@@ -1,11 +1,12 @@
 import styles from "./CategoryList.module.scss";
+import CategoryLink from "components/CategoryLink";
 import categoriesData from "data/categories.json";
-import Category from "components/Category";
 
 export default function CategoryList({
   fallback,
   flexDirection = "row",
   filter = null,
+  Category = CategoryLink,
 }) {
   const categoryFlexDirection = flexDirection === "row" ? "column" : "row";
   const data = filter ? categoriesData.filter(filter) : categoriesData;
