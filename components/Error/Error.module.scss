@@ -1,0 +1,6 @@
+@use "styles/colors.scss" as c;
+
+.error {
+  margin-bottom: 1.3rem;
+  color: c.$danger;
+}

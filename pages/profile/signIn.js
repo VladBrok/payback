@@ -1,6 +1,7 @@
 import styles from "./signIn.module.scss";
 import utilStyles from "styles/utils.module.scss";
 import Image from "components/Image";
+import Error from "components/Error";
 import providerData from "data/authProviders.json";
 import { getProviders, signIn } from "next-auth/react";
 import { useRouter } from "next/router";
@@ -41,11 +42,7 @@ export default function SignInPage() {
 
       <div className={styles.container}>
         <h1 className={styles.title}>Sign in</h1>
-        {error && (
-          <p className={styles.error}>
-            Please try sign in with a different provider
-          </p>
-        )}
+        {error && <Error>Please try sign in with a different provider</Error>}
         <ul className={styles.list}>{providerList}</ul>
       </div>
     </>

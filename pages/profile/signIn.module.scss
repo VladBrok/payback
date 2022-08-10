@@ -9,12 +9,7 @@
     @include m.title-3xl;
     margin-bottom: calc($gap * 2);
   }
-
-  .error {
-    margin-bottom: $gap;
-    color: c.$danger;
-  }
-
+  
   .image {
     width: $img-size;
     height: $img-size;
