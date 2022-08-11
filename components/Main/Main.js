@@ -4,8 +4,9 @@ import Section from "components/Section";
 import CategoryList from "components/CategoryList";
 import ProductList from "components/ProductList";
 import CategorySearchModal from "components/CategorySearchModal";
+import PremiumIcon from "components/PremiumIcon";
 import { byPremium } from "lib/productFilters";
-import { FcFinePrint, FcRating } from "react-icons/fc";
+import { FcFinePrint } from "react-icons/fc";
 import { useState } from "react";
 
 export default function Main() {
@@ -34,7 +35,7 @@ export default function Main() {
         <CategoryList />
       </Section>
 
-      <Section title="Premium products" Icon={FcRating}>
+      <Section title="Premium products" Icon={PremiumIcon}>
         <ProductList filter={byPremium} />
       </Section>
     </main>
