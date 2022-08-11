@@ -68,7 +68,7 @@ export default function FileForm({ onSubmit, submitButton }) {
           </>
         )}
         {file && blob && (
-          <Image className={styles.image} src={blob} objectFit="cover" />
+          <Image className={styles.image} src={blob} objectFit="cover" alt="" />
         )}
       </div>
       {file && submitButton}
