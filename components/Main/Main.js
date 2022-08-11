@@ -36,7 +36,7 @@ export default function Main() {
       </Section>
 
       <Section title="Premium products" Icon={PremiumIcon}>
-        <ProductList filter={byPremium} />
+        <ProductList filter={byPremium()} />
       </Section>
     </main>
   );
