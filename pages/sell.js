@@ -8,9 +8,12 @@ import FileForm from "components/FileForm";
 import PriceInput from "components/PriceInput";
 import ProductStatus from "components/ProductStatus";
 import PremiumIcon from "components/PremiumIcon";
+import Loading from "components/Loading";
+import { post } from "lib/api";
+import { useSession } from "next-auth/react";
 import { FcTemplate } from "react-icons/fc";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const STEPS = {
   CATEGORY: undefined,
@@ -26,12 +29,31 @@ const STEPS = {
 function SellPage() {
   const [step, setStep] = useState();
   const [category, setCategory] = useState();
-  const [photo, setPhoto] = useState();
+  const [photoBlob, setPhotoBlob] = useState();
   const [title, setTitle] = useState();
   const [description, setDescription] = useState();
   const [price, setPrice] = useState();
   const [isPremium, setIsPremium] = useState();
+  const {
+    data: { user },
+  } = useSession();
   const router = useRouter();
+
+  useEffect(() => {
+    if (step !== STEPS.END) {
+      return;
+    }
+
+    post("product", {
+      category,
+      photoBlob,
+      title,
+      description,
+      price,
+      isPremium,
+      userId: user.id,
+    }).then(() => router.push("/profile/products"));
+  }, [step]);
 
   function handleCategoryClick(value) {
     setCategory(value);
@@ -39,7 +61,7 @@ function SellPage() {
   }
 
   function handlePhotoSubmit(value) {
-    setPhoto(value);
+    setPhotoBlob(value);
     goToStep(STEPS.TITLE);
   }
 
@@ -150,7 +172,9 @@ function SellPage() {
             Select for free
           </ProductStatus>
         </Subpage>
-      ) : null}
+      ) : (
+        <Loading />
+      )}
     </div>
   );
 }

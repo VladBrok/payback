@@ -2,6 +2,7 @@ import styles from "./FileForm.module.scss";
 import Form from "components/Form";
 import Error from "components/Error";
 import Image from "components/Image";
+import { toBase64 } from "lib/file";
 import { BiUpload } from "react-icons/bi";
 import { useEffect, useRef, useState } from "react";
 
@@ -12,7 +13,7 @@ const ACCEPT = [...ALLOWED_TYPES.values()].join(", ");
 
 export default function FileForm({ onSubmit, submitButton }) {
   const [file, setFile] = useState();
-  const [imageUrl, setImageUrl] = useState();
+  const [blob, setBlob] = useState();
   const [error, setError] = useState();
   const inputRef = useRef();
 
@@ -21,15 +22,11 @@ export default function FileForm({ onSubmit, submitButton }) {
       return;
     }
 
-    const reader = new FileReader();
-    reader.onload = e => {
-      setImageUrl(e.target.result);
-    };
-    reader.readAsDataURL(file);
+    toBase64(file).then(setBlob);
   }, [file]);
 
   function handleSubmit() {
-    onSubmit(file);
+    onSubmit(blob);
   }
 
   function handleClick() {
@@ -70,8 +67,8 @@ export default function FileForm({ onSubmit, submitButton }) {
             </div>
           </>
         )}
-        {file && imageUrl && (
-          <Image className={styles.image} src={imageUrl} objectFit="cover" />
+        {file && blob && (
+          <Image className={styles.image} src={blob} objectFit="cover" />
         )}
       </div>
       {file && submitButton}
