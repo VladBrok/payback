@@ -24,43 +24,56 @@ export default async function handler(req, res) {
   }
 }
 
-async function handleGet(req, res) {
-  throw new Error("Not implement");
-}
+async function handleGet(req, res) {}
 
 async function handlePost(req, res) {
   const data = req.body;
-  const formData = new FormData();
-  formData.append(
-    "image",
-    data.photoBlob.slice(data.photoBlob.indexOf(",") + 1)
-  );
-  const response = await fetch(
-    `https://api.imgbb.com/1/upload?key=${process.env.IMAGE_HOSTING_API_KEY}`,
-    {
-      method: "POST",
-      body: formData,
-    }
-  );
-
-  const json = await response.json();
-  if (!response.ok) {
-    throw new Error();
+  if (data.filter) {
+    console.log(data);
+    await getProducts();
+  } else {
+    await createProduct();
   }
 
-  const image = json.data.image.url;
-  await prisma.product.create({
-    data: {
-      title: data.title,
-      description: data.description,
-      image,
-      price: data.price,
-      isPremium: data.isPremium,
-      user: { connect: { id: +data.userId } },
-      category: { connect: { id: +data.category } },
-    },
-  });
-  res.status(200).json("");
+  async function getProducts() {
+    // fixme: add pagination (to chats and messages too)
+    const products = await prisma.product.findMany({ where: data.filter });
+    res.status(200).json(products);
+  }
+
+  async function createProduct() {
+    const formData = new FormData();
+    formData.append(
+      "image",
+      data.photoBlob.slice(data.photoBlob.indexOf(",") + 1)
+    );
+    const response = await fetch(
+      `https://api.imgbb.com/1/upload?key=${process.env.IMAGE_HOSTING_API_KEY}`,
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
+
+    const json = await response.json();
+    if (!response.ok) {
+      throw new Error();
+    }
+
+    const image = json.data.image.url;
+    await prisma.product.create({
+      data: {
+        title: data.title,
+        description: data.description,
+        image,
+        price: data.price,
+        isPremium: data.isPremium,
+        user: { connect: { id: +data.userId } },
+        category: { connect: { id: +data.category } },
+      },
+    });
+    res.status(200).json("");
+  }
 }
 
 export const config = {
