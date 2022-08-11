@@ -8,6 +8,7 @@ const nextConfig = {
       "randomuser.me",
       "avatars.yandex.net",
       "lh3.googleusercontent.com",
+      "i.ibb.co",
     ],
   },
 };
