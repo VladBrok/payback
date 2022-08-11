@@ -1,8 +1,8 @@
 import Category from "components/Category";
 
-export default function CategoryButton({ name, onClick, ...props }) {
-  function handleClick(e) {
-    onClick(name);
+export default function CategoryButton({ id, name, onClick, ...props }) {
+  function handleClick() {
+    onClick(id);
   }
 
   return (

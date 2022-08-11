@@ -12,9 +12,10 @@ export default function CategoryList({
   const data = filter ? categoriesData.filter(filter) : categoriesData;
   const categories = data.map(d =>
     category({
-      key: d.name,
+      key: d.id,
       flexDirection: categoryFlexDirection,
       imageSizeIncrease: "1.5rem",
+      id: d.id,
       name: d.name,
       imageUrl: d.imageUrl,
     })

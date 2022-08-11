@@ -16,7 +16,7 @@ export default function Category({
     >
       <Image
         className={styles.image}
-        src={imageUrl ?? categories.find(byName(name)).imageUrl}
+        src={imageUrl ?? categories.find(byName(name)).image}
         alt=""
         objectFit="scale-down"
       />

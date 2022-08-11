@@ -1,6 +1,6 @@
 [
-  { "name": "electronics", "imageUrl": "/images/electronics.jpg" },
-  { "name": "jewelery", "imageUrl": "/images/jewelery.jpg" },
-  { "name": "men's clothing", "imageUrl": "/images/men.jpg" },
-  { "name": "women's clothing", "imageUrl": "/images/women.jpg" }
+  { "id": 1, "name": "electronics", "image": "/images/electronics.jpg" },
+  { "id": 2, "name": "jewelery", "image": "/images/jewelery.jpg" },
+  { "id": 3, "name": "men's clothing", "image": "/images/men.jpg" },
+  { "id": 4, "name": "women's clothing", "image": "/images/women.jpg" }
 ]
