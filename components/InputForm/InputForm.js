@@ -17,7 +17,7 @@ export default function InputForm({
   const [error, setError] = useState();
 
   function handleSubmit() {
-    onSubmit(value);
+    onSubmit(value ?? initialValue);
   }
 
   function handleChange(e) {
