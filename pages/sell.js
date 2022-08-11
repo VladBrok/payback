@@ -53,7 +53,17 @@ function SellPage() {
       isPremium,
       userId: user.id,
     }).then(() => router.push("/profile/products"));
-  }, [step]);
+  }, [
+    router,
+    step,
+    category,
+    photoBlob,
+    title,
+    description,
+    price,
+    isPremium,
+    user.id,
+  ]);
 
   function handleCategoryClick(value) {
     setCategory(value);
