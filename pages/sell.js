@@ -7,6 +7,9 @@ import Router from "components/Router";
 import InputForm from "components/InputForm";
 import FileForm from "components/FileForm";
 import PriceInput from "components/PriceInput";
+import ProductStatus from "components/ProductStatus";
+import PremiumIcon from "components/PremiumIcon";
+import { FcTemplate } from "react-icons/fc";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
@@ -17,6 +20,7 @@ const STEPS = {
   DESCRIPTION: "3",
   PRICE: "4",
   PREMIUM: "5",
+  END: "6",
 };
 
 // fixme: user can cange steps from url
@@ -53,6 +57,12 @@ function SellPage() {
   function handlePriceSubmit(value) {
     setPrice(value);
     goToStep(STEPS.PREMIUM);
+  }
+
+  function handlePremiumSelect(value) {
+    console.log(value);
+    setIsPremium(value);
+    goToStep(STEPS.END);
   }
 
   function goToStep(step) {
@@ -150,7 +160,29 @@ function SellPage() {
                 </Subpage>
               );
 
-            if (step === STEPS.PREMIUM) return;
+            if (step === STEPS.PREMIUM)
+              return (
+                <Subpage title="Select status">
+                  <ProductStatus
+                    name="Premium"
+                    description="Your product will be displayed on the main page"
+                    Icon={PremiumIcon}
+                    onClick={handlePremiumSelect.bind(null, true)}
+                  >
+                    Select for 10$ {/* fixme: add payment system */}
+                  </ProductStatus>
+                  <ProductStatus
+                    name="Regular"
+                    description="You can put the product up for sale for free, but the premium status will help you sell it faster"
+                    Icon={FcTemplate}
+                    onClick={handlePremiumSelect.bind(null, false)}
+                  >
+                    Select for free
+                  </ProductStatus>
+                </Subpage>
+              );
+
+            if (step === STEPS.END) return;
           }
         }}
       </Router>
