@@ -1,0 +1,19 @@
+@use "styles/mixins" as m;
+
+$icon-size: 2rem;
+
+.container {
+  max-width: 22rem;
+  margin: 0 auto;
+  margin-bottom: 2.8rem;
+  text-align: center;
+
+  .title {
+    @include m.title-2xl;
+  }
+
+  .icon {
+    width: $icon-size;
+    height: $icon-size;
+  }
+}
