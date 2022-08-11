@@ -2,15 +2,26 @@ import styles from "./ProfilePage.module.scss";
 import User from "components/User";
 import Rating from "components/Rating";
 import MenuItem from "components/MenuItem";
-import Router from "components/Router";
 import profileMenuItems from "data/profileMenuItems.json";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
+import { useRouter } from "next/router";
 
 function ProfilePage({ children }) {
+  const pathname = useRouter().pathname;
   const {
     data: { user },
   } = useSession();
+
+  const menuItems = profileMenuItems.map(item => (
+    <MenuItem
+      key={item}
+      isActive={pathname.includes(item)}
+      name={item}
+      href={`/profile/${item}`}
+      className={styles["menu-item"]}
+    />
+  ));
 
   return (
     <>
@@ -28,23 +39,7 @@ function ProfilePage({ children }) {
         <User name={user.name} imageUrl={user.image}>
           <Rating reviewCount={user.reviewCount} value={user.rating} />
         </User>
-
-        <Router>
-          {(_, pathname) => {
-            const menuItems = profileMenuItems.map(item => (
-              <MenuItem
-                key={item}
-                isActive={pathname.includes(item)}
-                name={item}
-                href={`/profile/${item}`}
-                className={styles["menu-item"]}
-              />
-            ));
-
-            return <div className={styles.menu}>{menuItems}</div>;
-          }}
-        </Router>
-
+        <div className={styles.menu}>{menuItems}</div>
         {typeof children === "function" ? children(user) : children}
       </main>
     </>

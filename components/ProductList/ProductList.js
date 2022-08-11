@@ -20,17 +20,19 @@ export default function ProductList({
     post("product", { filter }).then(async res => {
       setProducts(await res.json());
     });
-  }, []);
+  }, [filter]);
 
   const productList = products.map(p => (
     <div key={p.id}>
-      {includeCategory && <Category id={p.categoryId} />}
+      {includeCategory && (
+        <Category name={p.category.name} image={p.category.image} />
+      )}
       {/* fixme: dup with ReviewList */}
       <Link href={`/products/${p.id}`}>
         <a>
           <Product
-            image={p.image}
             imageSize="10rem"
+            image={p.image}
             price={p.price}
             isSold={p.isSold}
           >

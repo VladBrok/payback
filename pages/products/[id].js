@@ -6,85 +6,102 @@ import Category from "components/Category";
 import Section from "components/Section";
 import User from "components/User";
 import ProductList from "components/ProductList";
-import Router from "components/Router";
 import Rating from "components/Rating";
-import products from "data/products.json";
+import Loading from "components/Loading";
 import users from "data/users.json";
-import { byId as byProductId } from "lib/productFinders";
 import { byId as byUserId } from "lib/userFinders";
 import { bySimilar } from "lib/productFilters";
 import { FcSearch } from "react-icons/fc";
 import Link from "next/link";
 import Head from "next/head";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 // todo: move it (and other subpages) to components folder
 // so that it's easier to find them
-
 export default function ProductPage() {
+  const [product, setProduct] = useState();
+  const router = useRouter();
+  const { id } = router.query;
+
+  useEffect(() => {
+    if (!router.isReady) {
+      return;
+    }
+
+    fetch(`/api/product?id=${id}`).then(async res =>
+      setProduct(await res.json())
+    );
+  }, [router.isReady, id]);
+
   function buy() {
     console.log("buy");
   }
 
+  // fixme: use getServerSideProps ?
+  if (!product) {
+    return <Loading />;
+  }
+
+  const user = users.find(byUserId(product.userId));
+
   return (
-    <Router>
-      {({ id }) => {
-        const product = products.find(byProductId(id));
-        const user = users.find(byUserId(product.userId));
+    <>
+      <Head>
+        <title>{product.title}</title>
+        <meta name="description" content={product.description} />
+      </Head>
 
-        return (
-          <>
-            <Head>
-              <title>{product.title}</title>
-              <meta name="description" content={product.description} />
-            </Head>
+      <Subpage
+        title={
+          <Category
+            name={product.category.name}
+            image={product.category.image}
+          />
+        }
+      >
+        {product.isSold && <div className={styles.sold}>Sold</div>}
+        <Product
+          price={product.price}
+          image={product.image}
+          imageSize="14rem"
+          flexDirectionWhenExpanded="row"
+        >
+          <h2>{product.title}</h2>
+          {!product.isSold && (
+            <button
+              type="button"
+              className={utilStyles["button-primary"]}
+              onClick={buy}
+            >
+              Buy
+            </button>
+          )}
+        </Product>
 
-            <Subpage title={<Category name={product.category} />}>
-              {product.isSold && <div className={styles.sold}>Sold</div>}
-              <Product
-                price={product.price}
-                image={product.image}
-                imageSize="14rem"
-                flexDirectionWhenExpanded="row"
+        {product.description && (
+          <Section title="Description">
+            <p>{product.description}</p>
+          </Section>
+        )}
+
+        <Section title="Seller">
+          <Link href={`/users/${user.id}`}>
+            <a>
+              <User
+                name={user.login?.username ?? user.name} // fixme: use user.name
+                imageUrl={user.picture.large}
               >
-                <h2>{product.title}</h2>
-                {!product.isSold && (
-                  <button
-                    type="button"
-                    className={utilStyles["button-primary"]}
-                    onClick={buy}
-                  >
-                    Buy
-                  </button>
-                )}
-              </Product>
+                <Rating value={user.rating} reviewCount={user.reviewCount} />
+              </User>
+            </a>
+          </Link>
+        </Section>
 
-              <Section title="Description">
-                <p>{product.description}</p>
-              </Section>
-
-              <Section title="Seller">
-                <Link href={`/users/${user.id}`}>
-                  <a>
-                    <User
-                      name={user.login?.username ?? user.name} // fixme: use user.name
-                      imageUrl={user.picture.large}
-                    >
-                      <Rating
-                        value={user.rating}
-                        reviewCount={user.reviewCount}
-                      />
-                    </User>
-                  </a>
-                </Link>
-              </Section>
-
-              <Section title="Similar products" Icon={FcSearch}>
-                <ProductList filter={bySimilar(product)} />
-              </Section>
-            </Subpage>
-          </>
-        );
-      }}
-    </Router>
+        <Section title="Similar products" Icon={FcSearch}>
+          <ProductList filter={bySimilar(product)} />
+        </Section>
+      </Subpage>
+    </>
   );
 }

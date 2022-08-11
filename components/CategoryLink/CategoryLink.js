@@ -1,11 +1,11 @@
 import Category from "components/Category/";
 import Link from "next/link";
 
-export default function CategoryLink({ name, ...props }) {
+export default function CategoryLink({ id, ...props }) {
   return (
-    <Link href={`/categories/${encodeURIComponent(name)}`}>
+    <Link href={`/categories/${id}`}>
       <a>
-        <Category name={name} {...props} />
+        <Category {...props} />
       </a>
     </Link>
   );

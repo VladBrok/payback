@@ -24,7 +24,14 @@ export default async function handler(req, res) {
   }
 }
 
-async function handleGet(req, res) {}
+async function handleGet(req, res) {
+  const id = +req.query.id;
+  const product = await prisma.product.findFirst({
+    where: { id },
+    include: { category: true },
+  });
+  res.status(200).json(product);
+}
 
 async function handlePost(req, res) {
   const data = req.body;
@@ -37,7 +44,10 @@ async function handlePost(req, res) {
 
   async function getProducts() {
     // fixme: add pagination (to chats and messages too)
-    const products = await prisma.product.findMany({ where: data.filter });
+    const products = await prisma.product.findMany({
+      where: data.filter,
+      include: { category: true },
+    });
     res.status(200).json(products);
   }
 

@@ -1,11 +1,9 @@
 import styles from "./Category.module.scss";
 import Image from "components/Image";
-import categories from "data/categories.json";
-import { byName } from "lib/categoryFinders";
 
 export default function Category({
   name,
-  imageUrl = null,
+  image,
   flexDirection = "row",
   imageSizeIncrease = "0px",
 }) {
@@ -16,7 +14,7 @@ export default function Category({
     >
       <Image
         className={styles.image}
-        src={imageUrl ?? categories.find(byName(name)).image}
+        src={image}
         alt=""
         objectFit="scale-down"
       />
