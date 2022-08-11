@@ -65,5 +65,25 @@
     },
     "rating": 4,
     "reviewCount": 1
+  },
+  {
+    "id": 6,
+    "login": {
+      "uuid": "b08e74a7-311a-4764-97bd-dda14589fd55",
+      "username": "sadpanda964",
+      "password": "snake",
+      "salt": "BMxAyWXm",
+      "md5": "cf02a58cac95295c1ebd5631f00bd89e",
+      "sha1": "9f8d640d043b9d549eb7e4933f947ead67343338",
+      "sha256": "673a5715d51479ad96cd177f4f3fb034eca68cefc7111c0dee909bf21a434c57"
+    },
+    "registered": { "date": "2013-06-10T14:32:56.581Z", "age": 9 },
+    "picture": {
+      "large": "https://randomuser.me/api/portraits/women/64.jpg",
+      "medium": "https://randomuser.me/api/portraits/med/women/64.jpg",
+      "thumbnail": "https://randomuser.me/api/portraits/thumb/women/64.jpg"
+    },
+    "rating": 4,
+    "reviewCount": 1
   }
 ]
