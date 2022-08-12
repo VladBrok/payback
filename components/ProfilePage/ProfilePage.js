@@ -37,7 +37,7 @@ function ProfilePage({ children }) {
 
       <main className={styles.container}>
         <User name={user.name} imageUrl={user.image}>
-          <Rating reviewCount={user.reviewCount} value={user.rating} />
+          <Rating reviewCount={user.reviews.length} value={user.rating} />
         </User>
         <div className={styles.menu}>{menuItems}</div>
         {typeof children === "function" ? children(user) : children}

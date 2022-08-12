@@ -38,7 +38,7 @@ export const authOptions = {
         if (response.ok) {
           const createdUser = await response.json();
           token.id = createdUser.id;
-          token.reviewCount = createdUser.reviewCount;
+          token.reviewCount = createdUser.reviews.length;
           token.rating = createdUser.rating;
           console.log("fetch end");
         } else {

@@ -32,7 +32,7 @@ export default function ReviewsPage() {
       <Subpage
         title={
           <Rating
-            reviewCount={user.reviewCount}
+            reviewCount={user.reviews.count}
             value={user.rating}
             valueFontSize="2rem"
           />

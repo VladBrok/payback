@@ -43,7 +43,7 @@ export default function UserPage() {
           <User name={user.name} imageUrl={user.image}>
             <Rating
               value={user.rating}
-              reviewCount={user.reviewCount}
+              reviewCount={user.reviews.length}
               reviewWrapper={children => (
                 <Link href={`/users/${id}/reviews`}>
                   <a className={utilStyles["button-tertiary"]}>{children}</a>

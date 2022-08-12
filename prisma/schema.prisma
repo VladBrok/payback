@@ -17,17 +17,16 @@ model Chat {
 }
 
 model User {
-  id          Int        @id @default(autoincrement())
-  name        String     @db.VarChar(255)
-  image       String     @db.VarChar(255)
-  rating      Int?       @default(0)
-  reviewCount Int?       @default(0)
-  email       String?    @unique(map: "email") @db.VarChar(255)
-  isVerified  Boolean?   @default(false)
-  chats       UserChat[]
-  messages    Message[]
-  Review      Review[]
-  Product     Product[]
+  id         Int        @id @default(autoincrement())
+  name       String     @db.VarChar(255)
+  image      String     @db.VarChar(255)
+  rating     Int?       @default(0)
+  email      String?    @unique(map: "email") @db.VarChar(255)
+  isVerified Boolean?   @default(false)
+  chats      UserChat[]
+  messages   Message[]
+  reviews    Review[]
+  products   Product[]
 }
 
 model UserChat {
@@ -55,10 +54,10 @@ model Message {
 }
 
 model Category {
-  id      Int       @id @default(autoincrement())
-  name    String    @db.VarChar(255)
-  image   String    @db.VarChar(255)
-  Product Product[]
+  id       Int       @id @default(autoincrement())
+  name     String    @db.VarChar(255)
+  image    String    @db.VarChar(255)
+  products Product[]
 }
 
 model Product {
@@ -73,7 +72,7 @@ model Product {
   isSold      Boolean? @default(false)
   user        User     @relation(fields: [userId], references: [id])
   category    Category @relation(fields: [categoryId], references: [id])
-  Review      Review[]
+  reviews     Review[]
 
   @@index([categoryId], map: "categoryIdIdx")
   @@index([userId], map: "userIdIdx")

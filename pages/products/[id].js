@@ -87,7 +87,7 @@ export default function ProductPage() {
               <User name={product.user.name} imageUrl={product.user.image}>
                 <Rating
                   value={product.user.rating}
-                  reviewCount={product.user.reviewCount}
+                  reviewCount={product.user.reviews.length}
                 />
               </User>
             </a>

@@ -26,7 +26,12 @@ export default async function handler(req, res) {
 
 async function handleGet(req, res) {
   const id = +req.query.id;
-  const user = await prisma.user.findFirst({ where: { id } });
+  const user = await prisma.user.findFirst({
+    where: { id },
+    include: {
+      reviews: true,
+    },
+  });
   res.status(200).json(user);
 }
 
@@ -49,6 +54,9 @@ async function createUser(data) {
       name: data.name,
       image: data.image,
       email: data.email,
+    },
+    include: {
+      reviews: true,
     },
   });
 
