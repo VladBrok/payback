@@ -28,8 +28,14 @@ async function handleGet(req, res) {
   const id = +req.query.id;
   const product = await prisma.product.findFirst({
     where: { id },
-    include: { category: true, user: { include: { reviews: true } } },
+    include: { category: true, user: true },
   });
+
+  // fixme: dup
+  const reviewCount = await prisma.review.count({
+    where: { product: { userId: product.user.id } },
+  });
+  product.user.reviewCount = reviewCount;
   res.status(200).json(product);
 }
 

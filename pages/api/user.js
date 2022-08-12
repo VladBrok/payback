@@ -28,11 +28,11 @@ async function handleGet(req, res) {
   const id = +req.query.id;
   const user = await prisma.user.findFirst({
     where: { id },
-    include: {
-      reviews: true,
-    },
   });
-  res.status(200).json(user);
+  const reviewCount = await prisma.review.count({
+    where: { product: { userId: id } },
+  });
+  res.status(200).json({ ...user, reviewCount });
 }
 
 async function handlePost(req, res) {
@@ -45,7 +45,11 @@ async function handlePost(req, res) {
     user = await createUser(data);
   }
 
-  res.status(200).json(user);
+  // fixme: dup with handleGet
+  const reviewCount = await prisma.review.count({
+    where: { product: { userId: id } },
+  });
+  res.status(200).json({ ...user, reviewCount });
 }
 
 async function createUser(data) {
@@ -54,9 +58,6 @@ async function createUser(data) {
       name: data.name,
       image: data.image,
       email: data.email,
-    },
-    include: {
-      reviews: true,
     },
   });
 
