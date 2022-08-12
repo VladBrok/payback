@@ -47,7 +47,7 @@ async function handlePost(req, res) {
 
   // fixme: dup with handleGet
   const reviewCount = await prisma.review.count({
-    where: { product: { userId: id } },
+    where: { product: { userId: user.id } },
   });
   res.status(200).json({ ...user, reviewCount });
 }
