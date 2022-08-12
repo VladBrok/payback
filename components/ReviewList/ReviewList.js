@@ -20,7 +20,7 @@ export default function ReviewList({ sellerId }) {
     const buyer = review.buyer;
 
     return (
-      <div className={styles.review} key={product.id}>
+      <div className={styles.review} key={review.id}>
         <header className={styles.header}>
           <User imageUrl={buyer.image} name={buyer.name}>
             <Stars count={review.rating} />
