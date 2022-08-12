@@ -19,6 +19,7 @@
     "nanoid": "^4.0.0",
     "next": "12.2.3",
     "next-auth": "^4.10.3",
+    "node-fetch": "^3.2.10",
     "pusher": "^5.1.1-beta",
     "pusher-js": "^7.3.0",
     "react": "18.2.0",
