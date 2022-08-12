@@ -31,4 +31,32 @@ async function handleGet(req, res) {
   res.status(200).json(reviews);
 }
 
-async function handlePost(req, res) {}
+async function handlePost(req, res) {
+  const data = req.body;
+  const review = await prisma.review.create({
+    data: {
+      buyerId: data.buyerId,
+      productId: data.productId,
+      rating: data.rating,
+      text: data.text,
+    },
+    include: { product: true },
+  });
+  const sellerId = review.product.userId;
+
+  const aggregateResult = await prisma.review.aggregate({
+    where: { product: { userId: sellerId } },
+    _sum: { rating: true },
+    _count: true,
+  });
+
+  const newRating = Math.ceil(
+    aggregateResult._sum.rating / aggregateResult._count
+  );
+  await prisma.user.update({
+    data: { rating: newRating },
+    where: { id: sellerId },
+  });
+
+  res.status(200).json("");
+}
