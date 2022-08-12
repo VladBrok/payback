@@ -2,33 +2,35 @@ import styles from "./ReviewList.module.scss";
 import Product from "components/Product";
 import User from "components/User";
 import Stars from "components/Stars";
-import reviewData from "data/reviews.json";
-import productData from "data/products.json";
-import userData from "data/users.json";
-import { byId as byProductId } from "lib/productFinders";
-import { byId as byUserId } from "lib/userFinders";
-import { bySellerId } from "lib/reviewFilters";
 import { formatRelativeToNow } from "lib/date";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export default function ReviewList({ sellerId }) {
-  const reviews = reviewData.filter(bySellerId(sellerId)).map(d => {
-    const product = productData.find(byProductId(d.productId));
-    const buyer = userData.find(byUserId(d.buyerId));
+  const [reviews, setReviews] = useState([]);
+
+  useEffect(() => {
+    fetch(`/api/review?sellerId=${sellerId}`).then(async res =>
+      setReviews(await res.json())
+    );
+  }, [sellerId]);
+
+  const reviewList = reviews.map(review => {
+    const product = review.product;
+    const buyer = review.buyer;
 
     return (
       <div className={styles.review} key={product.id}>
         <header className={styles.header}>
-          <User
-            imageUrl={buyer.picture.large}
-            name={buyer.login?.username ?? buyer.name}
-          >
-            <Stars count={d.rating} />
+          <User imageUrl={buyer.image} name={buyer.name}>
+            <Stars count={review.rating} />
           </User>
-          <span className={styles.date}>{formatRelativeToNow(d.date)}</span>
+          <span className={styles.date}>
+            {formatRelativeToNow(review.date)}
+          </span>
         </header>
 
-        <p className={styles.text}>{d.text}</p>
+        <p className={styles.text}>{review.text}</p>
 
         <Link href={`/products/${product.id}`}>
           <a className={styles["product-link"]}>
@@ -49,5 +51,5 @@ export default function ReviewList({ sellerId }) {
     );
   });
 
-  return <div className={styles.container}>{reviews}</div>;
+  return <div className={styles.container}>{reviewList}</div>;
 }

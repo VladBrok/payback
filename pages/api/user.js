@@ -12,9 +12,22 @@ export default async function handler(req, res) {
       console.log(er);
       res.status(500).json({ error: "Error" });
     }
+  } else if (req.method === "GET") {
+    try {
+      await handleGet(req, res);
+    } catch (er) {
+      console.log(er);
+      res.status(500).json({ error: "Error" });
+    }
   } else {
     res.status(400).json({ error: `Method ${req.method} is not supported.` });
   }
+}
+
+async function handleGet(req, res) {
+  const id = +req.query.id;
+  const user = await prisma.user.findFirst({ where: { id } });
+  res.status(200).json(user);
 }
 
 async function handlePost(req, res) {

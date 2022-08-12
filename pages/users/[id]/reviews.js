@@ -1,37 +1,45 @@
 import Rating from "components/Rating";
-import Router from "components/Router";
 import Subpage from "components/Subpage";
 import ReviewList from "components/ReviewList";
-import users from "data/users.json";
-import { byId } from "lib/userFinders";
+import Loading from "components/Loading";
 import Head from "next/head";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 export default function ReviewsPage() {
-  return (
-    <Router>
-      {({ id }) => {
-        const user = users.find(byId(id));
-        const name = user.login?.username ?? user.name;
+  const [user, setUser] = useState();
+  const router = useRouter();
+  const { id } = router.query;
 
-        return (
-          <>
-            <Head>
-              <title>{name} reviews</title>
-            </Head>
-            <Subpage
-              title={
-                <Rating
-                  reviewCount={user.reviewCount}
-                  value={user.rating}
-                  valueFontSize="2rem"
-                />
-              }
-            >
-              <ReviewList sellerId={id} />
-            </Subpage>
-          </>
-        );
-      }}
-    </Router>
+  useEffect(() => {
+    if (!router.isReady) {
+      return;
+    }
+
+    fetch(`/api/user?id=${id}`).then(async res => setUser(await res.json()));
+  }, [router.isReady, id]);
+
+  if (!user) {
+    return <Loading />;
+  }
+
+  return (
+    <>
+      <Head>
+        <title>{user.name} reviews</title>
+      </Head>
+
+      <Subpage
+        title={
+          <Rating
+            reviewCount={user.reviewCount}
+            value={user.rating}
+            valueFontSize="2rem"
+          />
+        }
+      >
+        <ReviewList sellerId={id} />
+      </Subpage>
+    </>
   );
 }

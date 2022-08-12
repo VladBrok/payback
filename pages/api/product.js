@@ -28,7 +28,7 @@ async function handleGet(req, res) {
   const id = +req.query.id;
   const product = await prisma.product.findFirst({
     where: { id },
-    include: { category: true },
+    include: { category: true, user: true },
   });
   res.status(200).json(product);
 }

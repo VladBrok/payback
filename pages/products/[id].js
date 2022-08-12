@@ -8,8 +8,6 @@ import User from "components/User";
 import ProductList from "components/ProductList";
 import Rating from "components/Rating";
 import Loading from "components/Loading";
-import users from "data/users.json";
-import { byId as byUserId } from "lib/userFinders";
 import { bySimilar } from "lib/productFilters";
 import { FcSearch } from "react-icons/fc";
 import Link from "next/link";
@@ -42,8 +40,6 @@ export default function ProductPage() {
   if (!product) {
     return <Loading />;
   }
-
-  const user = users.find(byUserId(product.userId));
 
   return (
     <>
@@ -86,13 +82,13 @@ export default function ProductPage() {
         )}
 
         <Section title="Seller">
-          <Link href={`/users/${user.id}`}>
+          <Link href={`/users/${product.user.id}`}>
             <a>
-              <User
-                name={user.login?.username ?? user.name} // fixme: use user.name
-                imageUrl={user.picture.large}
-              >
-                <Rating value={user.rating} reviewCount={user.reviewCount} />
+              <User name={product.user.name} imageUrl={product.user.image}>
+                <Rating
+                  value={product.user.rating}
+                  reviewCount={product.user.reviewCount}
+                />
               </User>
             </a>
           </Link>
