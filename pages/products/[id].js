@@ -8,7 +8,6 @@ import User from "components/User";
 import ProductList from "components/ProductList";
 import Rating from "components/Rating";
 import Loading from "components/Loading";
-import getStripe from "lib/get-stripe";
 import { bySimilar } from "lib/productFilters";
 import { FcSearch } from "react-icons/fc";
 import Link from "next/link";
@@ -20,7 +19,6 @@ import { useEffect, useState } from "react";
 // so that it's easier to find them
 export default function ProductPage() {
   const [product, setProduct] = useState();
-  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const { id } = router.query;
 
@@ -34,41 +32,8 @@ export default function ProductPage() {
     );
   }, [router.isReady, id]);
 
-  async function buy() {
-    setIsLoading(true);
-    // Create a Checkout Session.
-    const response = await (
-      await fetch("/api/checkout_sessions", {
-        method: "POST",
-        cache: "no-cache",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        referrerPolicy: "no-referrer",
-        body: JSON.stringify({
-          amount: product.price,
-        }),
-      })
-    ).json();
-
-    if (response.statusCode === 500) {
-      console.error(response.message);
-      return;
-    }
-
-    // Redirect to Checkout.
-    const stripe = await getStripe();
-    const { error } = await stripe.redirectToCheckout({
-      // Make the id field from the Checkout Session creation API response
-      // available to this file, so you can provide it as parameter here
-      // instead of the {{CHECKOUT_SESSION_ID}} placeholder.
-      sessionId: response.id,
-    });
-    // If `redirectToCheckout` fails due to a browser or network
-    // error, display the localized error message to your customer
-    // using `error.message`.
-    console.warn(error.message);
-    setIsLoading(false);
+  function buy() {
+    console.log("buy");
   }
 
   // fixme: use getServerSideProps ?
@@ -104,7 +69,6 @@ export default function ProductPage() {
               type="button"
               className={utilStyles["button-primary"]}
               onClick={buy}
-              disabled={isLoading}
             >
               Buy
             </button>
