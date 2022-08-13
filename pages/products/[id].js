@@ -15,6 +15,62 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
+const RAZOR_SCRIPT = "https://checkout.razorpay.com/v1/checkout.js";
+
+function initializeRazorpay() {
+  return new Promise(resolve => {
+    if (document.querySelector(`script[src='${RAZOR_SCRIPT}']`)) {
+      resolve(true);
+      return;
+    }
+
+    const script = document.createElement("script");
+    script.src = RAZOR_SCRIPT;
+
+    script.onload = () => resolve(true);
+    script.onerror = () => resolve(false);
+
+    document.body.appendChild(script);
+  });
+}
+
+async function makePayment() {
+  const res = await initializeRazorpay();
+
+  if (!res) {
+    console.log("Razorpay SDK Failed to load");
+    return;
+  }
+
+  const data = await fetch("/api/payment", { method: "POST" }).then(x =>
+    x.json()
+  );
+  console.log(data);
+
+  const options = {
+    name: "Payback",
+    currency: data.currency,
+    amount: data.amount,
+    order_id: data.id,
+    description: `Buy product`,
+    image: "https://manuarora.in/logo.png",
+    handler: function (response) {
+      // Validate payment at server - using webhooks is a better idea.
+      console.log(response.razorpay_payment_id);
+      console.log(response.razorpay_order_id);
+      console.log(response.razorpay_signature);
+    },
+    prefill: {
+      name: "Vlad Brok",
+      email: "example@gmail.com",
+      contact: "9999999999",
+    },
+  };
+
+  const paymentObject = new window.Razorpay(options);
+  paymentObject.open();
+}
+
 // todo: move it (and other subpages) to components folder
 // so that it's easier to find them
 export default function ProductPage() {
@@ -31,10 +87,6 @@ export default function ProductPage() {
       setProduct(await res.json())
     );
   }, [router.isReady, id]);
-
-  function buy() {
-    console.log("buy");
-  }
 
   // fixme: use getServerSideProps ?
   if (!product) {
@@ -64,11 +116,12 @@ export default function ProductPage() {
           flexDirectionWhenExpanded="row"
         >
           <h2>{product.title}</h2>
+          {/* test card no.: 5267 3181 8797 5449 */}
           {!product.isSold && (
             <button
               type="button"
               className={utilStyles["button-primary"]}
-              onClick={buy}
+              onClick={makePayment}
             >
               Buy
             </button>
