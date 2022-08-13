@@ -1,8 +1,7 @@
 import Razorpay from "razorpay";
 import { nanoid } from "nanoid";
 import { CURRENCY } from "lib/sharedConstants";
-
-const CENTS_IN_DOLLAR = 100;
+import { formatPriceForRazorpay } from "lib/price";
 
 export default async function handler(req, res) {
   if (req.method === "POST") {
@@ -11,9 +10,8 @@ export default async function handler(req, res) {
       key_secret: process.env.RAZORPAY_SECRET,
     });
 
-    const amount = 499;
     const options = {
-      amount: (amount * CENTS_IN_DOLLAR).toString(),
+      amount: formatPriceForRazorpay(499),
       currency: CURRENCY,
       receipt: nanoid(),
       payment_capture: 1,
