@@ -1,0 +1,55 @@
+@use "styles/colors" as c;
+@use "styles/mixins" as m;
+@use "styles/breakpoints" as b;
+
+@mixin modal {
+  position: fixed;
+  z-index: 999;
+}
+
+.modal {
+  @include modal;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  flex-direction: column;
+  gap: min(3.5rem, 9vh);
+  align-items: center;
+  width: min(70vw, 30rem);
+  height: fit-content;
+  padding: 2rem;
+  text-align: center;
+  background: c.$background;
+  border-radius: 0.7rem;
+  transform: translate(-50%, -50%);
+
+  .title {
+    @include m.title-3xl;
+  }
+
+  .form-container {
+    width: max(80%, 10rem);
+    margin-top: -2rem;
+  }
+
+  .stars-container {
+    $scale: 2.3;
+
+    & > * {
+      transform: scale($scale);
+
+      @media (min-width: b.$xsm) {
+        transform: scale($scale * 1.35);
+      }
+    }
+  }
+}
+
+.overlay {
+  @include modal;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: c.$overlay;
+}

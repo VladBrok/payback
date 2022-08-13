@@ -1,5 +1,4 @@
 import styles from "./Modal.module.scss";
-import Container from "components/Container";
 import useScrollBarWidth from "hooks/useScrollBarWidth";
 import { useEffect } from "react";
 import ReactModal from "react-modal";
@@ -51,7 +50,7 @@ export default function Modal({
       contentLabel={label}
       shouldReturnFocusAfterClose={false}
     >
-      <Container>{children}</Container>
+      {children}
     </ReactModal>
   );
 }
