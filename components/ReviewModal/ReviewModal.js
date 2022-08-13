@@ -13,6 +13,10 @@ export default function ReviewModal({ isOpen, close }) {
     // todo: post
   }
 
+  function handleStarClick(index) {
+    setRating(index + 1);
+  }
+
   const title = "Leave a review";
 
   return (
@@ -25,7 +29,11 @@ export default function ReviewModal({ isOpen, close }) {
     >
       <h1 className={styles.title}>{title}</h1>
       <div className={styles["stars-container"]}>
-        <Stars count={rating} />
+        <Stars
+          count={rating}
+          onStarClick={handleStarClick}
+          starWrapper={s => <button aria-label="Select rating">{s}</button>}
+        />
       </div>
       <div className={styles["form-container"]}>
         <InputForm
