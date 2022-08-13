@@ -8,6 +8,7 @@ import User from "components/User";
 import ProductList from "components/ProductList";
 import Rating from "components/Rating";
 import Loading from "components/Loading";
+import ReviewModal from "components/ReviewModal";
 import { bySimilar } from "lib/productFilters";
 import { put } from "lib/api";
 import { FcSearch } from "react-icons/fc";
@@ -15,6 +16,7 @@ import Link from "next/link";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 
 const RAZOR_SCRIPT = "https://checkout.razorpay.com/v1/checkout.js";
 
@@ -39,8 +41,14 @@ function initializeRazorpay() {
 // todo: move it (and other subpages) to components folder
 // so that it's easier to find them
 export default function ProductPage() {
+  const [modalIsOpen, setModalIsOpen] = useState(false);
   const [product, setProduct] = useState();
   const router = useRouter();
+  const {
+    data: {
+      user: { id: userId },
+    },
+  } = useSession();
   const { id } = router.query;
 
   useEffect(() => {
@@ -51,7 +59,11 @@ export default function ProductPage() {
     fetch(`/api/product?id=${id}`).then(async res =>
       setProduct(await res.json())
     );
-  }, [router.isReady, id]);
+  }, [router.isReady, id, modalIsOpen]);
+
+  function handleModalClose() {
+    setModalIsOpen(false);
+  }
 
   async function makePayment() {
     const res = await initializeRazorpay();
@@ -61,6 +73,7 @@ export default function ProductPage() {
       return;
     }
 
+    // todo: use post from lib
     const data = await (
       await fetch(`/api/payment?productId=${product.id}`, { method: "POST" })
     ).json();
@@ -72,7 +85,9 @@ export default function ProductPage() {
       description: `Buy ${product.title}`,
       image: product.image,
       handler() {
-        put(`product?id=${product.id}`, { isSold: true });
+        put(`product?id=${product.id}`, { isSold: true }).then(() =>
+          setModalIsOpen(true)
+        );
       },
       prefill: {
         name: "Vlad Brok",
@@ -105,6 +120,13 @@ export default function ProductPage() {
           />
         }
       >
+        <ReviewModal
+          buyerId={userId}
+          productId={product.id}
+          isOpen={modalIsOpen}
+          close={handleModalClose}
+        />
+
         {product.isSold && <div className={styles.sold}>Sold</div>}
         <Product
           price={product.price}
@@ -113,7 +135,8 @@ export default function ProductPage() {
           flexDirectionWhenExpanded="row"
         >
           <h2>{product.title}</h2>
-          {/* test card no.: 5267 3181 8797 5449 */}
+          {/* fixme: make TestModeNotice component. 
+              test card no.: 5267 3181 8797 5449 */}
           {!product.isSold && (
             <button
               type="button"

@@ -5,12 +5,13 @@ import InputForm from "components/InputForm";
 import Stars from "components/Stars";
 import { MAX_RATING } from "lib/sharedConstants";
 import { useState } from "react";
+import { post } from "lib/api";
 
-export default function ReviewModal({ isOpen, close }) {
+export default function ReviewModal({ isOpen, close, productId, buyerId }) {
   const [rating, setRating] = useState(MAX_RATING);
 
-  function handleSubmit(textValue) {
-    // todo: post
+  function handleSubmit(text) {
+    post("review", { rating, text, productId, buyerId }).then(close);
   }
 
   function handleStarClick(index) {
