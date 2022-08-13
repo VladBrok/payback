@@ -1,5 +1,5 @@
-@use "styles/breakpoints.scss" as b;
-@use "styles/colors.scss" as c;
+@use "styles/breakpoints" as b;
+@use "styles/colors" as c;
 
 @mixin modal {
   position: fixed;
@@ -26,5 +26,5 @@
 
 .modal-overlay {
   @include modal;
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: c.$overlay;
 }
