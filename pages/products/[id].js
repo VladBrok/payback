@@ -9,6 +9,7 @@ import ProductList from "components/ProductList";
 import Rating from "components/Rating";
 import Loading from "components/Loading";
 import { bySimilar } from "lib/productFilters";
+import { put } from "lib/api";
 import { FcSearch } from "react-icons/fc";
 import Link from "next/link";
 import Head from "next/head";
@@ -70,11 +71,8 @@ export default function ProductPage() {
       order_id: data.id,
       description: `Buy ${product.title}`,
       image: product.image,
-      handler: function (response) {
-        // Validate payment at server - using webhooks is a better idea.
-        console.log(response.razorpay_payment_id);
-        console.log(response.razorpay_order_id);
-        console.log(response.razorpay_signature);
+      handler() {
+        put(`product?id=${product.id}`, { isSold: true });
       },
       prefill: {
         name: "Vlad Brok",
