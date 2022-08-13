@@ -1,5 +1,6 @@
 import Razorpay from "razorpay";
 import { nanoid } from "nanoid";
+import { CURRENCY } from "lib/sharedConstants";
 
 const CENTS_IN_DOLLAR = 100;
 
@@ -10,13 +11,10 @@ export default async function handler(req, res) {
       key_secret: process.env.RAZORPAY_SECRET,
     });
 
-    // Create an order -> generate the OrderID -> Send it to the Front-end
-    // Also, check the amount and currency on the backend (Security measure)
     const amount = 499;
-    const currency = "USD"; // todo: move to sharedConstants
     const options = {
       amount: (amount * CENTS_IN_DOLLAR).toString(),
-      currency,
+      currency: CURRENCY,
       receipt: nanoid(),
       payment_capture: 1,
     };
