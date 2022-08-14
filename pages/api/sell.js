@@ -1,3 +1,4 @@
+import { isSignatureValid } from "lib/payment";
 import prisma from "lib/prisma";
 
 // fixme: change error codes
@@ -23,7 +24,9 @@ export default async function handler(req, res) {
 
 async function handlePost(req, res) {
   const data = req.body;
-  console.log(data);
+  if (!isSignatureValid(data)) {
+    throw new Error("Invalid signature");
+  }
 
   const id = +req.query.id;
   await prisma.product.update({ where: { id }, data: { isSold: true } });

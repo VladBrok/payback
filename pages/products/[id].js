@@ -85,7 +85,13 @@ export default function ProductPage() {
       description: `Buy ${product.title}`,
       image: product.image,
       handler(res) {
-        post(`sell?id=${product.id}`, res).then(() => setModalIsOpen(true));
+        post(`sell?id=${product.id}`, res).then(res => {
+          if (!res.ok) {
+            console.log(res.statusText);
+            return;
+          }
+          setModalIsOpen(true);
+        });
       },
       prefill: {
         name: "Vlad Brok",
