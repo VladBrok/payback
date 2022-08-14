@@ -10,7 +10,7 @@ import Rating from "components/Rating";
 import Loading from "components/Loading";
 import ReviewModal from "components/ReviewModal";
 import { bySimilar } from "lib/productFilters";
-import { put } from "lib/api";
+import { post } from "lib/api";
 import { FcSearch } from "react-icons/fc";
 import Link from "next/link";
 import Head from "next/head";
@@ -84,10 +84,8 @@ export default function ProductPage() {
       order_id: data.id,
       description: `Buy ${product.title}`,
       image: product.image,
-      handler() {
-        put(`product?id=${product.id}`, { isSold: true }).then(() =>
-          setModalIsOpen(true)
-        );
+      handler(res) {
+        post(`sell?id=${product.id}`, res).then(() => setModalIsOpen(true));
       },
       prefill: {
         name: "Vlad Brok",

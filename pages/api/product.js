@@ -11,8 +11,6 @@ export default async function handler(req, res) {
     handle = handleGet;
   } else if (req.method === "POST") {
     handle = handlePost;
-  } else if (req.method === "PUT") {
-    handle = handlePut;
   } else {
     res.status(400).json({ error: `Method ${req.method} is not supported.` });
     return;
@@ -92,13 +90,6 @@ async function handlePost(req, res) {
     });
     res.status(200).json("");
   }
-}
-
-async function handlePut(req, res) {
-  const data = req.body;
-  const id = +req.query.id;
-  await prisma.product.update({ where: { id }, data });
-  res.status(200).end();
 }
 
 export const config = {
