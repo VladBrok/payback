@@ -14,6 +14,7 @@ import { useSession } from "next-auth/react";
 import { FcTemplate } from "react-icons/fc";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
+import { formatMoney } from "lib/money";
 
 const STEPS = {
   CATEGORY: undefined,
@@ -26,7 +27,7 @@ const STEPS = {
 };
 
 // todo: refactor (useReducer ?)
-function SellPage() {
+function SellPage({ serviceChargesPercent, premiumCost }) {
   const [step, setStep] = useState();
   const [category, setCategory] = useState();
   const [photoBlob, setPhotoBlob] = useState();
@@ -157,7 +158,7 @@ function SellPage() {
             max={100000}
             initialValue="100"
             onSubmit={handlePriceSubmit}
-            hint="Service charges are 15%" // fixme
+            hint={`Service charges are ${serviceChargesPercent}%`}
             input={props => (
               <PriceInput {...props} placeholder="Enter product price" />
             )}
@@ -171,7 +172,7 @@ function SellPage() {
             Icon={PremiumIcon}
             onClick={handlePremiumSelect.bind(null, true)}
           >
-            Select for 10$ {/* fixme: add payment system */}
+            Select for {formatMoney(premiumCost)}
           </ProductStatus>
           <ProductStatus
             name="Regular"
@@ -187,6 +188,15 @@ function SellPage() {
       )}
     </div>
   );
+}
+
+export async function getStaticProps() {
+  return {
+    props: {
+      serviceChargesPercent: process.env.SERVICE_CHARGES_PERCENT,
+      premiumCost: process.env.PREMIUM_COST,
+    },
+  };
 }
 
 SellPage.auth = true;
