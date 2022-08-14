@@ -1,6 +1,6 @@
 import { razorpay } from "lib/payment/server";
 import { CURRENCY } from "lib/sharedConstants";
-import { formatPriceForRazorpay } from "lib/price";
+import { formatMoneyForRazorpay } from "lib/money";
 import { nanoid } from "nanoid";
 
 export default async function handler(req, res) {
@@ -15,7 +15,7 @@ export default async function handler(req, res) {
       }
 
       const options = {
-        amount: formatPriceForRazorpay(price),
+        amount: formatMoneyForRazorpay(price),
         currency: CURRENCY,
         receipt: nanoid(),
         payment_capture: 1,

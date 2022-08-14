@@ -21,7 +21,7 @@ export const authOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        // fixme: reviewCount and rating are not updated
+        // fixme: reviewCount, rating and money are not updated
         console.log("fetch start");
         const baseUrl = process.env.NEXTAUTH_URL ?? process.env.VERCEL_URL;
         console.log(baseUrl);
@@ -37,10 +37,12 @@ export const authOptions = {
         });
 
         if (response.ok) {
-          const createdUser = await response.json();
-          token.id = createdUser.id;
-          token.reviewCount = createdUser.reviewCount;
-          token.rating = createdUser.rating;
+          const fetchedUser = await response.json();
+          console.log(fetchedUser);
+          token.id = fetchedUser.id;
+          token.reviewCount = fetchedUser.reviewCount;
+          token.rating = fetchedUser.rating;
+          token.money = fetchedUser.money;
           console.log("fetch end");
         } else {
           console.log("fetch end not ok");
@@ -54,6 +56,7 @@ export const authOptions = {
         session.user.id = token.id;
         session.user.rating = token.rating;
         session.user.reviewCount = token.reviewCount;
+        session.user.money = token.money;
       }
       return session;
     },

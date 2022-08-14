@@ -1,0 +1,11 @@
+@use "styles/colors" as c;
+@use "styles/mixins" as m;
+
+.container {
+  color: c.$text-secondary;
+
+  .money {
+    @include m.text-lg;
+    color: c.$highlight;
+  }
+}

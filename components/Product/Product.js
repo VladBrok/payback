@@ -1,6 +1,6 @@
 import styles from "./Product.module.scss";
 import Image from "components/Image";
-import { formatPrice } from "lib/price";
+import { formatMoney } from "lib/money";
 
 export default function Product({
   price,
@@ -29,7 +29,7 @@ export default function Product({
           objectFit="contain"
         />
         <div className={styles.info}>
-          <p className={styles.price}>{formatPrice(price)}</p>
+          <p className={styles.price}>{formatMoney(price)}</p>
           {children}
         </div>
       </div>
