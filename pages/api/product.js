@@ -73,7 +73,7 @@ async function handlePost(req, res) {
 
     const json = await response.json();
     if (!response.ok) {
-      throw new Error();
+      throw new Error(response.statusText);
     }
 
     const image = json.data.image.url;
