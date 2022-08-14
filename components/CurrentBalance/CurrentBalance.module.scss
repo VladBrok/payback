@@ -6,6 +6,7 @@
 
   .money {
     @include m.text-lg;
-    color: c.$highlight;
+    color: c.$success;
+    font-weight: 500;
   }
 }
