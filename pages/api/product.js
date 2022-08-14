@@ -2,6 +2,7 @@ import prisma from "lib/db/prisma";
 import FormData from "form-data";
 import { toMegabytes } from "lib/file";
 import { BYTES_IN_MEGABYTE, MAX_FILE_SIZE_IN_BYTES } from "lib/sharedConstants";
+import { processOrder } from "lib/payment/server";
 
 // fixme: change error codes
 // fixme: protect with next-auth
@@ -60,7 +61,9 @@ async function handlePost(req, res) {
   }
 
   async function createProduct() {
-    console.log(data);
+    if (data.isPremium) {
+      await processOrder(data.paymentData);
+    }
 
     const formData = new FormData();
     formData.append(

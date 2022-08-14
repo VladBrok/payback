@@ -1,9 +1,4 @@
-import {
-  isSignatureValid,
-  isPaymentStatusValid,
-  isOrderStatusValid,
-  processOrder,
-} from "lib/payment/server";
+import { processOrder } from "lib/payment/server";
 import { formatMoneyFromRazorpay } from "lib/money";
 import prisma from "lib/db/prisma";
 import { subtractPercent } from "lib/percentage";
@@ -31,17 +26,6 @@ export default async function handler(req, res) {
 
 async function handlePost(req, res) {
   const paymentData = req.body;
-
-  if (!isSignatureValid(paymentData)) {
-    throw new Error("Invalid signature");
-  }
-  if (!(await isPaymentStatusValid(paymentData))) {
-    throw new Error("Invalid payment status");
-  }
-  if (!(await isOrderStatusValid(paymentData))) {
-    throw new Error("Invalid order status");
-  }
-
   const productId = +req.query.productId;
   const order = await processOrder(paymentData);
   const money = subtractPercent(
