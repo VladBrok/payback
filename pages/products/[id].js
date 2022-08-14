@@ -86,8 +86,7 @@ export default function ProductPage() {
           flexDirectionWhenExpanded="row"
         >
           <h2>{product.title}</h2>
-          {/* fixme: make TestModeNotice component. 
-              test card no.: 5267 3181 8797 5449 */}
+          {/* todo: make TestModeNotice component. */}
           {!product.isSold && (
             <button
               type="button"
