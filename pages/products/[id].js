@@ -44,12 +44,9 @@ export default function ProductPage() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [product, setProduct] = useState();
   const router = useRouter();
-  const {
-    data: {
-      user: { id: userId },
-    },
-  } = useSession();
   const { id } = router.query;
+  const { data } = useSession();
+  const userId = data?.user?.id;
 
   useEffect(() => {
     if (!router.isReady) {
@@ -66,14 +63,17 @@ export default function ProductPage() {
   }
 
   async function makePayment() {
-    const res = await initializeRazorpay();
+    if (userId == null) {
+      router.push("/profile/signIn");
+      return;
+    }
 
+    const res = await initializeRazorpay();
     if (!res) {
       console.log("Razorpay SDK Failed to load");
       return;
     }
 
-    // todo: use post from lib
     const data = await (
       await fetch(`/api/payment?productId=${product.id}`, { method: "POST" })
     ).json();
