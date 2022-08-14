@@ -1,5 +1,5 @@
-import { isSignatureValid } from "lib/payment";
-import prisma from "lib/prisma";
+import { isSignatureValid } from "lib/payment/server";
+import prisma from "lib/db/prisma";
 
 // fixme: change error codes
 // fixme: protect with next-auth

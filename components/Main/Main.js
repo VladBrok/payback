@@ -5,7 +5,7 @@ import CategoryList from "components/CategoryList";
 import ProductList from "components/ProductList";
 import CategorySearchModal from "components/CategorySearchModal";
 import PremiumIcon from "components/PremiumIcon";
-import { byPremium } from "lib/productFilters";
+import { byPremium } from "lib/db/productFilters";
 import { FcFinePrint } from "react-icons/fc";
 import { useState } from "react";
 

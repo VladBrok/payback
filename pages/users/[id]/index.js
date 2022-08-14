@@ -6,7 +6,7 @@ import Empty from "components/Empty";
 import Rating from "components/Rating";
 import LinkToChat from "components/LinkToChat";
 import Loading from "components/Loading";
-import { byUserId } from "lib/productFilters";
+import { byUserId } from "lib/db/productFilters";
 import { FcInTransit } from "react-icons/fc";
 import Link from "next/link";
 import Head from "next/head";

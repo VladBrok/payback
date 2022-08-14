@@ -1,4 +1,4 @@
-import prisma from "lib/prisma";
+import prisma from "lib/db/prisma";
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import YandexProvider from "next-auth/providers/yandex";

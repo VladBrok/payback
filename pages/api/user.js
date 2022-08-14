@@ -1,6 +1,6 @@
 import { makeChatId } from "lib/chat/chatId";
 import { SUPPORT_ID } from "lib/sharedConstants";
-import prisma from "lib/prisma";
+import prisma from "lib/db/prisma";
 
 // todo: protect with next-auth
 export default async function handler(req, res) {

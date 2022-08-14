@@ -9,7 +9,7 @@ import ProductList from "components/ProductList";
 import Rating from "components/Rating";
 import Loading from "components/Loading";
 import ReviewModal from "components/ReviewModal";
-import { bySimilar } from "lib/productFilters";
+import { bySimilar } from "lib/db/productFilters";
 import { post } from "lib/api";
 import { FcSearch } from "react-icons/fc";
 import Link from "next/link";

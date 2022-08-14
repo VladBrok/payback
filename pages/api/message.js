@@ -1,6 +1,6 @@
 import { pusher } from "lib/chat/server";
 import { EVENTS } from "lib/chat/constants";
-import prisma from "lib/prisma";
+import prisma from "lib/db/prisma";
 
 export default async function handler(req, res) {
   const data = req.body;

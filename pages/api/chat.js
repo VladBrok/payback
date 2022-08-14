@@ -1,7 +1,7 @@
 import { pusher } from "lib/chat/server";
 import { getUserIdsFromChatId } from "lib/chat/chatId";
 import { EVENTS, CHANNELS } from "lib/chat/constants";
-import prisma from "lib/prisma";
+import prisma from "lib/db/prisma";
 
 // fixme: change error codes
 // fixme: protect with next-auth

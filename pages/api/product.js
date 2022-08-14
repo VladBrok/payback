@@ -1,4 +1,4 @@
-import prisma from "lib/prisma";
+import prisma from "lib/db/prisma";
 import FormData from "form-data";
 
 // fixme: change error codes

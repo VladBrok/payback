@@ -2,7 +2,7 @@ import utilStyles from "styles/utils.module.scss";
 import ProductList from "components/ProductList";
 import ProfilePage from "components/ProfilePage";
 import Empty from "components/Empty";
-import { byUserId } from "lib/productFilters";
+import { byUserId } from "lib/db/productFilters";
 import { FcInTransit } from "react-icons/fc";
 import Link from "next/link";
 

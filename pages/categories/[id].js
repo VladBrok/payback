@@ -3,7 +3,7 @@ import Category from "components/Category";
 import ProductList from "components/ProductList";
 import PriceRange from "components/PriceRange";
 import Loading from "components/Loading";
-import { byCategoryAndPrice } from "lib/productFilters";
+import { byCategoryAndPrice } from "lib/db/productFilters";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";

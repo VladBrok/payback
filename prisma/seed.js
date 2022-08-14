@@ -1,4 +1,4 @@
-import prisma from "../lib/prisma.js";
+import prisma from "../lib/db/prisma.js";
 import { MAX_RATING, SUPPORT_ID } from "../lib/sharedConstants.js";
 import { createReview } from "../lib/db/createReview.js";
 import { randomDate, randomNumber } from "../lib/random.js";
