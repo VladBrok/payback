@@ -23,7 +23,7 @@ const RAZOR_SCRIPT = "https://checkout.razorpay.com/v1/checkout.js";
 // fixme: refactor
 function initializeRazorpay() {
   return new Promise(resolve => {
-    if (document.querySelector(`script[src='${RAZOR_SCRIPT}']`)) {
+    if (window.Razorpay) {
       resolve(true);
       return;
     }
