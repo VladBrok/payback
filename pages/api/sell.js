@@ -4,7 +4,9 @@ import {
   isOrderStatusValid,
   processOrder,
 } from "lib/payment/server";
+import { formatMoneyFromRazorpay } from "lib/money";
 import prisma from "lib/db/prisma";
+import { subtractPercent } from "lib/percentage";
 
 // fixme: change error codes
 // fixme: protect with next-auth
@@ -40,8 +42,21 @@ async function handlePost(req, res) {
     throw new Error("Invalid order status");
   }
 
-  const id = +req.query.id;
-  await processOrder(paymentData);
-  await prisma.product.update({ where: { id }, data: { isSold: true } });
+  const productId = +req.query.productId;
+  const order = await processOrder(paymentData);
+  const money = subtractPercent(
+    order.amount,
+    process.env.SERVICE_CHARGES_PERCENT
+  );
+
+  const product = await prisma.product.update({
+    where: { id: productId },
+    data: { isSold: true },
+  });
+  await prisma.user.update({
+    where: { id: product.userId },
+    data: { money: formatMoneyFromRazorpay(money) },
+  });
+
   res.status(200).end();
 }
