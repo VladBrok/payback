@@ -10,7 +10,7 @@ import Rating from "components/Rating";
 import Loading from "components/Loading";
 import ReviewModal from "components/ReviewModal";
 import { bySimilar } from "lib/db/productFilters";
-import { makePayment } from "lib/payment/client";
+import { makeProductPayment } from "lib/payment/client";
 import { FcSearch } from "react-icons/fc";
 import Link from "next/link";
 import Head from "next/head";
@@ -48,7 +48,7 @@ export default function ProductPage() {
       return;
     }
 
-    makePayment(product, () => setModalIsOpen(true));
+    makeProductPayment(product, () => setModalIsOpen(true));
   }
 
   // fixme: use getServerSideProps ?

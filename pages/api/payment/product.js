@@ -6,7 +6,7 @@ import { nanoid } from "nanoid";
 export default async function handler(req, res) {
   if (req.method === "POST") {
     try {
-      const productId = +req.query.productId;
+      const productId = +req.query.id;
       const price = (
         await prisma.product.findFirst({ where: { id: productId } })
       )?.price;

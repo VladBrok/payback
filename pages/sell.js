@@ -10,11 +10,12 @@ import ProductStatus from "components/ProductStatus";
 import PremiumIcon from "components/PremiumIcon";
 import Loading from "components/Loading";
 import { post } from "lib/api";
+import { formatMoney } from "lib/money";
+import { makePremiumPayment } from "lib/payment/client";
 import { useSession } from "next-auth/react";
 import { FcTemplate } from "react-icons/fc";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
-import { formatMoney } from "lib/money";
 
 const STEPS = {
   CATEGORY: undefined,
@@ -35,6 +36,7 @@ function SellPage({ serviceChargesPercent, premiumCost }) {
   const [description, setDescription] = useState();
   const [price, setPrice] = useState();
   const [isPremium, setIsPremium] = useState();
+  const [paymentData, setPaymentData] = useState();
   const {
     data: { user },
   } = useSession();
@@ -52,6 +54,7 @@ function SellPage({ serviceChargesPercent, premiumCost }) {
       description,
       price,
       isPremium,
+      paymentData,
       userId: user.id,
     }).then(() => router.push("/profile/products"));
   }, [
@@ -64,6 +67,7 @@ function SellPage({ serviceChargesPercent, premiumCost }) {
     price,
     isPremium,
     user.id,
+    paymentData,
   ]);
 
   function handleCategoryClick(value) {
@@ -92,8 +96,17 @@ function SellPage({ serviceChargesPercent, premiumCost }) {
   }
 
   function handlePremiumSelect(value) {
-    setIsPremium(value);
-    goToStep(STEPS.END);
+    const end = data => {
+      setPaymentData(data);
+      setIsPremium(value);
+      goToStep(STEPS.END);
+    };
+
+    if (value) {
+      makePremiumPayment(end);
+    } else {
+      end();
+    }
   }
 
   function goToStep(step) {

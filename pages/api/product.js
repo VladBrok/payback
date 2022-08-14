@@ -60,6 +60,8 @@ async function handlePost(req, res) {
   }
 
   async function createProduct() {
+    console.log(data);
+
     const formData = new FormData();
     formData.append(
       "image",
