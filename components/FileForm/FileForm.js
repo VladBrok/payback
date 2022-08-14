@@ -2,12 +2,11 @@ import styles from "./FileForm.module.scss";
 import Form from "components/Form";
 import Error from "components/Error";
 import Image from "components/Image";
-import { toBase64 } from "lib/file";
+import { toBase64, toMegabytes } from "lib/file";
+import { MAX_FILE_SIZE_IN_BYTES } from "lib/sharedConstants";
 import { BiUpload } from "react-icons/bi";
 import { useEffect, useRef, useState } from "react";
 
-const BYTES_IN_MEGABYTE = 1000000;
-const MAX_SIZE = BYTES_IN_MEGABYTE * 4;
 const ALLOWED_TYPES = new Set(["image/jpg", "image/png", "image/jpeg"]);
 const ACCEPT = [...ALLOWED_TYPES.values()].join(", ");
 
@@ -39,8 +38,8 @@ export default function FileForm({ onSubmit, submitButton }) {
     if (!ALLOWED_TYPES.has(file?.type)) {
       setError("Please select an image");
       setFile();
-    } else if (file?.size > MAX_SIZE) {
-      setError(`Max file size is ${MAX_SIZE / BYTES_IN_MEGABYTE}MB`);
+    } else if (file?.size > MAX_FILE_SIZE_IN_BYTES) {
+      setError(`Max file size is ${toMegabytes(MAX_FILE_SIZE_IN_BYTES)}MB`);
       setFile();
     } else {
       setFile(file);

@@ -1,5 +1,7 @@
 import prisma from "lib/db/prisma";
 import FormData from "form-data";
+import { toMegabytes } from "lib/file";
+import { BYTES_IN_MEGABYTE, MAX_FILE_SIZE_IN_BYTES } from "lib/sharedConstants";
 
 // fixme: change error codes
 // fixme: protect with next-auth
@@ -95,7 +97,7 @@ async function handlePost(req, res) {
 export const config = {
   api: {
     bodyParser: {
-      sizeLimit: "5mb",
+      sizeLimit: `${toMegabytes(MAX_FILE_SIZE_IN_BYTES + BYTES_IN_MEGABYTE)}mb`,
     },
   },
 };
