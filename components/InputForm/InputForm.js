@@ -10,14 +10,14 @@ export default function InputForm({
   onSubmit,
   max,
   min = 0,
-  initialValue = undefined,
+  initialValue = "",
   hint = null,
 }) {
-  const [value, setValue] = useState();
+  const [value, setValue] = useState(initialValue);
   const [error, setError] = useState();
 
   function handleSubmit() {
-    onSubmit(value ?? initialValue);
+    onSubmit(value);
   }
 
   function handleChange(e) {
@@ -33,6 +33,7 @@ export default function InputForm({
     } else {
       setError();
     }
+
     setValue(value);
   }
 
@@ -42,7 +43,7 @@ export default function InputForm({
       {input({
         className: utilStyles.input,
         onChange: handleChange,
-        value: value ?? initialValue,
+        value,
       })}
       {!error && <p className={styles.hint}>{hint}</p>}
       {!error && submitButton}
