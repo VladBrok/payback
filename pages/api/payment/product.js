@@ -1,7 +1,4 @@
-import { razorpay } from "lib/payment/server";
-import { CURRENCY } from "lib/sharedConstants";
-import { formatMoneyForRazorpay } from "lib/money";
-import { nanoid } from "nanoid";
+import { createOrder } from "lib/payment/server";
 
 export default async function handler(req, res) {
   if (req.method === "POST") {
@@ -14,19 +11,8 @@ export default async function handler(req, res) {
         throw new Error(`Product with id ${productId} not found.`);
       }
 
-      const options = {
-        amount: formatMoneyForRazorpay(price),
-        currency: CURRENCY,
-        receipt: nanoid(),
-        payment_capture: 1,
-      };
-
-      const response = await razorpay.orders.create(options);
-      res.status(200).json({
-        id: response.id,
-        currency: response.currency,
-        amount: response.amount,
-      });
+      const order = await createOrder(price);
+      res.status(200).json(order);
     } catch (err) {
       console.log(err);
       res.status(400).json(err);
