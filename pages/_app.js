@@ -8,7 +8,7 @@ import { SessionProvider } from "next-auth/react";
 
 const progress = new ProgressBar({
   delay: 100,
-  color: "rgb(73, 115, 193)",
+  color: "#3e68b6", // fixme: dup with colors.scss
 });
 router.events.on("routeChangeStart", progress.start);
 router.events.on("routeChangeComplete", progress.finish);
