@@ -1,4 +1,8 @@
-import { isSignatureValid } from "lib/payment/server";
+import {
+  isSignatureValid,
+  isPaymentStatusValid,
+  isOrderStatusValid,
+} from "lib/payment/server";
 import prisma from "lib/db/prisma";
 
 // fixme: change error codes
@@ -24,8 +28,15 @@ export default async function handler(req, res) {
 
 async function handlePost(req, res) {
   const data = req.body;
+
   if (!isSignatureValid(data)) {
     throw new Error("Invalid signature");
+  }
+  if (!(await isPaymentStatusValid(data))) {
+    throw new Error("Invalid payment status");
+  }
+  if (!(await isOrderStatusValid(data))) {
+    throw new Error("Invalid order status");
   }
 
   const id = +req.query.id;
