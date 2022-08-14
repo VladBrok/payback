@@ -126,6 +126,7 @@ function SellPage({ serviceChargesPercent, premiumCost }) {
       ) : step === STEPS.TITLE ? (
         <Subpage title="Specify title">
           <InputForm
+            key={STEPS.TITLE}
             submitButton={continueButton}
             max={70}
             onSubmit={handleTitleSubmit}
@@ -137,6 +138,7 @@ function SellPage({ serviceChargesPercent, premiumCost }) {
       ) : step === STEPS.DESCRIPTION ? (
         <Subpage title="Specify description">
           <InputForm
+            key={STEPS.DESCRIPTION}
             submitButton={continueButton}
             max={300}
             onSubmit={handleDescriptionSubmit}
@@ -153,6 +155,7 @@ function SellPage({ serviceChargesPercent, premiumCost }) {
       ) : step === STEPS.PRICE ? (
         <Subpage title="Specify price">
           <InputForm
+            key={STEPS.PRICE}
             submitButton={continueButton}
             min={100}
             max={100000}
@@ -167,6 +170,7 @@ function SellPage({ serviceChargesPercent, premiumCost }) {
       ) : step === STEPS.PREMIUM ? (
         <Subpage title="Select status">
           <ProductStatus
+            key={`${STEPS.PREMIUM}-1`}
             name="Premium"
             description="Your product will be displayed on the main page"
             Icon={PremiumIcon}
@@ -175,6 +179,7 @@ function SellPage({ serviceChargesPercent, premiumCost }) {
             Select for {formatMoney(premiumCost)}
           </ProductStatus>
           <ProductStatus
+            key={`${STEPS.PREMIUM}-2`}
             name="Regular"
             description="You can put the product up for sale for free, but the premium status will help you sell it faster"
             Icon={FcTemplate}
