@@ -30,7 +30,7 @@ export default function FileForm({ onSubmit, submitButton }) {
   }
 
   function handleClick() {
-    inputRef.current.click();
+    inputRef.current?.click();
   }
 
   function handleChange(e) {
