@@ -2,6 +2,7 @@ import {
   isSignatureValid,
   isPaymentStatusValid,
   isOrderStatusValid,
+  processOrder,
 } from "lib/payment/server";
 import prisma from "lib/db/prisma";
 
@@ -27,19 +28,20 @@ export default async function handler(req, res) {
 }
 
 async function handlePost(req, res) {
-  const data = req.body;
+  const paymentData = req.body;
 
-  if (!isSignatureValid(data)) {
+  if (!isSignatureValid(paymentData)) {
     throw new Error("Invalid signature");
   }
-  if (!(await isPaymentStatusValid(data))) {
+  if (!(await isPaymentStatusValid(paymentData))) {
     throw new Error("Invalid payment status");
   }
-  if (!(await isOrderStatusValid(data))) {
+  if (!(await isOrderStatusValid(paymentData))) {
     throw new Error("Invalid order status");
   }
 
   const id = +req.query.id;
+  await processOrder(paymentData);
   await prisma.product.update({ where: { id }, data: { isSold: true } });
   res.status(200).end();
 }
