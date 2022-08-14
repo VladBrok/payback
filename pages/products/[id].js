@@ -10,33 +10,13 @@ import Rating from "components/Rating";
 import Loading from "components/Loading";
 import ReviewModal from "components/ReviewModal";
 import { bySimilar } from "lib/db/productFilters";
-import { post } from "lib/api";
+import { makePayment } from "lib/payment/client";
 import { FcSearch } from "react-icons/fc";
 import Link from "next/link";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
-
-const RAZOR_SCRIPT = "https://checkout.razorpay.com/v1/checkout.js";
-
-// fixme: refactor
-function initializeRazorpay() {
-  return new Promise(resolve => {
-    if (window.Razorpay) {
-      resolve(true);
-      return;
-    }
-
-    const script = document.createElement("script");
-    script.src = RAZOR_SCRIPT;
-
-    script.onload = () => resolve(true);
-    script.onerror = () => resolve(false);
-
-    document.body.appendChild(script);
-  });
-}
 
 // todo: move it (and other subpages) to components folder
 // so that it's easier to find them
@@ -62,46 +42,13 @@ export default function ProductPage() {
     setModalIsOpen(false);
   }
 
-  async function makePayment() {
+  function handleBuyClick() {
     if (userId == null) {
       router.push("/profile/signIn");
       return;
     }
 
-    const res = await initializeRazorpay();
-    if (!res) {
-      console.log("Razorpay SDK Failed to load");
-      return;
-    }
-
-    const data = await (
-      await fetch(`/api/payment?productId=${product.id}`, { method: "POST" })
-    ).json();
-    const options = {
-      name: "Payback",
-      currency: data.currency,
-      amount: data.amount,
-      order_id: data.id,
-      description: `Buy ${product.title}`,
-      image: product.image,
-      handler(res) {
-        post(`sell?id=${product.id}`, res).then(res => {
-          if (!res.ok) {
-            console.log(res.statusText);
-            return;
-          }
-          setModalIsOpen(true);
-        });
-      },
-      prefill: {
-        name: "Vlad Brok",
-        email: "example@gmail.com",
-        contact: "9999999999",
-      },
-    };
-
-    const paymentObject = new window.Razorpay(options);
-    paymentObject.open();
+    makePayment(product, () => setModalIsOpen(true));
   }
 
   // fixme: use getServerSideProps ?
@@ -145,7 +92,7 @@ export default function ProductPage() {
             <button
               type="button"
               className={utilStyles["button-primary"]}
-              onClick={makePayment}
+              onClick={handleBuyClick}
             >
               Buy
             </button>
