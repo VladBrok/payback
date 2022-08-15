@@ -6,10 +6,10 @@ import NewMessages from "components/NewMessages";
 import Loading from "components/Loading";
 import { isScrolledToBottom, scrollToBottom } from "lib/document";
 import { EVENTS, CHANNELS } from "lib/chat/constants";
-import { post } from "lib/api";
 import Pusher from "pusher-js/with-encryption";
 import Head from "next/head";
 import Link from "next/link";
+import Error from "next/error";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { FcApproval } from "react-icons/fc";
@@ -40,23 +40,6 @@ function ChatsPage() {
 
     getChats();
   }, [userId]);
-
-  useEffect(() => {
-    if (chatId == null) {
-      return;
-    }
-
-    if (!chats.length) {
-      return;
-    }
-
-    if (!chats.find(c => c.id == chatId)) {
-      // fixme: should I catch, or should I check res.status ?
-      post("chat", { chatId }).catch(() =>
-        console.log("failed to create a chat")
-      );
-    }
-  }, [chatId, chats]);
 
   useEffect(() => {
     const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY, {
@@ -147,6 +130,8 @@ function ChatsPage() {
         <ul className={styles.list}>{chatList}</ul>
       </>
     );
+  } else if (!chats.length) {
+    content = <Loading />;
   } else {
     const chat = chats.find(c => c.id == chatId);
     content = chat ? (
@@ -159,7 +144,7 @@ function ChatsPage() {
         />
       </Subpage>
     ) : (
-      <Loading />
+      <Error statusCode={404} />
     );
   }
 

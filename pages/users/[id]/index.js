@@ -7,6 +7,7 @@ import Rating from "components/Rating";
 import Loading from "components/Loading";
 import ReviewLink from "components/ReviewLink";
 import { byUserId } from "lib/db/productFilters";
+import { post } from "lib/api";
 import { FcInTransit } from "react-icons/fc";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
@@ -39,7 +40,13 @@ export default function UserPage() {
 
     const authenticatedUserId = session.data.user.id;
     const chatId = makeChatId([authenticatedUserId, id]);
-    router.push(`/chats?id=${chatId}`);
+    post("chat", { chatId }).then(res => {
+      if (res.ok) {
+        router.push(`/chats?id=${chatId}`);
+      } else {
+        console.log("oops");
+      }
+    });
   }
 
   if (!user) {
