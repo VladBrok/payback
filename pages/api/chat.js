@@ -41,14 +41,18 @@ async function handleGet(req, res) {
 
 async function handlePost(req, res) {
   const chatId = req.body.chatId;
-  const userIds = getUserIdsFromChatId(chatId).map(x => ({ userId: +x }));
-  const chat = await prisma.chat.create({
-    data: { id: chatId, users: { createMany: { data: userIds } } },
-  });
-  await Promise.all(
-    userIds.map(({ userId }) =>
-      pusher.trigger(`${CHANNELS.ENCRYPTED_BASE}${userId}`, EVENTS.CHAT, chat)
-    )
-  );
+
+  if ((await prisma.chat.count({ where: { id: chatId } })) === 0) {
+    const userIds = getUserIdsFromChatId(chatId).map(x => ({ userId: +x }));
+    const chat = await prisma.chat.create({
+      data: { id: chatId, users: { createMany: { data: userIds } } },
+    });
+    await Promise.all(
+      userIds.map(({ userId }) =>
+        pusher.trigger(`${CHANNELS.ENCRYPTED_BASE}${userId}`, EVENTS.CHAT, chat)
+      )
+    );
+  }
+
   res.status(200).end();
 }
