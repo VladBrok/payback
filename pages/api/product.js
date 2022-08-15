@@ -3,28 +3,13 @@ import FormData from "form-data";
 import { toMegabytes } from "lib/file";
 import { BYTES_IN_MEGABYTE, MAX_FILE_SIZE_IN_BYTES } from "lib/sharedConstants";
 import { processOrder } from "lib/payment/server";
+import { handle } from "lib/api";
 
-// fixme: change error codes
-// fixme: protect with next-auth
-// fixme: dup
 export default async function handler(req, res) {
-  let handle;
-
-  if (req.method === "GET") {
-    handle = handleGet;
-  } else if (req.method === "POST") {
-    handle = handlePost;
-  } else {
-    res.status(400).json({ error: `Method ${req.method} is not supported.` });
-    return;
-  }
-
-  try {
-    await handle(req, res);
-  } catch (er) {
-    console.log(er);
-    res.status(500).json({ error: "Fail" });
-  }
+  await handle(req, res, {
+    GET: handleGet,
+    POST: handlePost,
+  });
 }
 
 async function handleGet(req, res) {
@@ -95,7 +80,7 @@ async function handlePost(req, res) {
         category: { connect: { id: +data.category } },
       },
     });
-    res.status(200).json("");
+    res.status(200).end();
   }
 }
 

@@ -1,21 +1,10 @@
+import { handle } from "lib/api";
 import prisma from "lib/db/prisma";
 
 export default async function handler(req, res) {
-  let handle;
-
-  if (req.method === "GET") {
-    handle = handleGet;
-  } else {
-    res.status(400).json({ error: `Method ${req.method} is not supported.` });
-    return;
-  }
-
-  try {
-    await handle(req, res);
-  } catch (er) {
-    console.log(er);
-    res.status(500).json({ error: "Fail" });
-  }
+  await handle(req, res, {
+    GET: handleGet,
+  });
 }
 
 async function handleGet(req, res) {

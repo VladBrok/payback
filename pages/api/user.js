@@ -1,26 +1,13 @@
 import { makeChatId } from "lib/chat/chatId";
 import { SUPPORT_ID } from "lib/sharedConstants";
 import prisma from "lib/db/prisma";
+import { handle } from "lib/api";
 
-// todo: protect with next-auth
 export default async function handler(req, res) {
-  if (req.method === "POST") {
-    try {
-      await handlePost(req, res);
-    } catch (er) {
-      console.log(er);
-      res.status(500).json({ error: "Error" });
-    }
-  } else if (req.method === "GET") {
-    try {
-      await handleGet(req, res);
-    } catch (er) {
-      console.log(er);
-      res.status(500).json({ error: "Error" });
-    }
-  } else {
-    res.status(400).json({ error: `Method ${req.method} is not supported.` });
-  }
+  await handle(req, res, {
+    GET: handleGet,
+    POST: handlePost,
+  });
 }
 
 async function handleGet(req, res) {

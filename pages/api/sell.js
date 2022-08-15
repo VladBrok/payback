@@ -2,26 +2,12 @@ import { processOrder } from "lib/payment/server";
 import { formatMoneyFromRazorpay } from "lib/money";
 import prisma from "lib/db/prisma";
 import { subtractPercent } from "lib/percentage";
+import { handle } from "lib/api";
 
-// fixme: change error codes
-// fixme: protect with next-auth
-// fixme: dup
 export default async function handler(req, res) {
-  let handle;
-
-  if (req.method === "POST") {
-    handle = handlePost;
-  } else {
-    res.status(400).json({ error: `Method ${req.method} is not supported.` });
-    return;
-  }
-
-  try {
-    await handle(req, res);
-  } catch (er) {
-    console.log(er);
-    res.status(500).json({ error: "Fail" });
-  }
+  await handle(req, res, {
+    POST: handlePost,
+  });
 }
 
 async function handlePost(req, res) {
