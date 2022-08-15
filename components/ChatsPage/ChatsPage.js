@@ -3,13 +3,13 @@ import User from "components/User";
 import Subpage from "components/Subpage";
 import Chat from "components/Chat";
 import NewMessages from "components/NewMessages";
-import LinkToChat from "components/LinkToChat";
 import Loading from "components/Loading";
 import { isScrolledToBottom, scrollToBottom } from "lib/document";
 import { EVENTS, CHANNELS } from "lib/chat/constants";
 import { post } from "lib/api";
 import Pusher from "pusher-js/with-encryption";
 import Head from "next/head";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { FcApproval } from "react-icons/fc";
@@ -51,6 +51,7 @@ function ChatsPage() {
     }
 
     if (!chats.find(c => c.id == chatId)) {
+      // fixme: should I catch, or should I check res.status ?
       post("chat", { chatId }).catch(() =>
         console.log("failed to create a chat")
       );
@@ -119,19 +120,22 @@ function ChatsPage() {
     }
   }, [router.isReady, chatId]);
 
-  const chatList = chats.map(c => (
-    <li key={c.id}>
-      <LinkToChat chatId={c.id} className={styles["user-container"]} shallow>
-        <User
-          name={
-            <span className={styles.username}>
-              {c.name} {c.isVerified && <FcApproval className={styles.icon} />}{" "}
-              <NewMessages count={newMessageCount} />
-            </span>
-          }
-          imageUrl={c.image}
-        />
-      </LinkToChat>
+  const chatList = chats.map(chat => (
+    <li key={chat.id}>
+      <Link href={`/chats?id=${chat.id}`} shallow>
+        <a className={styles["user-container"]}>
+          <User
+            name={
+              <span className={styles.username}>
+                {chat.name}{" "}
+                {chat.isVerified && <FcApproval className={styles.icon} />}{" "}
+                <NewMessages count={newMessageCount} />
+              </span>
+            }
+            imageUrl={chat.image}
+          />
+        </a>
+      </Link>
     </li>
   ));
 
