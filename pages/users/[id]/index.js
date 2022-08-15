@@ -7,7 +7,7 @@ import Rating from "components/Rating";
 import Loading from "components/Loading";
 import ReviewLink from "components/ReviewLink";
 import { byUserId } from "lib/db/productFilters";
-import { post } from "lib/api";
+import { post } from "lib/api/client";
 import { FcInTransit } from "react-icons/fc";
 import { useSession } from "next-auth/react";
 import Head from "next/head";

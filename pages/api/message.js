@@ -1,7 +1,7 @@
 import { pusher } from "lib/chat/server";
 import { EVENTS } from "lib/chat/constants";
 import prisma from "lib/db/prisma";
-import { handle } from "lib/api";
+import { handle } from "lib/api/server";
 
 export default async function handler(req, res) {
   await handle(req, res, {
@@ -9,15 +9,15 @@ export default async function handler(req, res) {
   });
 }
 
-async function handlePost(req, res) {
-  const data = req.body;
+async function handlePost(req, res, session) {
+  const { text, chatId, channelName } = req.body;
   const message = await prisma.message.create({
     data: {
-      text: data.text,
-      user: { connect: { id: data.userId } },
-      chat: { connect: { id: data.chatId } },
+      text: text,
+      user: { connect: { id: session.user.id } },
+      chat: { connect: { id: chatId } },
     },
   });
-  await pusher.trigger(data.channelName, EVENTS.MESSAGE, message);
+  await pusher.trigger(channelName, EVENTS.MESSAGE, message);
   res.status(200).end();
 }

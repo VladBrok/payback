@@ -2,7 +2,7 @@ import { processOrder } from "lib/payment/server";
 import { formatMoneyFromRazorpay } from "lib/money";
 import prisma from "lib/db/prisma";
 import { subtractPercent } from "lib/percentage";
-import { handle } from "lib/api";
+import { handle } from "lib/api/server";
 
 export default async function handler(req, res) {
   await handle(req, res, {

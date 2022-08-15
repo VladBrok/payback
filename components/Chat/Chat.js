@@ -1,7 +1,7 @@
 import styles from "./Chat.module.scss";
 import Form from "components/Form";
 import Message from "components/Message";
-import { post } from "lib/api";
+import { post } from "lib/api/client";
 import { RiSendPlaneFill } from "react-icons/ri";
 import { useEffect, useRef, useState } from "react";
 
@@ -29,8 +29,8 @@ export default function Chat({ userId, chatId, channelName, messages }) {
     }
 
     input.value = "";
-    post("message", { text: messageText, userId, chatId, channelName }).catch(
-      () => handleError(error, "post request")
+    post("message", { text: messageText, chatId, channelName }).catch(() =>
+      handleError(error, "post request")
     );
   }
 

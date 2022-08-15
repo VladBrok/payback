@@ -1,4 +1,4 @@
-import { handle } from "lib/api";
+import { handle } from "lib/api/server";
 import prisma from "lib/db/prisma";
 
 export default async function handler(req, res) {
@@ -22,3 +22,4 @@ async function handleGet(req, res) {
     res.status(200).json(categories);
   }
 }
+handleGet.allowUnauthorized = true;

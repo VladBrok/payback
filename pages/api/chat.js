@@ -2,7 +2,7 @@ import { pusher } from "lib/chat/server";
 import { getUserIdsFromChatId } from "lib/chat/chatId";
 import { EVENTS, CHANNELS } from "lib/chat/constants";
 import prisma from "lib/db/prisma";
-import { handle } from "lib/api";
+import { handle } from "lib/api/server";
 
 // fixme: change error codes
 export default async function handler(req, res) {
@@ -12,8 +12,8 @@ export default async function handler(req, res) {
   });
 }
 
-async function handleGet(req, res) {
-  const userId = +req.query.userId;
+async function handleGet(_, res, session) {
+  const userId = +session.user.id;
   const chats = await prisma.chat.findMany({
     where: { users: { some: { userId } } },
     select: {

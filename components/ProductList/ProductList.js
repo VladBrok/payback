@@ -5,7 +5,7 @@ import Empty from "components/Empty";
 import { FcInTransit } from "react-icons/fc";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { post } from "lib/api";
+import { post } from "lib/api/client";
 
 export default function ProductList({
   filter,

@@ -1,4 +1,4 @@
-import { handle } from "lib/api";
+import { handle } from "lib/api/server";
 import { pusher } from "lib/chat/server";
 
 export default async function handler(req, res) {
@@ -7,8 +7,10 @@ export default async function handler(req, res) {
   });
 }
 
-function handlePost(req, res) {
-  const { socket_id: socketId, channel_name: channel, userId } = req.body;
-  const auth = pusher.authenticate(socketId, channel, { user_id: userId });
+function handlePost(req, res, session) {
+  const { socket_id: socketId, channel_name: channel } = req.body;
+  const auth = pusher.authenticate(socketId, channel, {
+    user_id: session.user.id,
+  });
   res.send(auth);
 }

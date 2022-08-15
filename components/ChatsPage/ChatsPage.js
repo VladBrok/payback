@@ -30,7 +30,7 @@ function ChatsPage() {
 
   useEffect(() => {
     async function getChats() {
-      const response = await fetch(`/api/chat?userId=${userId}`);
+      const response = await fetch("/api/chat");
       if (!response.ok) {
         console.log("failed to load chats");
       } else {
@@ -39,15 +39,12 @@ function ChatsPage() {
     }
 
     getChats();
-  }, [userId]);
+  }, []);
 
   useEffect(() => {
     const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY, {
       cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER,
       authEndpoint: "api/auth/chat",
-      auth: {
-        params: { userId },
-      },
     });
 
     chats.forEach(c => {

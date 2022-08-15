@@ -9,7 +9,7 @@ import PriceInput from "components/PriceInput";
 import ProductStatus from "components/ProductStatus";
 import PremiumIcon from "components/PremiumIcon";
 import Loading from "components/Loading";
-import { post } from "lib/api";
+import { post } from "lib/api/client";
 import { formatMoney } from "lib/money";
 import { makePremiumPayment } from "lib/payment/client";
 import { useSession } from "next-auth/react";
@@ -55,7 +55,6 @@ function SellPage({ serviceChargesPercent, premiumCost }) {
       price,
       isPremium,
       paymentData,
-      userId: user.id,
     }).then(() => router.push("/profile/products"));
   }, [
     router,

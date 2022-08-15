@@ -1,4 +1,4 @@
-import { handle } from "lib/api";
+import { handle } from "lib/api/server";
 import { createOrder } from "lib/payment/server";
 
 export default async function handler(req, res) {

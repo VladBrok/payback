@@ -3,7 +3,7 @@ import FormData from "form-data";
 import { toMegabytes } from "lib/file";
 import { BYTES_IN_MEGABYTE, MAX_FILE_SIZE_IN_BYTES } from "lib/sharedConstants";
 import { processOrder } from "lib/payment/server";
-import { handle } from "lib/api";
+import { handle } from "lib/api/server";
 
 export default async function handler(req, res) {
   await handle(req, res, {
@@ -26,11 +26,11 @@ async function handleGet(req, res) {
   product.user.reviewCount = reviewCount;
   res.status(200).json(product);
 }
+handleGet.allowUnauthorized = true;
 
-async function handlePost(req, res) {
+async function handlePost(req, res, session) {
   const data = req.body;
   if (data.filter) {
-    console.log(data);
     await getProducts();
   } else {
     await createProduct();
@@ -46,6 +46,11 @@ async function handlePost(req, res) {
   }
 
   async function createProduct() {
+    if (!session) {
+      res.status(401).end();
+      return;
+    }
+
     if (data.isPremium) {
       await processOrder(data.paymentData);
     }
@@ -76,13 +81,14 @@ async function handlePost(req, res) {
         image,
         price: data.price,
         isPremium: data.isPremium,
-        user: { connect: { id: +data.userId } },
+        user: { connect: { id: +session.user.id } },
         category: { connect: { id: +data.category } },
       },
     });
     res.status(200).end();
   }
 }
+handlePost.allowUnauthorized = true;
 
 export const config = {
   api: {
