@@ -1,3 +1,5 @@
+import { makeChatId } from "lib/chat/chatId";
+import { SUPPORT_ID } from "lib/sharedConstants";
 import prisma from "lib/db/prisma";
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
@@ -22,30 +24,16 @@ export const authOptions = {
     async jwt({ token, user }) {
       if (user) {
         // fixme: reviewCount, rating and money are not updated
-        console.log("fetch start");
-        const baseUrl = process.env.NEXTAUTH_URL ?? process.env.VERCEL_URL;
-        console.log(baseUrl);
-
-        const response = await fetch(`${baseUrl}/api/user`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            email: user.email,
-            name: user.name,
-            image: user.image,
-          }),
+        const receivedUser = await createOrGetUser({
+          email: user.email,
+          name: user.name,
+          image: user.image,
         });
 
-        if (response.ok) {
-          const fetchedUser = await response.json();
-          token.id = fetchedUser.id;
-          token.reviewCount = fetchedUser.reviewCount;
-          token.rating = fetchedUser.rating;
-          token.money = fetchedUser.money;
-          console.log("fetch end");
-        } else {
-          console.log("fetch end not ok");
-        }
+        token.id = receivedUser.id;
+        token.reviewCount = receivedUser.reviewCount;
+        token.rating = receivedUser.rating;
+        token.money = receivedUser.money;
       }
 
       return token;
@@ -65,5 +53,48 @@ export const authOptions = {
     error: "/profile/signIn",
   },
 };
+
+async function createOrGetUser(data) {
+  // fixme: use upsert ?
+  let user = await prisma.user.findFirst({
+    where: { email: data.email },
+  });
+
+  if (user == null) {
+    user = await createUser(data);
+  }
+
+  // fixme: dup with handleGet in api/user
+  const reviewCount = await prisma.review.count({
+    where: { product: { userId: user.id } },
+  });
+  return { ...user, reviewCount };
+}
+
+async function createUser(data) {
+  const user = await prisma.user.create({
+    data: {
+      name: data.name,
+      image: data.image,
+      email: data.email,
+    },
+  });
+
+  const chatId = makeChatId([SUPPORT_ID, user.id]);
+  await prisma.userChat.create({
+    data: {
+      chat: { create: { id: chatId } },
+      user: { connect: { id: user.id } },
+    },
+  });
+  await prisma.userChat.create({
+    data: {
+      chat: { connect: { id: chatId } },
+      user: { connect: { id: SUPPORT_ID } },
+    },
+  });
+
+  return user;
+}
 
 export default NextAuth(authOptions);
