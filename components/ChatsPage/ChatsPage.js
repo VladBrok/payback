@@ -97,7 +97,12 @@ function ChatsPage() {
               <span className={styles.username}>
                 {chat.name}{" "}
                 {chat.isVerified && <FcApproval className={styles.icon} />}{" "}
-                {/* <NewMessages count={newMessageCount} /> */}
+                <NewMessages
+                  count={
+                    chat.messages.filter(m => !m.wasRead && m.userId != userId)
+                      .length
+                  }
+                />
               </span>
             }
             imageUrl={chat.image}
