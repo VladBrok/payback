@@ -8,6 +8,11 @@ import { useEffect, useRef, useState } from "react";
 export default function Chat({ userId, chatId, channelName, messages }) {
   const [error, setError] = useState(false);
   const inputRef = useRef();
+  const [bottomBound, setBottomBound] = useState();
+
+  useEffect(() => {
+    setBottomBound(inputRef.current?.getBoundingClientRect().top);
+  }, [inputRef.current]);
 
   useEffect(focusOnInput, []);
 
@@ -34,9 +39,22 @@ export default function Chat({ userId, chatId, channelName, messages }) {
     );
   }
 
-  const messagesList = messages.map(m => (
-    <Message message={m} userId={userId} key={m.id} />
-  ));
+  function handleMessageInsideBounds(message) {
+    console.log("inside bounds:", message.text);
+  }
+
+  const messagesList = bottomBound
+    ? messages.map(m => (
+        <Message
+          key={m.id}
+          message={m}
+          userId={userId}
+          topBound={0}
+          bottomBound={bottomBound}
+          onInsideBounds={() => handleMessageInsideBounds(m)}
+        />
+      ))
+    : null;
 
   return (
     <div className={styles.container}>
