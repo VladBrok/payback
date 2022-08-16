@@ -18,7 +18,6 @@ import { useEffect, useState } from "react";
 // todo: refactor (too large)
 function ChatsPage() {
   const [chats, setChats] = useState([]);
-  const [newMessageCount, setNewMessageCount] = useState(0); // fixme: works badly
   const [shouldScrollToBottom, setShouldScrollToBottom] = useState(true); // fixme: works badly
 
   const router = useRouter();
@@ -66,7 +65,6 @@ function ChatsPage() {
             return c;
           })
         );
-        setNewMessageCount(cur => cur + 1);
       });
     });
 
@@ -90,16 +88,6 @@ function ChatsPage() {
     }
   }, [chats, shouldScrollToBottom]);
 
-  useEffect(() => {
-    if (!router.isReady) {
-      return;
-    }
-
-    if (chatId == null) {
-      setNewMessageCount(0);
-    }
-  }, [router.isReady, chatId]);
-
   const chatList = chats.map(chat => (
     <li key={chat.id}>
       <Link href={`/chats?id=${chat.id}`} shallow>
@@ -109,7 +97,7 @@ function ChatsPage() {
               <span className={styles.username}>
                 {chat.name}{" "}
                 {chat.isVerified && <FcApproval className={styles.icon} />}{" "}
-                <NewMessages count={newMessageCount} />
+                {/* <NewMessages count={newMessageCount} /> */}
               </span>
             }
             imageUrl={chat.image}
