@@ -19,6 +19,10 @@
     font-size: 1.5rem;
   }
 
+  & * {
+    overflow-wrap: normal;
+  }
+
   @media (min-width: b.$menu) {
     flex-direction: column;
     width: var(--menu-size);
