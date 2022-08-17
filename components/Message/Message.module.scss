@@ -1,4 +1,4 @@
-@use "styles/colors.scss" as c;
+@use "styles/colors" as c;
 
 $br: 1rem;
 
@@ -6,16 +6,6 @@ $br: 1rem;
   max-width: 65%;
   margin: 0.25rem 0;
   padding: 0.6rem 1rem;
-}
-
-.info-message {
-  margin: 0.4rem 0;
-  color: c.$text-secondary;
-  text-align: center;
-
-  .time {
-    display: none;
-  }
 }
 
 .message-from-me {

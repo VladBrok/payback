@@ -30,12 +30,8 @@ export default function Message({
     };
   }, [topBound, bottomBound, onInsideBounds]);
 
-  // fixme: remove info message because it's not used ?
-  const style = !message.userId
-    ? "info-message"
-    : message.userId == userId
-    ? "message-from-me"
-    : "message-from-friend";
+  const style =
+    message.userId == userId ? "message-from-me" : "message-from-friend";
 
   return (
     <li className={styles[style]} ref={elementRef}>
