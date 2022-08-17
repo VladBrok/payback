@@ -22,9 +22,13 @@ export default function ReviewList({ sellerId }) {
     return (
       <div className={styles.review} key={review.id}>
         <header className={styles.header}>
-          <User imageUrl={buyer.image} name={buyer.name}>
-            <Stars count={review.rating} />
-          </User>
+          <Link href={`/users/${buyer.id}`}>
+            <a>
+              <User imageUrl={buyer.image} name={buyer.name}>
+                <Stars count={review.rating} />
+              </User>
+            </a>
+          </Link>
           <span className={styles.date}>
             {formatRelativeToNow(review.date)}
           </span>
