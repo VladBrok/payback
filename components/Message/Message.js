@@ -22,10 +22,13 @@ export default function Message({
       );
     }
 
-    handleScroll();
+    const timeoutId = setTimeout(handleScroll);
     document.addEventListener("scroll", handleScroll);
-    return () => document.removeEventListener("scroll", handleScroll);
-  }, [topBound, bottomBound]);
+    return () => {
+      document.removeEventListener("scroll", handleScroll);
+      clearTimeout(timeoutId);
+    };
+  }, [topBound, bottomBound, onInsideBounds]);
 
   // fixme: remove info message because it's not used ?
   const style = !message.userId
