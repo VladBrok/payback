@@ -6,6 +6,7 @@ import { handle } from "lib/api/server";
 export default async function handler(req, res) {
   await handle(req, res, {
     POST: handlePost,
+    PUT: handlePut,
   });
 }
 
@@ -19,5 +20,12 @@ async function handlePost(req, res, session) {
     },
   });
   await pusher.trigger(channelName, EVENTS.MESSAGE, message);
+  res.status(200).end();
+}
+
+async function handlePut(req, res) {
+  const id = +req.query.id;
+  const data = req.body;
+  await prisma.message.update({ where: { id }, data });
   res.status(200).end();
 }
