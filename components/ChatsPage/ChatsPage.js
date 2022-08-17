@@ -6,16 +6,17 @@ import LinkToChat from "components/LinkToChat";
 import { isScrolledToBottom, scrollToBottom } from "lib/document";
 import { CHANNELS } from "lib/chat/constants";
 import { connect } from "lib/chat/client";
+import { put } from "lib/api/client";
 import Head from "next/head";
 import Error from "next/error";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { put } from "lib/api/client";
 import { flushSync } from "react-dom";
 
 function ChatsPage() {
   const [chats, setChats] = useState([]);
+  const [shouldScrollToBottom, setShouldScrollToBottom] = useState(true);
   const router = useRouter();
   const chatId = router.query?.id;
   const {
@@ -38,6 +39,10 @@ function ChatsPage() {
 
   useEffect(() => {
     function handleMessage(message) {
+      setShouldScrollToBottom(
+        chatId != null && (message.userId == userId || isScrolledToBottom())
+      );
+
       setChats(cur =>
         cur.map(c => {
           if (c.id == message.chatId) {
@@ -54,6 +59,16 @@ function ChatsPage() {
 
     return connect(chats, userId, handleMessage, handleChat);
   }, [userId, chatId, chats]);
+
+  useEffect(() => {
+    setShouldScrollToBottom(chatId != null);
+  }, [chatId]);
+
+  useEffect(() => {
+    if (shouldScrollToBottom) {
+      scrollToBottom();
+    }
+  }, [chats, shouldScrollToBottom]);
 
   function handleMessageInsideBounds(message) {
     if (message.userId == userId || message.wasRead) {
@@ -79,12 +94,11 @@ function ChatsPage() {
     put(`message?id=${message.id}`, { wasRead: true });
   }
 
-  const chatList = chats.map(chat => (
-    <li key={chat.id}>{<LinkToChat chat={chat} userId={userId} />}</li>
-  ));
-
   let content = "";
   if (chatId == null) {
+    const chatList = chats.map(chat => (
+      <li key={chat.id}>{<LinkToChat chat={chat} userId={userId} />}</li>
+    ));
     content = (
       <>
         <h1 className={styles.title}>Chats</h1>
