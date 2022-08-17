@@ -1,5 +1,5 @@
-@use "styles/colors.scss" as c;
-@use "styles/mixins.scss" as m;
+@use "styles/colors" as c;
+@use "styles/mixins" as m;
 
 .sold {
   @include m.title-3xl;
