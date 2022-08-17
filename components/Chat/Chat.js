@@ -5,7 +5,13 @@ import { post } from "lib/api/client";
 import { RiSendPlaneFill } from "react-icons/ri";
 import { useEffect, useRef, useState } from "react";
 
-export default function Chat({ userId, chatId, channelName, messages }) {
+export default function Chat({
+  userId,
+  chatId,
+  channelName,
+  messages,
+  onMessageInsideBounds,
+}) {
   const [error, setError] = useState(false);
   const inputRef = useRef();
   const [bottomBound, setBottomBound] = useState();
@@ -39,10 +45,6 @@ export default function Chat({ userId, chatId, channelName, messages }) {
     );
   }
 
-  function handleMessageInsideBounds(message) {
-    console.log("inside bounds:", message.text);
-  }
-
   const messagesList = bottomBound
     ? messages.map(m => (
         <Message
@@ -51,7 +53,7 @@ export default function Chat({ userId, chatId, channelName, messages }) {
           userId={userId}
           topBound={0}
           bottomBound={bottomBound}
-          onInsideBounds={() => handleMessageInsideBounds(m)}
+          onInsideBounds={() => onMessageInsideBounds(m)}
         />
       ))
     : null;

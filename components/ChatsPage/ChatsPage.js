@@ -63,6 +63,10 @@ function ChatsPage() {
     }
   }, [chats, shouldScrollToBottom]);
 
+  function handleMessageInsideBounds(message) {
+    console.log("inside bounds:", message);
+  }
+
   const chatList = chats.map(chat => (
     <li key={chat.id}>{<LinkToChat chat={chat} userId={userId} />}</li>
   ));
@@ -86,6 +90,7 @@ function ChatsPage() {
           messages={chat.messages}
           chatId={chatId}
           channelName={`${CHANNELS.ENCRYPTED_BASE}${chatId}`}
+          onMessageInsideBounds={handleMessageInsideBounds}
         />
       </Subpage>
     ) : (
