@@ -1,5 +1,11 @@
-@use "styles/colors.scss" as c;
+@use "styles/colors" as c;
 
 .container {
   color: c.$text-primary;
+
+  .logo {
+    width: 10rem;
+    height: 3rem;
+    margin-bottom: 1.2rem;
+  }
 }
