@@ -27,7 +27,6 @@ function ProfilePage({ children }) {
 
   return (
     <>
-      {/* todo: add Head to the subpage ? */}
       <Head>
         <title>{user.name}</title>
       </Head>

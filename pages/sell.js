@@ -15,6 +15,7 @@ import { makePremiumPayment } from "lib/payment/client";
 import { useSession } from "next-auth/react";
 import { FcTemplate } from "react-icons/fc";
 import { useRouter } from "next/router";
+import Head from "next/head";
 import { useState, useEffect } from "react";
 
 const STEPS = {
@@ -118,92 +119,102 @@ function SellPage({ serviceChargesPercent, premiumCost }) {
 
   // todo: implement goBack
   return (
-    <div className={styles.container}>
-      {step === STEPS.CATEGORY ? (
-        <Subpage title="Select category">
-          <CategorySearch
-            searchBarLabel="Find"
-            category={props => (
-              <CategoryButton onClick={handleCategoryClick} {...props} />
-            )}
-          />
-        </Subpage>
-      ) : step === STEPS.PHOTO ? (
-        <Subpage title="Upload photo">
-          <FileForm
-            onSubmit={handlePhotoSubmit}
-            submitButton={continueButton}
-          />
-        </Subpage>
-      ) : step === STEPS.TITLE ? (
-        <Subpage title="Specify title">
-          <InputForm
-            key={STEPS.TITLE}
-            submitButton={continueButton}
-            max={70}
-            onSubmit={handleTitleSubmit}
-            input={props => (
-              <input type="text" placeholder="Enter product title" {...props} />
-            )}
-          />
-        </Subpage>
-      ) : step === STEPS.DESCRIPTION ? (
-        <Subpage title="Specify description">
-          <InputForm
-            key={STEPS.DESCRIPTION}
-            submitButton={continueButton}
-            max={300}
-            onSubmit={handleDescriptionSubmit}
-            input={props => (
-              <textarea
-                placeholder="Enter product description"
-                rows="10"
-                cols="15"
-                {...props}
-              />
-            )}
-          />
-        </Subpage>
-      ) : step === STEPS.PRICE ? (
-        <Subpage title="Specify price">
-          <InputForm
-            key={STEPS.PRICE}
-            submitButton={continueButton}
-            min={100}
-            max={100000}
-            initialValue="100"
-            onSubmit={handlePriceSubmit}
-            hint={`Service charges are ${serviceChargesPercent}%`}
-            input={props => (
-              <PriceInput {...props} placeholder="Enter product price" />
-            )}
-          />
-        </Subpage>
-      ) : step === STEPS.PREMIUM ? (
-        <Subpage title="Select status">
-          <ProductStatus
-            key={`${STEPS.PREMIUM}-1`}
-            name="Premium"
-            description="Your product will be displayed on the main page"
-            Icon={PremiumIcon}
-            onClick={handlePremiumSelect.bind(null, true)}
-          >
-            Select for {formatMoney(premiumCost)}
-          </ProductStatus>
-          <ProductStatus
-            key={`${STEPS.PREMIUM}-2`}
-            name="Regular"
-            description="You can put the product up for sale for free, but the premium status will help you sell it faster"
-            Icon={FcTemplate}
-            onClick={handlePremiumSelect.bind(null, false)}
-          >
-            Select for free
-          </ProductStatus>
-        </Subpage>
-      ) : (
-        <Loading />
-      )}
-    </div>
+    <>
+      <Head>
+        <title>Sell</title>
+      </Head>
+
+      <div className={styles.container}>
+        {step === STEPS.CATEGORY ? (
+          <Subpage title="Select category">
+            <CategorySearch
+              searchBarLabel="Find"
+              category={props => (
+                <CategoryButton onClick={handleCategoryClick} {...props} />
+              )}
+            />
+          </Subpage>
+        ) : step === STEPS.PHOTO ? (
+          <Subpage title="Upload photo">
+            <FileForm
+              onSubmit={handlePhotoSubmit}
+              submitButton={continueButton}
+            />
+          </Subpage>
+        ) : step === STEPS.TITLE ? (
+          <Subpage title="Specify title">
+            <InputForm
+              key={STEPS.TITLE}
+              submitButton={continueButton}
+              max={70}
+              onSubmit={handleTitleSubmit}
+              input={props => (
+                <input
+                  type="text"
+                  placeholder="Enter product title"
+                  {...props}
+                />
+              )}
+            />
+          </Subpage>
+        ) : step === STEPS.DESCRIPTION ? (
+          <Subpage title="Specify description">
+            <InputForm
+              key={STEPS.DESCRIPTION}
+              submitButton={continueButton}
+              max={300}
+              onSubmit={handleDescriptionSubmit}
+              input={props => (
+                <textarea
+                  placeholder="Enter product description"
+                  rows="10"
+                  cols="15"
+                  {...props}
+                />
+              )}
+            />
+          </Subpage>
+        ) : step === STEPS.PRICE ? (
+          <Subpage title="Specify price">
+            <InputForm
+              key={STEPS.PRICE}
+              submitButton={continueButton}
+              min={100}
+              max={100000}
+              initialValue="100"
+              onSubmit={handlePriceSubmit}
+              hint={`Service charges are ${serviceChargesPercent}%`}
+              input={props => (
+                <PriceInput {...props} placeholder="Enter product price" />
+              )}
+            />
+          </Subpage>
+        ) : step === STEPS.PREMIUM ? (
+          <Subpage title="Select status">
+            <ProductStatus
+              key={`${STEPS.PREMIUM}-1`}
+              name="Premium"
+              description="Your product will be displayed on the main page"
+              Icon={PremiumIcon}
+              onClick={handlePremiumSelect.bind(null, true)}
+            >
+              Select for {formatMoney(premiumCost)}
+            </ProductStatus>
+            <ProductStatus
+              key={`${STEPS.PREMIUM}-2`}
+              name="Regular"
+              description="You can put the product up for sale for free, but the premium status will help you sell it faster"
+              Icon={FcTemplate}
+              onClick={handlePremiumSelect.bind(null, false)}
+            >
+              Select for free
+            </ProductStatus>
+          </Subpage>
+        ) : (
+          <Loading />
+        )}
+      </div>
+    </>
   );
 }
 
