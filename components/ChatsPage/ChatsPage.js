@@ -11,10 +11,11 @@ import Error from "next/error";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
+import { put } from "lib/api/client";
+import { flushSync } from "react-dom";
 
 function ChatsPage() {
   const [chats, setChats] = useState([]);
-  const [shouldScrollToBottom, setShouldScrollToBottom] = useState(true); // fixme: works badly
   const router = useRouter();
   const chatId = router.query?.id;
   const {
@@ -37,9 +38,6 @@ function ChatsPage() {
 
   useEffect(() => {
     function handleMessage(message) {
-      setShouldScrollToBottom(
-        chatId != null && (isScrolledToBottom() || message.userId == userId)
-      );
       setChats(cur =>
         cur.map(c => {
           if (c.id == message.chatId) {
@@ -57,14 +55,28 @@ function ChatsPage() {
     return connect(chats, userId, handleMessage, handleChat);
   }, [userId, chatId, chats]);
 
-  useEffect(() => {
-    if (shouldScrollToBottom) {
-      scrollToBottom();
-    }
-  }, [chats, shouldScrollToBottom]);
-
   function handleMessageInsideBounds(message) {
-    console.log("inside bounds:", message);
+    if (message.userId == userId || message.wasRead) {
+      return;
+    }
+
+    flushSync(() => {
+      setChats(
+        chats.map(chat => {
+          if (chat.id == message.chatId) {
+            return {
+              ...chat,
+              messages: chat.messages.map(m =>
+                m.id == message.id ? { ...message, wasRead: true } : m
+              ),
+            };
+          }
+
+          return chat;
+        })
+      );
+    });
+    put(`message?id=${message.id}`, { wasRead: true });
   }
 
   const chatList = chats.map(chat => (
