@@ -1,6 +1,6 @@
 import styles from "./Message.module.scss";
 import { formatDistanceToNow } from "lib/date";
-import { isInsideVerticalBounds } from "lib/document";
+import { checkIfInsideBounds } from "lib/document";
 import { useEffect, useRef } from "react";
 
 export default function Message({
@@ -14,11 +14,15 @@ export default function Message({
 
   useEffect(() => {
     function handleScroll() {
-      if (isInsideVerticalBounds(elementRef.current, topBound, bottomBound)) {
-        onInsideBounds();
-      }
+      checkIfInsideBounds(
+        elementRef.current,
+        topBound,
+        bottomBound,
+        onInsideBounds
+      );
     }
 
+    handleScroll();
     document.addEventListener("scroll", handleScroll);
     return () => document.removeEventListener("scroll", handleScroll);
   }, [topBound, bottomBound]);
