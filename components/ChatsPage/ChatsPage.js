@@ -1,25 +1,20 @@
 import styles from "./ChatsPage.module.scss";
-import User from "components/User";
 import Subpage from "components/Subpage";
 import Chat from "components/Chat";
-import NewMessages from "components/NewMessages";
 import Loading from "components/Loading";
+import LinkToChat from "components/LinkToChat";
 import { isScrolledToBottom, scrollToBottom } from "lib/document";
-import { EVENTS, CHANNELS } from "lib/chat/constants";
-import Pusher from "pusher-js/with-encryption";
+import { CHANNELS } from "lib/chat/constants";
+import { connect } from "lib/chat/client";
 import Head from "next/head";
-import Link from "next/link";
 import Error from "next/error";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
-import { FcApproval } from "react-icons/fc";
 import { useEffect, useState } from "react";
 
-// todo: refactor (too large)
 function ChatsPage() {
   const [chats, setChats] = useState([]);
   const [shouldScrollToBottom, setShouldScrollToBottom] = useState(true); // fixme: works badly
-
   const router = useRouter();
   const chatId = router.query?.id;
   const {
@@ -41,45 +36,25 @@ function ChatsPage() {
   }, []);
 
   useEffect(() => {
-    const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY, {
-      cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER,
-      authEndpoint: "api/auth/chat",
-    });
-
-    chats.forEach(c => {
-      const messageChannel = pusher.subscribe(
-        `${CHANNELS.ENCRYPTED_BASE}${c.id}`
+    function handleMessage(message) {
+      setShouldScrollToBottom(
+        chatId != null && (isScrolledToBottom() || message.userId == userId)
       );
-      messageChannel.bind(EVENTS.SUBSCRIPTION_ERROR, er =>
-        console.log("subscription error", er)
+      setChats(cur =>
+        cur.map(c => {
+          if (c.id == message.chatId) {
+            return { ...c, messages: [...c.messages, message] };
+          }
+          return c;
+        })
       );
-      messageChannel.bind(EVENTS.MESSAGE, message => {
-        setShouldScrollToBottom(
-          chatId != null && (isScrolledToBottom() || message.userId == userId)
-        );
-        setChats(cur =>
-          cur.map(c => {
-            if (c.id == message.chatId) {
-              return { ...c, messages: [...c.messages, message] };
-            }
-            return c;
-          })
-        );
-      });
-    });
+    }
 
-    const chatChannelName = `${CHANNELS.ENCRYPTED_BASE}${userId}`;
-    const chatChannel = pusher.subscribe(chatChannelName);
-    chatChannel.bind(EVENTS.SUBSCRIPTION_ERROR, er =>
-      console.log("subscription error", er)
-    );
-    chatChannel.bind(EVENTS.CHAT, chat => {
+    function handleChat(chat) {
       setChats(cur => [...cur, chat]);
-    });
+    }
 
-    return () => {
-      pusher.disconnect();
-    };
+    return connect(chats, userId, handleMessage, handleChat);
   }, [userId, chatId, chats]);
 
   useEffect(() => {
@@ -89,27 +64,7 @@ function ChatsPage() {
   }, [chats, shouldScrollToBottom]);
 
   const chatList = chats.map(chat => (
-    <li key={chat.id}>
-      <Link href={`/chats?id=${chat.id}`} shallow>
-        <a className={styles["user-container"]}>
-          <User
-            name={
-              <span className={styles.username}>
-                {chat.name}{" "}
-                {chat.isVerified && <FcApproval className={styles.icon} />}{" "}
-                <NewMessages
-                  count={
-                    chat.messages.filter(m => !m.wasRead && m.userId != userId)
-                      .length
-                  }
-                />
-              </span>
-            }
-            imageUrl={chat.image}
-          />
-        </a>
-      </Link>
-    </li>
+    <li key={chat.id}>{<LinkToChat chat={chat} userId={userId} />}</li>
   ));
 
   let content = "";
