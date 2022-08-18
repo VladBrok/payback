@@ -40,7 +40,7 @@ export default function InputForm({
 
   return (
     <Form onSubmit={handleSubmit}>
-      {<Error>{error}</Error> /* fixme: dup with FileForm */}
+      {<Error>{error}</Error>}
       {input({
         className: utilStyles.input,
         onChange: handleChange,

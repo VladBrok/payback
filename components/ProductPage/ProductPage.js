@@ -38,7 +38,6 @@ export default function ProductPage({ id }) {
     makeProductPayment(product, () => setModalIsOpen(true));
   }
 
-  // fixme: use getServerSideProps ?
   if (!product) {
     return <Loading />;
   }

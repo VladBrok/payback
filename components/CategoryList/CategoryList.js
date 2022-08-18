@@ -31,7 +31,7 @@ export default function CategoryList({
   return (
     <div className={styles.container} style={{ flexDirection }}>
       {categoryList}
-      {/* fixme: same problem with fallback as in the ProductList */}
+      {/* fixme: same problem with fallback as in the ProductList (add isLoaded state) */}
       {!categoryList.length && fallback}{" "}
     </div>
   );

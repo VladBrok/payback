@@ -48,7 +48,6 @@ export const authOptions = {
 };
 
 async function createOrGetUser(data) {
-  // fixme: use upsert ?
   let user = await prisma.user.findFirst({
     where: { email: data.email },
   });
