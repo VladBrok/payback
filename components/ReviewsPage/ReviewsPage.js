@@ -3,21 +3,14 @@ import Subpage from "components/Subpage";
 import ReviewList from "components/ReviewList";
 import Loading from "components/Loading";
 import Head from "next/head";
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-export default function ReviewsPage() {
+export default function ReviewsPage({ id }) {
   const [user, setUser] = useState();
-  const router = useRouter();
-  const { id } = router.query;
 
   useEffect(() => {
-    if (!router.isReady) {
-      return;
-    }
-
     fetch(`/api/user?id=${id}`).then(async res => setUser(await res.json()));
-  }, [router.isReady, id]);
+  }, [id]);
 
   if (!user) {
     return <Loading />;
