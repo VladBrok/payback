@@ -14,27 +14,20 @@ import { makeProductPayment } from "lib/payment/client";
 import { FcSearch } from "react-icons/fc";
 import Link from "next/link";
 import Head from "next/head";
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 
-export default function ProductPage() {
+export default function ProductPage({ id }) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [product, setProduct] = useState();
-  const router = useRouter();
-  const { id } = router.query;
   const { data } = useSession();
   const userId = data?.user?.id;
 
   useEffect(() => {
-    if (!router.isReady) {
-      return;
-    }
-
     fetch(`/api/product?id=${id}`).then(async res =>
       setProduct(await res.json())
     );
-  }, [router.isReady, id, modalIsOpen]);
+  }, [id, modalIsOpen]);
 
   function handleModalClose() {
     setModalIsOpen(false);
