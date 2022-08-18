@@ -2,10 +2,11 @@ import styles from "./ProductList.module.scss";
 import Product from "components/Product";
 import Category from "components/Category";
 import Empty from "components/Empty";
+import Loading from "components/Loading";
+import { post } from "lib/api/client";
 import { FcInTransit } from "react-icons/fc";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { post } from "lib/api/client";
 
 export default function ProductList({
   filter,
@@ -15,10 +16,13 @@ export default function ProductList({
   ),
 }) {
   const [products, setProducts] = useState([]);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     post("product", { filter }).then(async res => {
-      setProducts(await res.json());
+      const prods = await res.json();
+      setProducts(prods);
+      setIsLoaded(true);
     });
   }, [filter]);
 
@@ -27,7 +31,6 @@ export default function ProductList({
       {includeCategory && (
         <Category name={p.category.name} image={p.category.image} />
       )}
-      {/* fixme: dup with ReviewList */}
       <Link href={`/products/${p.id}`}>
         <a>
           <Product
@@ -43,7 +46,10 @@ export default function ProductList({
     </div>
   ));
 
-  // fixme: fallback should be showed when products are loaded, but product.length is 0
+  if (!isLoaded) {
+    return <Loading />;
+  }
+
   if (!productList.length) {
     return <>{fallback}</>;
   }
