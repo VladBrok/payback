@@ -6,29 +6,26 @@ import Empty from "components/Empty";
 import Rating from "components/Rating";
 import Loading from "components/Loading";
 import ReviewLink from "components/ReviewLink";
+import AuthButton from "components/AuthButton";
 import { byUserId } from "lib/db/productFilters";
 import { post } from "lib/api/client";
 import { makeChatId } from "lib/chat/chatId";
 import { FcInTransit } from "react-icons/fc";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 export default function UserPage({ id }) {
   const [user, setUser] = useState();
   const session = useSession();
+  const router = useRouter();
 
   useEffect(() => {
     fetch(`/api/user?id=${id}`).then(async res => setUser(await res.json()));
   }, [id]);
 
   function handleWriteMessageClick() {
-    // todo: dup (create AuthButton)
-    if (session.status !== "authenticated") {
-      router.push("/profile/signIn");
-      return;
-    }
-
     const authenticatedUserId = session.data.user.id;
     const chatId = makeChatId([authenticatedUserId, id]);
     post("chat", { chatId }).then(res => {
@@ -60,12 +57,12 @@ export default function UserPage({ id }) {
                 <ReviewLink userId={id}>{children}</ReviewLink>
               )}
             />
-            <button
+            <AuthButton
               className={utilStyles["button-tertiary"]}
               onClick={handleWriteMessageClick}
             >
               Write a message
-            </button>
+            </AuthButton>
           </User>
         }
       >

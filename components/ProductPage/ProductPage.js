@@ -9,6 +9,7 @@ import ProductList from "components/ProductList";
 import Rating from "components/Rating";
 import Loading from "components/Loading";
 import ReviewModal from "components/ReviewModal";
+import AuthButton from "components/AuthButton";
 import { bySimilar } from "lib/db/productFilters";
 import { makeProductPayment } from "lib/payment/client";
 import { FcSearch } from "react-icons/fc";
@@ -34,11 +35,6 @@ export default function ProductPage({ id }) {
   }
 
   function handleBuyClick() {
-    if (userId == null) {
-      router.push("/profile/signIn");
-      return;
-    }
-
     makeProductPayment(product, () => setModalIsOpen(true));
   }
 
@@ -79,13 +75,13 @@ export default function ProductPage({ id }) {
           <h2>{product.title}</h2>
           {/* todo: make TestModeNotice component. */}
           {!product.isSold && (
-            <button
+            <AuthButton
               type="button"
               className={utilStyles["button-primary"]}
               onClick={handleBuyClick}
             >
               Buy
-            </button>
+            </AuthButton>
           )}
         </Product>
 
