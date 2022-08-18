@@ -30,6 +30,7 @@ export default function Main() {
         loading="eager"
         className={styles.logo}
         objectFit="contain"
+        alt=""
       />
       <SearchBar label={searchBarLabel} onFocus={openModal} />
       <CategorySearchModal
