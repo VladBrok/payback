@@ -4,17 +4,8 @@ import User from "components/User";
 import Stars from "components/Stars";
 import { formatRelativeToNow } from "lib/date";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 
-export default function ReviewList({ sellerId }) {
-  const [reviews, setReviews] = useState([]);
-
-  useEffect(() => {
-    fetch(`/api/review?sellerId=${sellerId}`).then(async res =>
-      setReviews(await res.json())
-    );
-  }, [sellerId]);
-
+export default function ReviewList({ reviews }) {
   const reviewList = reviews.map(review => {
     const product = review.product;
     const buyer = review.buyer;

@@ -38,7 +38,7 @@ export default function ReviewsPage() {
           />
         }
       >
-        <ReviewList sellerId={id} />
+        <ReviewList reviews={user.products.reviews} />
       </Subpage>
     </>
   );

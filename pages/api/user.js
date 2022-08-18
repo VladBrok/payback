@@ -11,10 +11,19 @@ async function handleGet(req, res) {
   const id = +req.query.id;
   const user = await prisma.user.findFirst({
     where: { id },
+    include: {
+      products: {
+        select: { reviews: { include: { buyer: true, product: true } } },
+      },
+    },
   });
   const reviewCount = await prisma.review.count({
     where: { product: { userId: id } },
   });
-  res.status(200).json({ ...user, reviewCount });
+
+  user.reviewCount = reviewCount;
+  user.products = { reviews: user.products.flatMap(p => p.reviews) };
+
+  res.status(200).json(user);
 }
 handleGet.allowUnauthorized = true;
