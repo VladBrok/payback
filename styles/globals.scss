@@ -1,3 +1,5 @@
+@use "styles/colors" as c;
+
 html,
 body {
   height: 100%;
@@ -62,4 +64,14 @@ fieldset {
 
 ul {
   list-style: none;
+}
+
+.bar-of-progress {
+  color: c.$progress-bar !important;
+  background-color: c.$progress-bar !important;
+}
+
+.bar-of-progress .glow {
+  color: c.$progress-bar !important;
+  background-color: c.$progress-bar !important;
 }
