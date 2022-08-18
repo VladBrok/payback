@@ -5,7 +5,6 @@ import Loading from "components/Loading";
 import LinkToChat from "components/LinkToChat";
 import { isScrolledToBottom, scrollToBottom } from "lib/document";
 import { CHANNELS } from "lib/chat/constants";
-import { connect } from "lib/chat/client";
 import { put } from "lib/api/client";
 import Head from "next/head";
 import Error from "next/error";
@@ -17,6 +16,7 @@ import { flushSync } from "react-dom";
 function ChatsPage() {
   const [chats, setChats] = useState([]);
   const [shouldScrollToBottom, setShouldScrollToBottom] = useState(true);
+  const [chatConnector, setChatConnector] = useState({});
   const router = useRouter();
   const chatId = router.query?.id;
   const {
@@ -38,7 +38,16 @@ function ChatsPage() {
   }, []);
 
   useEffect(() => {
+    // This module needs window object in order to work
+    // so it can't be placed at the top with other modules
+    import("lib/chat/client").then(({ connect }) => {
+      setChatConnector({ connect });
+    });
+  }, []);
+
+  useEffect(() => {
     function handleMessage(message) {
+      console.log(message);
       setShouldScrollToBottom(
         chatId != null && (message.userId == userId || isScrolledToBottom())
       );
@@ -57,8 +66,8 @@ function ChatsPage() {
       setChats(cur => [...cur, chat]);
     }
 
-    return connect(chats, userId, handleMessage, handleChat);
-  }, [userId, chatId, chats]);
+    return chatConnector.connect?.(chats, userId, handleMessage, handleChat);
+  }, [userId, chatId, chats, chatConnector]);
 
   useEffect(() => {
     setShouldScrollToBottom(chatId != null);

@@ -1,5 +1,8 @@
-import dynamic from "next/dynamic";
+export { default } from "components/ChatsPage";
 
-const Page = dynamic(() => import("components/ChatsPage"), { ssr: false });
-Page.auth = true;
-export default Page;
+export async function getServerSideProps(ctx) {
+  console.log(ctx.query);
+  return {
+    props: {},
+  };
+}
