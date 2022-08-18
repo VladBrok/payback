@@ -44,7 +44,6 @@ function ProfilePage({ children }) {
         <title>{user.name}</title>
       </Head>
 
-      {/* fixme: use Subpage (without go back button) ? */}
       <header>
         <h1 className={styles.title}>Profile</h1>
       </header>

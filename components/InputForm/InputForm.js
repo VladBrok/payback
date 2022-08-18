@@ -24,12 +24,13 @@ export default function InputForm({
     const value = e.target.value;
     const length = value.length;
     const isNumeric = e.target.type === "number";
+    const valueToCheck = isNumeric ? +value : length;
+    const valueName = isNumeric ? "value" : "length";
 
-    // fixme: dup
-    if (isNumeric ? +value > max : length > max) {
-      setError(`Max ${isNumeric ? "value" : "length"} is ${max}`);
-    } else if (isNumeric ? +value < min : length < min) {
-      setError(`Min ${isNumeric ? "value" : "length"} is ${min}`);
+    if (valueToCheck > max) {
+      setError(`Max ${valueName} is ${max}`);
+    } else if (valueToCheck < min) {
+      setError(`Min ${valueName} is ${min}`);
     } else {
       setError();
     }
