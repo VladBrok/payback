@@ -5,26 +5,18 @@ import PriceRange from "components/PriceRange";
 import Loading from "components/Loading";
 import { byCategoryAndPrice } from "lib/db/productFilters";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
 import Head from "next/head";
 
-// fixme: use getServerSideProps ?
-export default function CategoryPage() {
+export default function CategoryPage({ id }) {
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
   const [category, setCategory] = useState();
-  const router = useRouter();
-  const id = router.query.id;
 
   useEffect(() => {
-    if (!router.isReady) {
-      return;
-    }
-
     fetch(`/api/category?id=${id}`).then(async res =>
       setCategory(await res.json())
     );
-  }, [router.isReady, id]);
+  }, [id]);
 
   function handleMinPriceChange(e) {
     setMinPrice(extractValue(e));
