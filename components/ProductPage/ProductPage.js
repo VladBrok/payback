@@ -10,6 +10,7 @@ import Rating from "components/Rating";
 import Loading from "components/Loading";
 import ReviewModal from "components/ReviewModal";
 import AuthButton from "components/AuthButton";
+import TestModeNotice from "components/TestModeNotice";
 import { bySimilar } from "lib/db/productFilters";
 import { makeProductPayment } from "lib/payment/client";
 import { FcSearch } from "react-icons/fc";
@@ -72,7 +73,12 @@ export default function ProductPage({ id }) {
           flexDirectionWhenExpanded="row"
         >
           <h2>{product.title}</h2>
-          {/* todo: make TestModeNotice component. */}
+          <TestModeNotice>
+            After clicking &quot;Buy&quot;, click &quot;Skip Saved Cards&quot;
+            -&gt; uncheck option &quot;Save card securely for future
+            payments&quot; -&gt; click &quot;Pay&quot; -&gt; click
+            &quot;Success&quot;
+          </TestModeNotice>
           {!product.isSold && (
             <AuthButton
               type="button"

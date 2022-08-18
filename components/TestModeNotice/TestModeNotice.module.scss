@@ -1,0 +1,10 @@
+@use "styles/colors" as c;
+
+.container {
+  margin-top: 0.7rem;
+  margin-bottom: -0.8rem;
+  color: c.$text-secondary;
+  font-size: 0.9rem;
+  font-style: italic;
+  line-height: 1.2;
+}
