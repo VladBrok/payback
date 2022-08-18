@@ -15,6 +15,10 @@
     height: $img-size;
   }
 
+  .provider {
+    text-transform: capitalize;
+  }
+
   .list {
     display: flex;
     flex-direction: column;

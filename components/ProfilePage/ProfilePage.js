@@ -4,16 +4,25 @@ import Rating from "components/Rating";
 import MenuItem from "components/MenuItem";
 import CurrentBalance from "components/CurrentBalance";
 import ReviewLink from "components/ReviewLink";
+import Loading from "components/Loading";
 import profileMenuItems from "data/profileMenuItems.json";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
+// fixme: user state, user fetching and if (!user) {...} dups
 function ProfilePage({ children }) {
+  const [user, setUser] = useState();
+  const session = useSession();
+  const userId = session.data.user.id;
   const pathname = useRouter().pathname;
-  const {
-    data: { user },
-  } = useSession();
+
+  useEffect(() => {
+    fetch(`/api/user?id=${userId}`).then(async res =>
+      setUser(await res.json())
+    );
+  }, [userId]);
 
   const menuItems = profileMenuItems.map(item => (
     <MenuItem
@@ -24,6 +33,10 @@ function ProfilePage({ children }) {
       className={styles["menu-item"]}
     />
   ));
+
+  if (!user) {
+    return <Loading />;
+  }
 
   return (
     <>

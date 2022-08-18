@@ -23,7 +23,6 @@ export const authOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        // fixme: reviewCount, rating and money are not updated
         const receivedUser = await createOrGetUser({
           email: user.email,
           name: user.name,
@@ -31,9 +30,6 @@ export const authOptions = {
         });
 
         token.id = receivedUser.id;
-        token.reviewCount = receivedUser.reviewCount;
-        token.rating = receivedUser.rating;
-        token.money = receivedUser.money;
       }
 
       return token;
@@ -41,9 +37,6 @@ export const authOptions = {
     async session({ session, token }) {
       if (session.user) {
         session.user.id = token.id;
-        session.user.rating = token.rating;
-        session.user.reviewCount = token.reviewCount;
-        session.user.money = token.money;
       }
       return session;
     },
@@ -64,11 +57,7 @@ async function createOrGetUser(data) {
     user = await createUser(data);
   }
 
-  // fixme: dup with handleGet in api/user
-  const reviewCount = await prisma.review.count({
-    where: { product: { userId: user.id } },
-  });
-  return { ...user, reviewCount };
+  return user;
 }
 
 async function createUser(data) {
