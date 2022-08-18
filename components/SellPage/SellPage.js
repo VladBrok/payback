@@ -19,18 +19,18 @@ import Head from "next/head";
 import { useState, useEffect } from "react";
 
 const STEPS = {
-  CATEGORY: undefined,
-  PHOTO: "1",
-  TITLE: "2",
-  DESCRIPTION: "3",
-  PRICE: "4",
-  PREMIUM: "5",
-  END: "6",
+  CATEGORY: { value: undefined, title: "Select category" },
+  PHOTO: { value: "1", title: "Upload photo" },
+  TITLE: { value: "2", title: "Specify title" },
+  DESCRIPTION: { value: "3", title: "Specify description" },
+  PRICE: { value: "4", title: "Specify price" },
+  PREMIUM: { value: "5", title: "Select status" },
+  END: { value: "6", title: "" },
 };
 
 // todo: refactor (useReducer ?)
 function SellPage({ serviceChargesPercent, premiumCost }) {
-  const [step, setStep] = useState();
+  const [step, setStep] = useState(STEPS.CATEGORY);
   const [category, setCategory] = useState();
   const [photoBlob, setPhotoBlob] = useState();
   const [title, setTitle] = useState();
@@ -44,7 +44,7 @@ function SellPage({ serviceChargesPercent, premiumCost }) {
   const router = useRouter();
 
   useEffect(() => {
-    if (step !== STEPS.END) {
+    if (step.value !== STEPS.END.value) {
       return;
     }
 
@@ -72,34 +72,34 @@ function SellPage({ serviceChargesPercent, premiumCost }) {
 
   function handleCategoryClick(value) {
     setCategory(value);
-    goToStep(STEPS.PHOTO);
+    setStep(STEPS.PHOTO);
   }
 
   function handlePhotoSubmit(value) {
     setPhotoBlob(value);
-    goToStep(STEPS.TITLE);
+    setStep(STEPS.TITLE);
   }
 
   function handleTitleSubmit(value) {
     setTitle(value);
-    goToStep(STEPS.DESCRIPTION);
+    setStep(STEPS.DESCRIPTION);
   }
 
   function handleDescriptionSubmit(value) {
     setDescription(value);
-    goToStep(STEPS.PRICE);
+    setStep(STEPS.PRICE);
   }
 
   function handlePriceSubmit(value) {
     setPrice(value);
-    goToStep(STEPS.PREMIUM);
+    setStep(STEPS.PREMIUM);
   }
 
   function handlePremiumSelect(value) {
     const end = data => {
       setPaymentData(data);
       setIsPremium(value);
-      goToStep(STEPS.END);
+      setStep(STEPS.END);
     };
 
     if (value) {
@@ -109,42 +109,43 @@ function SellPage({ serviceChargesPercent, premiumCost }) {
     }
   }
 
-  function goToStep(step) {
-    setStep(step);
+  function handleGoBack() {
+    if (step.value == undefined) {
+      router.back();
+    } else {
+      setStep(cur =>
+        Object.values(STEPS).find(s => s.value == (+cur.value - 1 || undefined))
+      );
+    }
   }
 
   const continueButton = (
     <button className={utilStyles["button-primary"]}>Continue</button>
   );
 
-  // todo: implement goBack
   return (
     <>
       <Head>
         <title>Sell</title>
       </Head>
 
-      <div className={styles.container}>
-        {step === STEPS.CATEGORY ? (
-          <Subpage title="Select category">
+      <Subpage title={step.title} onGoBack={handleGoBack}>
+        <div className={styles.container}>
+          {step.value === STEPS.CATEGORY.value ? (
             <CategorySearch
               searchBarLabel="Find"
               category={props => (
                 <CategoryButton onClick={handleCategoryClick} {...props} />
               )}
             />
-          </Subpage>
-        ) : step === STEPS.PHOTO ? (
-          <Subpage title="Upload photo">
+          ) : step.value === STEPS.PHOTO.value ? (
             <FileForm
               onSubmit={handlePhotoSubmit}
               submitButton={continueButton}
             />
-          </Subpage>
-        ) : step === STEPS.TITLE ? (
-          <Subpage title="Specify title">
+          ) : step.value === STEPS.TITLE.value ? (
             <InputForm
-              key={STEPS.TITLE}
+              key={STEPS.TITLE.value}
               submitButton={continueButton}
               max={70}
               onSubmit={handleTitleSubmit}
@@ -156,11 +157,9 @@ function SellPage({ serviceChargesPercent, premiumCost }) {
                 />
               )}
             />
-          </Subpage>
-        ) : step === STEPS.DESCRIPTION ? (
-          <Subpage title="Specify description">
+          ) : step.value === STEPS.DESCRIPTION.value ? (
             <InputForm
-              key={STEPS.DESCRIPTION}
+              key={STEPS.DESCRIPTION.value}
               submitButton={continueButton}
               max={300}
               onSubmit={handleDescriptionSubmit}
@@ -173,11 +172,9 @@ function SellPage({ serviceChargesPercent, premiumCost }) {
                 />
               )}
             />
-          </Subpage>
-        ) : step === STEPS.PRICE ? (
-          <Subpage title="Specify price">
+          ) : step.value === STEPS.PRICE.value ? (
             <InputForm
-              key={STEPS.PRICE}
+              key={STEPS.PRICE.value}
               submitButton={continueButton}
               min={100}
               max={100000}
@@ -188,32 +185,32 @@ function SellPage({ serviceChargesPercent, premiumCost }) {
                 <PriceInput {...props} placeholder="Enter product price" />
               )}
             />
-          </Subpage>
-        ) : step === STEPS.PREMIUM ? (
-          <Subpage title="Select status">
-            <ProductStatus
-              key={`${STEPS.PREMIUM}-1`}
-              name="Premium"
-              description="Your product will be displayed on the main page"
-              Icon={PremiumIcon}
-              onClick={handlePremiumSelect.bind(null, true)}
-            >
-              Select for {formatMoney(premiumCost)}
-            </ProductStatus>
-            <ProductStatus
-              key={`${STEPS.PREMIUM}-2`}
-              name="Regular"
-              description="You can put the product up for sale for free, but the premium status will help you sell it faster"
-              Icon={FcTemplate}
-              onClick={handlePremiumSelect.bind(null, false)}
-            >
-              Select for free
-            </ProductStatus>
-          </Subpage>
-        ) : (
-          <Loading />
-        )}
-      </div>
+          ) : step.value === STEPS.PREMIUM.value ? (
+            <>
+              <ProductStatus
+                key={`${STEPS.PREMIUM.value}-1`}
+                name="Premium"
+                description="Your product will be displayed on the main page"
+                Icon={PremiumIcon}
+                onClick={handlePremiumSelect.bind(null, true)}
+              >
+                Select for {formatMoney(premiumCost)}
+              </ProductStatus>
+              <ProductStatus
+                key={`${STEPS.PREMIUM.value}-2`}
+                name="Regular"
+                description="You can put the product up for sale for free, but the premium status will help you sell it faster"
+                Icon={FcTemplate}
+                onClick={handlePremiumSelect.bind(null, false)}
+              >
+                Select for free
+              </ProductStatus>
+            </>
+          ) : (
+            <Loading />
+          )}
+        </div>
+      </Subpage>
     </>
   );
 }
