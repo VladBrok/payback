@@ -12,24 +12,15 @@ import { makeChatId } from "lib/chat/chatId";
 import { FcInTransit } from "react-icons/fc";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-export default function UserPage() {
-  // fixme: dup with reviews.js
-  // fixme: use getServerSideProps ?
+export default function UserPage({ id }) {
   const [user, setUser] = useState();
-  const router = useRouter();
-  const { id } = router.query;
   const session = useSession();
 
   useEffect(() => {
-    if (!router.isReady) {
-      return;
-    }
-
     fetch(`/api/user?id=${id}`).then(async res => setUser(await res.json()));
-  }, [router.isReady, id]);
+  }, [id]);
 
   function handleWriteMessageClick() {
     // todo: dup (create AuthButton)
