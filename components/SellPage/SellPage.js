@@ -19,13 +19,13 @@ import Head from "next/head";
 import { useState, useEffect } from "react";
 
 const STEPS = {
-  CATEGORY: { value: undefined, title: "Select category" },
-  PHOTO: { value: "1", title: "Upload photo" },
-  TITLE: { value: "2", title: "Specify title" },
-  DESCRIPTION: { value: "3", title: "Specify description" },
-  PRICE: { value: "4", title: "Specify price" },
-  PREMIUM: { value: "5", title: "Select status" },
-  END: { value: "6", title: "" },
+  CATEGORY: { value: 0, title: "Select category" },
+  PHOTO: { value: 1, title: "Upload photo" },
+  TITLE: { value: 2, title: "Specify title" },
+  DESCRIPTION: { value: 3, title: "Specify description" },
+  PRICE: { value: 4, title: "Specify price" },
+  PREMIUM: { value: 5, title: "Select status" },
+  END: { value: 6, title: "" },
 };
 
 // todo: refactor (useReducer ?)
@@ -77,29 +77,29 @@ function SellPage({ serviceChargesPercent, premiumCost }) {
 
   function handlePhotoSubmit(value) {
     setPhotoBlob(value);
-    setStep(STEPS.TITLE);
+    goToNextStep();
   }
 
   function handleTitleSubmit(value) {
     setTitle(value);
-    setStep(STEPS.DESCRIPTION);
+    goToNextStep();
   }
 
   function handleDescriptionSubmit(value) {
     setDescription(value);
-    setStep(STEPS.PRICE);
+    goToNextStep();
   }
 
   function handlePriceSubmit(value) {
     setPrice(value);
-    setStep(STEPS.PREMIUM);
+    goToNextStep();
   }
 
   function handlePremiumSelect(value) {
     const end = data => {
       setPaymentData(data);
       setIsPremium(value);
-      setStep(STEPS.END);
+      goToNextStep();
     };
 
     if (value) {
@@ -109,13 +109,15 @@ function SellPage({ serviceChargesPercent, premiumCost }) {
     }
   }
 
+  function goToNextStep() {
+    setStep(cur => Object.values(STEPS).find(s => s.value === cur.value + 1));
+  }
+
   function handleGoBack() {
-    if (step.value == undefined) {
+    if (step.value === 0) {
       router.back();
     } else {
-      setStep(cur =>
-        Object.values(STEPS).find(s => s.value == (+cur.value - 1 || undefined))
-      );
+      setStep(cur => Object.values(STEPS).find(s => s.value === cur.value - 1));
     }
   }
 
