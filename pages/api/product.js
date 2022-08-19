@@ -5,6 +5,7 @@ import { BYTES_IN_MEGABYTE, MAX_FILE_SIZE_IN_BYTES } from "lib/sharedConstants";
 import { processOrder } from "lib/payment/server";
 import { handle } from "lib/api/server";
 import { postBlob } from "lib/api/client";
+import { enrichUser } from "lib/db/enrichUser";
 
 export default async function handler(req, res) {
   await handle(req, res, {
@@ -20,11 +21,7 @@ async function handleGet(req, res) {
     include: { category: true, user: true },
   });
 
-  // fixme: dup
-  const reviewCount = await prisma.review.count({
-    where: { product: { userId: product.user.id } },
-  });
-  product.user.reviewCount = reviewCount;
+  await enrichUser(product.user.id, product.user);
   res.status(200).json(product);
 }
 handleGet.allowUnauthorized = true;

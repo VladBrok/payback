@@ -1,5 +1,6 @@
 import prisma from "lib/db/prisma";
 import { handle } from "lib/api/server";
+import { enrichUser } from "lib/db/enrichUser";
 
 export default async function handler(req, res) {
   await handle(req, res, {
@@ -17,11 +18,8 @@ async function handleGet(req, res) {
       },
     },
   });
-  const reviewCount = await prisma.review.count({
-    where: { product: { userId: id } },
-  });
 
-  user.reviewCount = reviewCount;
+  await enrichUser(id, user);
   user.products = { reviews: user.products.flatMap(p => p.reviews) };
 
   res.status(200).json(user);
