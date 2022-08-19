@@ -17,7 +17,7 @@ async function handlePost(req, res) {
 
   await transaction(prisma, async prisma => {
     const order = await processOrder(paymentData);
-    const money = subtractPercent(
+    const gain = subtractPercent(
       order.amount,
       process.env.SERVICE_CHARGES_PERCENT
     );
@@ -25,10 +25,13 @@ async function handlePost(req, res) {
     const product = await prisma.product.update({
       where: { id: productId },
       data: { isSold: true },
+      include: { user: true },
     });
+
+    const newMoney = +product.user.money + formatMoneyFromRazorpay(gain);
     await prisma.user.update({
       where: { id: product.userId },
-      data: { money: formatMoneyFromRazorpay(money) },
+      data: { money: newMoney },
     });
   });
 
