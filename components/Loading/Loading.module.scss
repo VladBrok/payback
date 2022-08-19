@@ -1,11 +1,9 @@
 $size: 2rem;
 
 .image {
-  position: fixed !important;
-  top: 50%;
-  left: 50%;
   width: $size;
   height: $size;
-  transform: translate(-50%, -50%);
+  display: block;
+  margin: 3rem auto;
   filter: brightness(48%);
 }
