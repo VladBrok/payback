@@ -34,6 +34,10 @@ export default function MyApp({ Component: Page, pageProps }) {
       const message = isCustom ? e.reason.message : "Please try again later";
       const title = isCustom ? "Error" : "Failed to load data";
 
+      if (isCustom) {
+        console.log("Error caused by: ", e.reason.cause.message);
+      }
+
       if (!error || error !== message) {
         NotificationManager.error(message, title, NOTIFICATION_LIFETIME_MS);
       }
