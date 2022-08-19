@@ -1,5 +1,6 @@
 import styles from "./CategoryList.module.scss";
 import CategoryLink from "components/CategoryLink";
+import Loading from "components/Loading";
 import { get } from "lib/api/client";
 import { useState, useEffect } from "react";
 
@@ -14,6 +15,10 @@ export default function CategoryList({
   useEffect(() => {
     get(`/api/category?nameSubstr=${nameSubstr}`).then(setCategories);
   }, [nameSubstr]);
+
+  if (!categories) {
+    return <Loading/>
+  }
 
   const categoryFlexDirection = flexDirection === "row" ? "column" : "row";
   const categoryList = categories?.map(d =>
@@ -30,7 +35,6 @@ export default function CategoryList({
   return (
     <div className={styles.container} style={{ flexDirection }}>
       {categoryList}
-      {/* fixme: same problem with fallback as in the ProductList (add isLoaded state) */}
       {!categoryList?.length && fallback}{" "}
     </div>
   );
