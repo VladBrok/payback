@@ -72,20 +72,22 @@ export default function ProductPage({ id }) {
           flexDirectionWhenExpanded="row"
         >
           <h2>{product.title}</h2>
-          <TestModeNotice>
-            After clicking &quot;Buy&quot;, click &quot;Skip Saved Cards&quot;
-            -&gt; uncheck option &quot;Save card securely for future
-            payments&quot; -&gt; click &quot;Pay&quot; -&gt; click
-            &quot;Success&quot;
-          </TestModeNotice>
           {!product.isSold && (
-            <AuthButton
-              type="button"
-              className={utilStyles["button-primary"]}
-              onClick={handleBuyClick}
-            >
-              Buy
-            </AuthButton>
+            <>
+              <TestModeNotice>
+                After clicking &quot;Buy&quot;, click &quot;Skip Saved
+                Cards&quot; -&gt; uncheck option &quot;Save card securely for
+                future payments&quot; -&gt; click &quot;Pay&quot; -&gt; click
+                &quot;Success&quot;
+              </TestModeNotice>
+              <AuthButton
+                type="button"
+                className={utilStyles["button-primary"]}
+                onClick={handleBuyClick}
+              >
+                Buy
+              </AuthButton>
+            </>
           )}
         </Product>
 
