@@ -25,7 +25,7 @@ function ChatsPage() {
   const userId = user.id;
 
   useEffect(() => {
-    get("chat").then(setChats);
+    get("/api/chat").then(setChats);
   }, []);
 
   useEffect(() => {
