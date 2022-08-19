@@ -27,7 +27,7 @@ export default function Main() {
     <main className={styles.container}>
       <Image
         src="/images/logo.png"
-        loading="eager"
+        priority
         className={styles.logo}
         objectFit="contain"
         alt=""
