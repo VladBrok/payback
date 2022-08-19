@@ -1,5 +1,6 @@
 import { makeChatId } from "lib/chat/chatId";
 import { SUPPORT_ID } from "lib/sharedConstants";
+import { transaction } from "lib/db/transaction";
 import prisma from "lib/db/prisma";
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
@@ -60,29 +61,31 @@ async function createOrGetUser(data) {
 }
 
 async function createUser(data) {
-  const user = await prisma.user.create({
-    data: {
-      name: data.name,
-      image: data.image,
-      email: data.email,
-    },
-  });
+  return await transaction(prisma, async prisma => {
+    const user = await prisma.user.create({
+      data: {
+        name: data.name,
+        image: data.image,
+        email: data.email,
+      },
+    });
 
-  const chatId = makeChatId([SUPPORT_ID, user.id]);
-  await prisma.userChat.create({
-    data: {
-      chat: { create: { id: chatId } },
-      user: { connect: { id: user.id } },
-    },
-  });
-  await prisma.userChat.create({
-    data: {
-      chat: { connect: { id: chatId } },
-      user: { connect: { id: SUPPORT_ID } },
-    },
-  });
+    const chatId = makeChatId([SUPPORT_ID, user.id]);
+    await prisma.userChat.create({
+      data: {
+        chat: { create: { id: chatId } },
+        user: { connect: { id: user.id } },
+      },
+    });
+    await prisma.userChat.create({
+      data: {
+        chat: { connect: { id: chatId } },
+        user: { connect: { id: SUPPORT_ID } },
+      },
+    });
 
-  return user;
+    return user;
+  });
 }
 
 export default NextAuth(authOptions);
