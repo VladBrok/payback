@@ -1,6 +1,7 @@
 import styles from "./Chat.module.scss";
 import Form from "components/Form";
 import Message from "components/Message";
+import { PaybackError } from "lib/errors";
 import { post } from "lib/api/client";
 import { RiSendPlaneFill } from "react-icons/ri";
 import { useEffect, useRef, useState } from "react";
@@ -12,7 +13,6 @@ export default function Chat({
   messages,
   onMessageInsideBounds,
 }) {
-  const [error, setError] = useState(false);
   const inputRef = useRef();
   const [bottomBound, setBottomBound] = useState();
 
@@ -26,11 +26,6 @@ export default function Chat({
     inputRef.current?.focus();
   }
 
-  function handleError(error, cause) {
-    console.log(error, `CAUSED BY: ${cause}`);
-    setError(true);
-  }
-
   function handleSubmit(e) {
     focusOnInput();
     const input = e.target.elements.message;
@@ -40,8 +35,10 @@ export default function Chat({
     }
 
     input.value = "";
-    post("/api/message", { text: messageText, chatId, channelName }).catch(() =>
-      handleError(error, "post request")
+    post("/api/message", { text: messageText, chatId, channelName }).catch(
+      err => {
+        throw new PaybackError("Failed to send a message", err);
+      }
     );
   }
 

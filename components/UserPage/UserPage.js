@@ -15,6 +15,7 @@ import { useSession } from "next-auth/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { PaybackError } from "lib/errors";
 
 export default function UserPage({ id }) {
   const [user, setUser] = useState();
@@ -32,7 +33,12 @@ export default function UserPage({ id }) {
       .then(() => {
         router.push(`/chats?id=${chatId}`);
       })
-      .catch(() => console.log("fail")); // todo: show error notification
+      .catch(err => {
+        throw new PaybackError(
+          `Failed to create or load a chat with ${user.name}`,
+          err
+        );
+      });
   }
 
   if (!user) {
