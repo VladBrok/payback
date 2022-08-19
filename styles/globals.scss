@@ -75,3 +75,8 @@ ul {
   color: c.$progress-bar !important;
   background-color: c.$progress-bar !important;
 }
+
+.notification-error {
+  background-color: c.$danger !important;
+  border-radius: 0.5rem !important;
+}
