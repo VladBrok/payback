@@ -4,7 +4,6 @@ import { EVENTS, CHANNELS } from "lib/chat/constants";
 import prisma from "lib/db/prisma";
 import { handle } from "lib/api/server";
 
-// fixme: change error codes
 export default async function handler(req, res) {
   await handle(req, res, {
     GET: handleGet,
