@@ -19,7 +19,7 @@ function SellPage(props) {
       return;
     }
 
-    post("product", {
+    post("/api/product", {
       ...productData,
       paymentData,
     }).then(() => router.push("/profile/products"));

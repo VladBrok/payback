@@ -15,18 +15,18 @@ export default function ProductList({
     <Empty title="Sold out" Icon={FcInTransit} hint="come back later" />
   ),
 }) {
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState();
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    post("product", { filter }).then(async res => {
+    post("/api/product", { filter }).then(async res => {
       const prods = await res.json();
       setProducts(prods);
       setIsLoaded(true);
     });
   }, [filter]);
 
-  const productList = products.map(p => (
+  const productList = products?.map(p => (
     <div key={p.id}>
       {includeCategory && (
         <Category name={p.category.name} image={p.category.image} />
@@ -50,7 +50,7 @@ export default function ProductList({
     return <Loading />;
   }
 
-  if (!productList.length) {
+  if (!productList?.length) {
     return <>{fallback}</>;
   }
 

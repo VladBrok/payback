@@ -40,7 +40,7 @@ export default function Chat({
     }
 
     input.value = "";
-    post("message", { text: messageText, chatId, channelName }).catch(() =>
+    post("/api/message", { text: messageText, chatId, channelName }).catch(() =>
       handleError(error, "post request")
     );
   }

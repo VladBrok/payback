@@ -13,6 +13,7 @@ import AuthButton from "components/AuthButton";
 import TestModeNotice from "components/TestModeNotice";
 import { bySimilar } from "lib/db/productFilters";
 import { makeProductPayment } from "lib/payment/client";
+import { get } from "lib/api/client";
 import { FcSearch } from "react-icons/fc";
 import Link from "next/link";
 import Head from "next/head";
@@ -26,9 +27,7 @@ export default function ProductPage({ id }) {
   const userId = data?.user?.id;
 
   useEffect(() => {
-    fetch(`/api/product?id=${id}`).then(async res =>
-      setProduct(await res.json())
-    );
+    get(`/api/product?id=${id}`).then(setProduct);
   }, [id, modalIsOpen]);
 
   function handleModalClose() {

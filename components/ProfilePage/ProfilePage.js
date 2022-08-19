@@ -5,6 +5,7 @@ import MenuItem from "components/MenuItem";
 import CurrentBalance from "components/CurrentBalance";
 import ReviewLink from "components/ReviewLink";
 import Loading from "components/Loading";
+import { get } from "lib/api/client";
 import profileMenuItems from "data/profileMenuItems.json";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
@@ -19,9 +20,7 @@ function ProfilePage({ children }) {
   const pathname = useRouter().pathname;
 
   useEffect(() => {
-    fetch(`/api/user?id=${userId}`).then(async res =>
-      setUser(await res.json())
-    );
+    get(`/api/user?id=${userId}`).then(setUser);
   }, [userId]);
 
   const menuItems = profileMenuItems.map(item => (

@@ -4,6 +4,7 @@ import { toMegabytes } from "lib/file";
 import { BYTES_IN_MEGABYTE, MAX_FILE_SIZE_IN_BYTES } from "lib/sharedConstants";
 import { processOrder } from "lib/payment/server";
 import { handle } from "lib/api/server";
+import { postBlob } from "lib/api/client";
 
 export default async function handler(req, res) {
   await handle(req, res, {
@@ -60,18 +61,11 @@ async function handlePost(req, res, session) {
       "image",
       data.photoBlob.slice(data.photoBlob.indexOf(",") + 1)
     );
-    const response = await fetch(
-      `https://api.imgbb.com/1/upload?key=${process.env.IMAGE_HOSTING_API_KEY}`,
-      {
-        method: "POST",
-        body: formData,
-      }
-    );
 
-    const json = await response.json();
-    if (!response.ok) {
-      throw new Error(response.statusText);
-    }
+    const json = await postBlob(
+      `https://api.imgbb.com/1/upload?key=${process.env.IMAGE_HOSTING_API_KEY}`,
+      formData
+    );
 
     const image = json.data.image.url;
     await prisma.product.create({

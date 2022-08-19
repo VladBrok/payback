@@ -3,6 +3,7 @@ import Category from "components/Category";
 import ProductList from "components/ProductList";
 import PriceRange from "components/PriceRange";
 import Loading from "components/Loading";
+import { get } from "lib/api/client";
 import { byCategoryAndPrice } from "lib/db/productFilters";
 import { useEffect, useState } from "react";
 import Head from "next/head";
@@ -13,9 +14,7 @@ export default function CategoryPage({ id }) {
   const [category, setCategory] = useState();
 
   useEffect(() => {
-    fetch(`/api/category?id=${id}`).then(async res =>
-      setCategory(await res.json())
-    );
+    get(`/api/category?id=${id}`).then(setCategory);
   }, [id]);
 
   function handleMinPriceChange(e) {

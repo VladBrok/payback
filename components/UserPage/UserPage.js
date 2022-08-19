@@ -8,7 +8,7 @@ import Loading from "components/Loading";
 import ReviewLink from "components/ReviewLink";
 import AuthButton from "components/AuthButton";
 import { byUserId } from "lib/db/productFilters";
-import { post } from "lib/api/client";
+import { get, post } from "lib/api/client";
 import { makeChatId } from "lib/chat/chatId";
 import { FcInTransit } from "react-icons/fc";
 import { useSession } from "next-auth/react";
@@ -22,19 +22,17 @@ export default function UserPage({ id }) {
   const router = useRouter();
 
   useEffect(() => {
-    fetch(`/api/user?id=${id}`).then(async res => setUser(await res.json()));
+    get(`/api/user?id=${id}`).then(setUser);
   }, [id]);
 
   function handleWriteMessageClick() {
     const authenticatedUserId = session.data.user.id;
     const chatId = makeChatId([authenticatedUserId, id]);
-    post("chat", { chatId }).then(res => {
-      if (res.ok) {
+    post("/api/chat", { chatId })
+      .then(() => {
         router.push(`/chats?id=${chatId}`);
-      } else {
-        console.log("oops");
-      }
-    });
+      })
+      .catch(() => console.log("fail")); // todo: show error notification
   }
 
   if (!user) {

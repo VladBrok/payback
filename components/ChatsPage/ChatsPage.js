@@ -5,7 +5,7 @@ import Loading from "components/Loading";
 import LinkToChat from "components/LinkToChat";
 import { isScrolledToBottom, scrollToBottom } from "lib/document";
 import { CHANNELS } from "lib/chat/constants";
-import { put } from "lib/api/client";
+import { get, put } from "lib/api/client";
 import Head from "next/head";
 import Error from "next/error";
 import { useRouter } from "next/router";
@@ -14,7 +14,7 @@ import { useEffect, useState } from "react";
 import { flushSync } from "react-dom";
 
 function ChatsPage() {
-  const [chats, setChats] = useState([]);
+  const [chats, setChats] = useState();
   const [shouldScrollToBottom, setShouldScrollToBottom] = useState(true);
   const [chatConnector, setChatConnector] = useState({});
   const router = useRouter();
@@ -25,16 +25,7 @@ function ChatsPage() {
   const userId = user.id;
 
   useEffect(() => {
-    async function getChats() {
-      const response = await fetch("/api/chat");
-      if (!response.ok) {
-        console.log("failed to load chats");
-      } else {
-        setChats(await response.json());
-      }
-    }
-
-    getChats();
+    get("chat").then(setChats);
   }, []);
 
   useEffect(() => {
@@ -47,13 +38,12 @@ function ChatsPage() {
 
   useEffect(() => {
     function handleMessage(message) {
-      console.log(message);
       setShouldScrollToBottom(
         chatId != null && (message.userId == userId || isScrolledToBottom())
       );
 
       setChats(cur =>
-        cur.map(c => {
+        cur?.map(c => {
           if (c.id == message.chatId) {
             return { ...c, messages: [...c.messages, message] };
           }
@@ -63,7 +53,7 @@ function ChatsPage() {
     }
 
     function handleChat(chat) {
-      setChats(cur => [...cur, chat]);
+      setChats(cur => (cur ? [...cur, chat] : [chat]));
     }
 
     return chatConnector.connect?.(chats, userId, handleMessage, handleChat);
@@ -86,7 +76,7 @@ function ChatsPage() {
 
     flushSync(() => {
       setChats(
-        chats.map(chat => {
+        chats?.map(chat => {
           if (chat.id == message.chatId) {
             return {
               ...chat,
@@ -100,12 +90,12 @@ function ChatsPage() {
         })
       );
     });
-    put(`message?id=${message.id}`, { wasRead: true });
+    put(`/api/message?id=${message.id}`, { wasRead: true });
   }
 
   let content = "";
   if (chatId == null) {
-    const chatList = chats.map(chat => (
+    const chatList = chats?.map(chat => (
       <li key={chat.id}>{<LinkToChat chat={chat} userId={userId} />}</li>
     ));
     content = (
@@ -114,7 +104,7 @@ function ChatsPage() {
         <ul className={styles.list}>{chatList}</ul>
       </>
     );
-  } else if (!chats.length) {
+  } else if (!chats) {
     content = <Loading />;
   } else {
     const chat = chats.find(c => c.id == chatId);

@@ -11,7 +11,7 @@ export default function ReviewModal({ isOpen, close, productId, buyerId }) {
   const [rating, setRating] = useState(MAX_RATING);
 
   function handleSubmit(text) {
-    post("review", { rating, text, productId, buyerId }).then(close);
+    post("/api/review", { rating, text, productId, buyerId }).then(close);
   }
 
   function handleStarClick(index) {

@@ -3,11 +3,11 @@ import { createOrder } from "lib/payment/server";
 
 export default async function handler(req, res) {
   await handle(req, res, {
-    POST: handlePost,
+    GET: handleGet,
   });
 }
 
-async function handlePost(req, res) {
+async function handleGet(req, res) {
   const productId = +req.query.id;
   const price = (await prisma.product.findFirst({ where: { id: productId } }))
     ?.price;
