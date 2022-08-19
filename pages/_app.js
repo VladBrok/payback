@@ -22,20 +22,23 @@ router.events.on("routeChangeStart", progress.start);
 router.events.on("routeChangeComplete", progress.finish);
 router.events.on("routeChangeError", progress.finish);
 
+const NOTIFICATION_LIFETIME_MS = 10000000;
+
 export default function MyApp({ Component: Page, pageProps }) {
-  const [error, setError] = useState(false);
+  const [error, setError] = useState();
   const pathname = useRouter().pathname;
 
   useEffect(() => {
-    function handleError() {
-      if (!error) {
-        NotificationManager.error(
-          "Please try again later",
-          "Failed to load data",
-          Number.MAX_SAFE_INTEGER
-        );
+    function handleError(e) {
+      const isCustom = e.reason.name === "PaybackError";
+      const message = isCustom ? e.reason.message : "Please try again later";
+      const title = isCustom ? "Error" : "Failed to load data";
+
+      if (!error || error !== message) {
+        NotificationManager.error(message, title, NOTIFICATION_LIFETIME_MS);
       }
-      flushSync(() => setError(true));
+
+      flushSync(() => setError(message));
     }
 
     window.addEventListener("unhandledrejection", handleError);
@@ -43,7 +46,7 @@ export default function MyApp({ Component: Page, pageProps }) {
   }, [error]);
 
   useEffect(() => {
-    setError(false);
+    setError();
     NotificationManager.removeAll();
   }, [pathname]);
 
@@ -52,7 +55,8 @@ export default function MyApp({ Component: Page, pageProps }) {
       <Head>
         <link rel="icon" type="image/png" href="/images/logo-small.png" />
       </Head>
-      <ErrorProvider value={error}>
+
+      <ErrorProvider value={Boolean(error)}>
         <SessionProvider session={pageProps.session} refetchInterval={0}>
           <Container>
             {Page.auth ? (
