@@ -2,6 +2,7 @@ import { pusher } from "lib/chat/server";
 import { getUserIdsFromChatId } from "lib/chat/chatId";
 import { EVENTS, CHANNELS } from "lib/chat/constants";
 import prisma from "lib/db/prisma";
+import { transaction } from "lib/db/transaction";
 import { handle } from "lib/api/server";
 
 export default async function handler(req, res) {
@@ -39,13 +40,22 @@ async function handleGet(_, res, session) {
 }
 
 async function handlePost(req, res) {
+  // todo: prevent from creating chat with yourself
   const chatId = req.body.chatId;
+  const userIds = getUserIdsFromChatId(chatId).map(x => ({ userId: +x }));
 
-  if ((await prisma.chat.count({ where: { id: chatId } })) === 0) {
-    const userIds = getUserIdsFromChatId(chatId).map(x => ({ userId: +x }));
-    const chat = await prisma.chat.create({
-      data: { id: chatId, users: { createMany: { data: userIds } } },
-    });
+  const chat = await transaction(prisma, async prisma => {
+    if ((await prisma.chat.count({ where: { id: chatId } })) === 0) {
+      const chat = await prisma.chat.create({
+        data: { id: chatId, users: { createMany: { data: userIds } } },
+      });
+      return chat;
+    }
+
+    return null;
+  });
+
+  if (chat) {
     await Promise.all(
       userIds.map(({ userId }) =>
         pusher.trigger(`${CHANNELS.ENCRYPTED_BASE}${userId}`, EVENTS.CHAT, chat)
