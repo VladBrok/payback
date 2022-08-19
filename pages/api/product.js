@@ -1,11 +1,12 @@
 import prisma from "lib/db/prisma";
-import FormData from "form-data";
 import { toMegabytes } from "lib/file";
 import { BYTES_IN_MEGABYTE, MAX_FILE_SIZE_IN_BYTES } from "lib/sharedConstants";
 import { processOrder } from "lib/payment/server";
 import { handle } from "lib/api/server";
 import { postBlob } from "lib/api/client";
 import { enrichUser } from "lib/db/enrichUser";
+import { transaction } from "lib/db/transaction";
+import FormData from "form-data";
 
 export default async function handler(req, res) {
   await handle(req, res, {
@@ -49,33 +50,36 @@ async function handlePost(req, res, session) {
       return;
     }
 
-    if (data.isPremium) {
-      await processOrder(data.paymentData);
-    }
+    await transaction(prisma, async prisma => {
+      if (data.isPremium) {
+        await processOrder(data.paymentData);
+      }
 
-    const formData = new FormData();
-    formData.append(
-      "image",
-      data.photoBlob.slice(data.photoBlob.indexOf(",") + 1)
-    );
+      const formData = new FormData();
+      formData.append(
+        "image",
+        data.photoBlob.slice(data.photoBlob.indexOf(",") + 1)
+      );
 
-    const json = await postBlob(
-      `https://api.imgbb.com/1/upload?key=${process.env.IMAGE_HOSTING_API_KEY}`,
-      formData
-    );
+      const json = await postBlob(
+        `https://api.imgbb.com/1/upload?key=${process.env.IMAGE_HOSTING_API_KEY}`,
+        formData
+      );
 
-    const image = json.data.image.url;
-    await prisma.product.create({
-      data: {
-        title: data.title,
-        description: data.description,
-        image,
-        price: data.price,
-        isPremium: data.isPremium,
-        user: { connect: { id: +session.user.id } },
-        category: { connect: { id: +data.category } },
-      },
+      const image = json.data.image.url;
+      await prisma.product.create({
+        data: {
+          title: data.title,
+          description: data.description,
+          image,
+          price: data.price,
+          isPremium: data.isPremium,
+          user: { connect: { id: +session.user.id } },
+          category: { connect: { id: +data.category } },
+        },
+      });
     });
+
     res.status(200).end();
   }
 }
