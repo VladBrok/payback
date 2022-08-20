@@ -2,20 +2,15 @@ import Subpage from "components/Subpage";
 import Category from "components/Category";
 import ProductList from "components/ProductList";
 import PriceRange from "components/PriceRange";
-import Loading from "components/Loading";
+import withDataFetching from "components/withDataFetching";
 import { get } from "lib/api/client";
 import { byCategoryAndPrice } from "lib/db/productFilters";
-import { useEffect, useState } from "react";
 import Head from "next/head";
+import { useState } from "react";
 
-export default function CategoryPage({ id }) {
+function CategoryPage({ fetchedData: category }) {
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
-  const [category, setCategory] = useState();
-
-  useEffect(() => {
-    get(`/api/category?id=${id}`).then(setCategory);
-  }, [id]);
 
   function handleMinPriceChange(e) {
     setMinPrice(extractValue(e));
@@ -23,10 +18,6 @@ export default function CategoryPage({ id }) {
 
   function handleMaxPriceChange(e) {
     setMaxPrice(extractValue(e));
-  }
-
-  if (!category) {
-    return <Loading />;
   }
 
   return (
@@ -54,3 +45,9 @@ export default function CategoryPage({ id }) {
 function extractValue(e) {
   return e.target.value;
 }
+
+export default withDataFetching(
+  CategoryPage,
+  ({ id }) => get(`/api/category?id=${id}`),
+  props => ({ id: props.id })
+);
