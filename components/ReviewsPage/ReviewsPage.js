@@ -9,7 +9,7 @@ function ReviewsPage({ fetchedData: user }) {
   return (
     <>
       <Head>
-        <title>{user.name} reviews</title>
+        <title>Reviews about {user.name}</title>
       </Head>
 
       <Subpage
