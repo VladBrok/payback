@@ -34,7 +34,7 @@ function ProductList({
     </div>
   ));
 
-  if (!products?.length) {
+  if (!products.length) {
     return <>{fallback}</>;
   }
 
@@ -46,6 +46,5 @@ export default withDataFetching(
   ({ filter }) => post("/api/product", { filter }).then(res => res.json()),
   props => ({
     filter: props.filter,
-  }),
-  true
+  })
 );

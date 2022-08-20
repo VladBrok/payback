@@ -10,7 +10,7 @@ function CategoryList({
   fetchedData: categories,
 }) {
   const categoryFlexDirection = flexDirection === "row" ? "column" : "row";
-  const categoryList = categories?.map(d =>
+  const categoryList = categories.map(d =>
     category({
       key: d.id,
       flexDirection: categoryFlexDirection,
@@ -24,7 +24,7 @@ function CategoryList({
   return (
     <div className={styles.container} style={{ flexDirection }}>
       {categoryList}
-      {!categoryList?.length && fallback}{" "}
+      {!categoryList.length && fallback}{" "}
     </div>
   );
 }
@@ -32,6 +32,5 @@ function CategoryList({
 export default withDataFetching(
   CategoryList,
   ({ nameSubstr }) => get(`/api/category?nameSubstr=${nameSubstr}`),
-  props => ({ nameSubstr: props.nameSubstr ?? "" }),
-  true
+  props => ({ nameSubstr: props.nameSubstr ?? "" })
 );
