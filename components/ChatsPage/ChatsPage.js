@@ -1,8 +1,8 @@
 import styles from "./ChatsPage.module.scss";
 import Subpage from "components/Subpage";
 import Chat from "components/Chat";
-import Loading from "components/Loading";
 import LinkToChat from "components/LinkToChat";
+import withDataFetching from "components/withDataFetching";
 import { isScrolledToBottom, scrollToBottom } from "lib/document";
 import { CHANNELS } from "lib/chat/constants";
 import { get, put } from "lib/api/client";
@@ -13,8 +13,7 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { flushSync } from "react-dom";
 
-function ChatsPage() {
-  const [chats, setChats] = useState();
+function ChatsPage({ fetchedData: chats, setFetchedData: setChats }) {
   const [shouldScrollToBottom, setShouldScrollToBottom] = useState(true);
   const [chatConnector, setChatConnector] = useState({});
   const router = useRouter();
@@ -23,10 +22,6 @@ function ChatsPage() {
     data: { user },
   } = useSession();
   const userId = user.id;
-
-  useEffect(() => {
-    get("/api/chat").then(setChats);
-  }, []);
 
   useEffect(() => {
     // This module needs window object in order to work
@@ -104,10 +99,8 @@ function ChatsPage() {
         <ul className={styles.list}>{chatList}</ul>
       </>
     );
-  } else if (!chats) {
-    content = <Loading />;
   } else {
-    const chat = chats.find(c => c.id == chatId);
+    const chat = chats?.find(c => c.id == chatId);
     content = chat ? (
       <Subpage title={chat.name}>
         <Chat
@@ -134,4 +127,12 @@ function ChatsPage() {
 }
 
 ChatsPage.auth = true;
-export default ChatsPage;
+const hoc = withDataFetching(
+  ChatsPage,
+  () => get("/api/chat"),
+  () => ({}),
+  true
+);
+hoc.auth = ChatsPage.auth;
+
+export default hoc;

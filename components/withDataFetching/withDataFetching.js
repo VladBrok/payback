@@ -42,6 +42,7 @@ export default function withDataFetching(
       <Component
         {...props}
         fetchedData={fetchedData}
+        setFetchedData={setFetchedData}
         customState={customState}
         setCustomState={setCustomState}
       />
