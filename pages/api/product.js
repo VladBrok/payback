@@ -49,12 +49,15 @@ async function handlePost(req, res, session) {
       take: PRODUCT_PAGE_SIZE + 1,
       orderBy: { id: "desc" },
     });
+
     const newCursor =
       products.length >= PRODUCT_PAGE_SIZE + 1 ? products.at(-2).id : undefined;
+    const pageData =
+      products.length >= PRODUCT_PAGE_SIZE + 1
+        ? products.slice(0, -1)
+        : products;
 
-    res
-      .status(200)
-      .json({ pageData: products.slice(0, -1), pageCursor: newCursor });
+    res.status(200).json({ pageData, pageCursor: newCursor });
   }
 
   async function createProduct() {
