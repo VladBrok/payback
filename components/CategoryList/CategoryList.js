@@ -1,25 +1,14 @@
 import styles from "./CategoryList.module.scss";
 import CategoryLink from "components/CategoryLink";
-import Loading from "components/Loading";
 import { get } from "lib/api/client";
-import { useState, useEffect } from "react";
+import withDataFetching from "components/withDataFetching";
 
-export default function CategoryList({
+function CategoryList({
   fallback,
   flexDirection = "row",
-  nameSubstr = "",
   category = props => <CategoryLink {...props} />,
+  fetchedData: categories,
 }) {
-  const [categories, setCategories] = useState();
-
-  useEffect(() => {
-    get(`/api/category?nameSubstr=${nameSubstr}`).then(setCategories);
-  }, [nameSubstr]);
-
-  if (!categories) {
-    return <Loading/>
-  }
-
   const categoryFlexDirection = flexDirection === "row" ? "column" : "row";
   const categoryList = categories?.map(d =>
     category({
@@ -39,3 +28,10 @@ export default function CategoryList({
     </div>
   );
 }
+
+export default withDataFetching(
+  CategoryList,
+  ({ nameSubstr }) => get(`/api/category?nameSubstr=${nameSubstr}`),
+  props => ({ nameSubstr: props.nameSubstr ?? "" }),
+  true
+);
