@@ -4,27 +4,21 @@ import User from "components/User";
 import ProductList from "components/ProductList";
 import Empty from "components/Empty";
 import Rating from "components/Rating";
-import Loading from "components/Loading";
 import ReviewLink from "components/ReviewLink";
 import AuthButton from "components/AuthButton";
+import withDataFetching from "components/withDataFetching";
 import { byUserId } from "lib/db/productFilters";
 import { get, post } from "lib/api/client";
 import { makeChatId } from "lib/chat/chatId";
+import { PaybackError } from "lib/errors";
 import { FcInTransit } from "react-icons/fc";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { PaybackError } from "lib/errors";
 
-export default function UserPage({ id }) {
-  const [user, setUser] = useState();
+function UserPage({ id, fetchedData: user }) {
   const session = useSession();
   const router = useRouter();
-
-  useEffect(() => {
-    get(`/api/user?id=${id}`).then(setUser);
-  }, [id]);
 
   function handleWriteMessageClick() {
     const authenticatedUserId = session.data.user.id;
@@ -39,10 +33,6 @@ export default function UserPage({ id }) {
           err
         );
       });
-  }
-
-  if (!user) {
-    return <Loading />;
   }
 
   return (
@@ -85,3 +75,9 @@ export default function UserPage({ id }) {
     </>
   );
 }
+
+export default withDataFetching(
+  UserPage,
+  ({ id }) => get(`/api/user?id=${id}`),
+  props => ({ id: props.id })
+);
