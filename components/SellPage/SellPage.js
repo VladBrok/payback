@@ -2,6 +2,7 @@ import styles from "./SellPage.module.scss";
 import Subpage from "components/Subpage";
 import { post } from "lib/api/client";
 import { makePremiumPayment } from "lib/payment/client";
+import { PaybackError } from "lib/errors";
 import { STEP_DATA, STEPS } from "data/sellSteps";
 import { useRouter } from "next/router";
 import Head from "next/head";
@@ -22,7 +23,12 @@ function SellPage(props) {
     post("/api/product", {
       ...productData,
       paymentData,
-    }).then(() => router.push("/profile/products"));
+    })
+      .catch(err => {
+        setStep(cur => cur - 1);
+        throw new PaybackError("Failed to create a product", err);
+      })
+      .then(() => router.push("/profile/products"));
   }, [router, step, productData, paymentData]);
 
   function handlePremiumSelect(value) {
