@@ -2,10 +2,12 @@ import styles from "./ReviewList.module.scss";
 import Product from "components/Product";
 import User from "components/User";
 import Stars from "components/Stars";
+import withDataFetching from "components/withDataFetching";
 import { formatRelativeToNow } from "lib/date";
+import { get } from "lib/api/client";
 import Link from "next/link";
 
-export default function ReviewList({ reviews }) {
+function ReviewList({ fetchedData: reviews }) {
   const reviewList = reviews.map(review => {
     const product = review.product;
     const buyer = review.buyer;
@@ -48,3 +50,9 @@ export default function ReviewList({ reviews }) {
 
   return <div className={styles.container}>{reviewList}</div>;
 }
+
+export default withDataFetching(
+  ReviewList,
+  ({ userId }) => get(`/api/review?userId=${userId}`),
+  props => ({ userId: props.userId })
+);

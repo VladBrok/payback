@@ -21,7 +21,7 @@ function ReviewsPage({ fetchedData: user }) {
           />
         }
       >
-        <ReviewList reviews={user.products.reviews} />
+        <ReviewList userId={user.id} />
       </Subpage>
     </>
   );

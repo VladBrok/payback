@@ -12,15 +12,8 @@ async function handleGet(req, res) {
   const id = +req.query.id;
   const user = await prisma.user.findFirst({
     where: { id },
-    include: {
-      products: {
-        select: { reviews: { include: { buyer: true, product: true } } },
-      },
-    },
   });
-
   await enrichUser(id, user);
-  user.products = { reviews: user.products.flatMap(p => p.reviews) };
 
   res.status(200).json(user);
 }
