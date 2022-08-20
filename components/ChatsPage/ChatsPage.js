@@ -101,7 +101,7 @@ function ChatsPage() {
     content = (
       <>
         <h1 className={styles.title}>Chats</h1>
-        <ul className={styles.list}>{chatList}</ul>
+        {chatList ? <ul className={styles.list}>{chatList}</ul> : <Loading />}
       </>
     );
   } else if (!chats) {
