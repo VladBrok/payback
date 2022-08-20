@@ -12,7 +12,6 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-// fixme: user state, user fetching and if (!user) {...} dups
 function ProfilePage({ children }) {
   const [user, setUser] = useState();
   const session = useSession();

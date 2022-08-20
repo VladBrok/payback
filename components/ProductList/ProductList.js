@@ -2,30 +2,18 @@ import styles from "./ProductList.module.scss";
 import Product from "components/Product";
 import Category from "components/Category";
 import Empty from "components/Empty";
-import Loading from "components/Loading";
 import { post } from "lib/api/client";
 import { FcInTransit } from "react-icons/fc";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import withDataFetching from "components/withDataFetching";
 
-export default function ProductList({
-  filter,
+function ProductList({
   includeCategory = true,
   fallback = (
     <Empty title="Sold out" Icon={FcInTransit} hint="come back later" />
   ),
+  fetchedData: products,
 }) {
-  const [products, setProducts] = useState();
-  const [isLoaded, setIsLoaded] = useState(false);
-
-  useEffect(() => {
-    post("/api/product", { filter }).then(async res => {
-      const prods = await res.json();
-      setProducts(prods);
-      setIsLoaded(true);
-    });
-  }, [filter]);
-
   const productList = products?.map(p => (
     <div key={p.id}>
       {includeCategory && (
@@ -46,13 +34,17 @@ export default function ProductList({
     </div>
   ));
 
-  if (!isLoaded) {
-    return <Loading />;
-  }
-
-  if (!productList?.length) {
+  if (!products?.length) {
     return <>{fallback}</>;
   }
 
   return <div className={styles.container}>{productList}</div>;
 }
+
+export default withDataFetching(
+  ProductList,
+  ({ filter }) => post("/api/product", { filter }).then(res => res.json()),
+  props => ({
+    filter: props.filter,
+  })
+);
