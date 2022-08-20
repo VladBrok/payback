@@ -1,6 +1,7 @@
 import styles from "./withDataFetching.module.scss";
 import utilStyles from "styles/utils.module.scss";
 import Loading from "components/Loading";
+import { uniqueById } from "lib/db/uniqueById";
 import { useEffect, useState } from "react";
 
 export default function withDataFetching(
@@ -17,24 +18,45 @@ export default function withDataFetching(
   return props => {
     const [fetchedData, setFetchedData] = useState();
     const [isLoaded, setIsLoaded] = useState(false);
-    const [pageCursor, setPageCursor] = useState();
+    const [showMore, setShowMore] = useState(false);
+    const [curPageCursor, setCurPageCursor] = useState("");
+    const [prevPageCursor, setPrevPageCursor] = useState("");
     const [customState, setCustomState] = useState(customStateInit);
+
     const fetchDeps = getFetchDeps(props);
-    console.log([...Object.values(fetchDeps), customState], fetchDeps);
+    const pageCursor = showMore ? curPageCursor : prevPageCursor;
 
     useEffect(() => {
-      console.log("fetching...");
-      fetchCallback(fetchDeps, customState)
+      console.log("fetching with cursor:", pageCursor);
+
+      fetchCallback(fetchDeps, customState, pageCursor)
         .then(result => {
-          setFetchedData(result);
+          if (result.pageData) {
+            setFetchedData(
+              fetchedData
+                ? uniqueById([...fetchedData, ...result.pageData])
+                : result.pageData
+            );
+          } else {
+            setFetchedData(result);
+          }
+
+          setCurPageCursor(result.pageCursor ?? "");
         })
         .finally(() => {
           setIsLoaded(true);
+          setShowMore(false);
         });
-    }, [...Object.values(fetchDeps), customState]);
+    }, [...Object.values(fetchDeps), customState, pageCursor]);
+
+    useEffect(() => {
+      if (showMore) {
+        setPrevPageCursor(pageCursor);
+      }
+    }, [showMore, pageCursor]);
 
     function handleShowMoreClick() {
-      console.log("ok.");
+      setShowMore(true);
     }
 
     if (!isLoaded) {
@@ -54,7 +76,8 @@ export default function withDataFetching(
           customState={customState}
           setCustomState={setCustomState}
         />
-        {fetchedData != undefined && pageCursor != undefined && (
+        {showMore && <Loading />}
+        {!showMore && fetchedData != undefined && curPageCursor != "" && (
           <div className={styles["button-wrapper"]}>
             <button
               type="button"

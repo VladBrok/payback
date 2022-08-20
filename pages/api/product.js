@@ -1,6 +1,10 @@
 import prisma from "lib/db/prisma";
 import { toMegabytes } from "lib/file";
-import { BYTES_IN_MEGABYTE, MAX_FILE_SIZE_IN_BYTES } from "lib/sharedConstants";
+import {
+  BYTES_IN_MEGABYTE,
+  MAX_FILE_SIZE_IN_BYTES,
+  PRODUCT_PAGE_SIZE,
+} from "lib/sharedConstants";
 import { processOrder } from "lib/payment/server";
 import { handle } from "lib/api/server";
 import { postBlob } from "lib/api/client";
@@ -36,12 +40,21 @@ async function handlePost(req, res, session) {
   }
 
   async function getProducts() {
-    // fixme: add pagination (to chats and messages too)
+    const pageCursor = req.query.pageCursor;
     const products = await prisma.product.findMany({
-      where: data.filter,
+      where: pageCursor
+        ? { AND: [data.filter, { id: { lt: +pageCursor } }] }
+        : data.filter,
       include: { category: true },
+      take: PRODUCT_PAGE_SIZE + 1,
+      orderBy: { id: "desc" },
     });
-    res.status(200).json(products);
+    const newCursor =
+      products.length >= PRODUCT_PAGE_SIZE + 1 ? products.at(-2).id : undefined;
+
+    res
+      .status(200)
+      .json({ pageData: products.slice(0, -1), pageCursor: newCursor });
   }
 
   async function createProduct() {

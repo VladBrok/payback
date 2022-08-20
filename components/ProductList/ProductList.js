@@ -43,7 +43,10 @@ function ProductList({
 
 export default withDataFetching(
   ProductList,
-  ({ filter }) => post("/api/product", { filter }).then(res => res.json()),
+  ({ filter }, _, pageCursor) =>
+    post(`/api/product?pageCursor=${pageCursor}`, { filter }).then(res =>
+      res.json()
+    ),
   props => ({
     filter: props.filter,
   })
