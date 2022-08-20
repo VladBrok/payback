@@ -53,6 +53,7 @@ function ReviewList({ fetchedData: reviews }) {
 
 export default withDataFetching(
   ReviewList,
-  ({ userId }) => get(`/api/review?userId=${userId}`),
+  ({ userId }, _, pageCursor) =>
+    get(`/api/review?userId=${userId}&pageCursor=${pageCursor}`),
   props => ({ userId: props.userId })
 );
