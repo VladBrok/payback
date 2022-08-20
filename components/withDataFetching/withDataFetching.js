@@ -1,5 +1,7 @@
-import { useEffect, useState } from "react";
+import styles from "./withDataFetching.module.scss";
+import utilStyles from "styles/utils.module.scss";
 import Loading from "components/Loading";
+import { useEffect, useState } from "react";
 
 export default function withDataFetching(
   Component,
@@ -15,6 +17,7 @@ export default function withDataFetching(
   return props => {
     const [fetchedData, setFetchedData] = useState();
     const [isLoaded, setIsLoaded] = useState(false);
+    const [pageCursor, setPageCursor] = useState();
     const [customState, setCustomState] = useState(customStateInit);
     const fetchDeps = getFetchDeps(props);
     console.log([...Object.values(fetchDeps), customState], fetchDeps);
@@ -30,6 +33,10 @@ export default function withDataFetching(
         });
     }, [...Object.values(fetchDeps), customState]);
 
+    function handleShowMoreClick() {
+      console.log("ok.");
+    }
+
     if (!isLoaded) {
       return <Loading />;
     }
@@ -39,13 +46,26 @@ export default function withDataFetching(
     }
 
     return (
-      <Component
-        {...props}
-        fetchedData={fetchedData}
-        setFetchedData={setFetchedData}
-        customState={customState}
-        setCustomState={setCustomState}
-      />
+      <>
+        <Component
+          {...props}
+          fetchedData={fetchedData}
+          setFetchedData={setFetchedData}
+          customState={customState}
+          setCustomState={setCustomState}
+        />
+        {fetchedData != undefined && pageCursor != undefined && (
+          <div className={styles["button-wrapper"]}>
+            <button
+              type="button"
+              className={utilStyles["button-secondary"]}
+              onClick={handleShowMoreClick}
+            >
+              Show more
+            </button>
+          </div>
+        )}
+      </>
     );
   };
 }

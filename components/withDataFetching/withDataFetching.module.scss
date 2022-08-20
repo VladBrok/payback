@@ -1,0 +1,10 @@
+.button-wrapper {
+  margin-top: 1rem;
+
+  & > * {
+    display: block;
+    justify-content: center;
+    max-width: 23rem;
+    margin: 0 auto;
+  }
+}
