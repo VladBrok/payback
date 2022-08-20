@@ -3,7 +3,6 @@ import "react-notifications/lib/notifications.css";
 import Menu from "components/Menu";
 import Container from "components/Container";
 import Auth from "components/Auth";
-import ErrorProvider from "context/ErrorContext";
 import ProgressBar from "@badrap/bar-of-progress";
 import {
   NotificationContainer,
@@ -50,8 +49,10 @@ export default function MyApp({ Component: Page, pageProps }) {
   }, [error]);
 
   useEffect(() => {
-    setError();
-    NotificationManager.removeAll();
+    if (error) {
+      NotificationManager.removeAll();
+      setError();
+    }
   }, [pathname]);
 
   return (
@@ -60,21 +61,19 @@ export default function MyApp({ Component: Page, pageProps }) {
         <link rel="icon" type="image/png" href="/images/logo-small.png" />
       </Head>
 
-      <ErrorProvider value={Boolean(error)}>
-        <SessionProvider session={pageProps.session} refetchInterval={0}>
-          <Container>
-            {Page.auth ? (
-              <Auth>
-                <Page {...pageProps} />
-              </Auth>
-            ) : (
+      <SessionProvider session={pageProps.session} refetchInterval={0}>
+        <Container>
+          {Page.auth ? (
+            <Auth>
               <Page {...pageProps} />
-            )}
-          </Container>
-          <Menu activePath={pathname} />
-          <NotificationContainer />
-        </SessionProvider>
-      </ErrorProvider>
+            </Auth>
+          ) : (
+            <Page {...pageProps} />
+          )}
+        </Container>
+        <Menu activePath={pathname} />
+        <NotificationContainer />
+      </SessionProvider>
     </>
   );
 }
