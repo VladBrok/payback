@@ -4,7 +4,8 @@ import Loading from "components/Loading";
 export default function withDataFetching(
   Component,
   fetchCallback,
-  getFetchDeps
+  getFetchDeps,
+  renderIfFailedToFetch = false
 ) {
   withDataFetching.displayName = `WithDataFetching(${getDisplayName(
     Component
@@ -29,6 +30,10 @@ export default function withDataFetching(
 
     if (!isLoaded) {
       return <Loading />;
+    }
+
+    if (fetchedData == undefined && !renderIfFailedToFetch) {
+      return;
     }
 
     return <Component {...props} fetchedData={fetchedData} />;
