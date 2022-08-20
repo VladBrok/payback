@@ -1,26 +1,17 @@
-import styles from "./ProfilePage.module.scss";
+import styles from "./Profile.module.scss";
 import User from "components/User";
 import Rating from "components/Rating";
 import MenuItem from "components/MenuItem";
 import CurrentBalance from "components/CurrentBalance";
 import ReviewLink from "components/ReviewLink";
-import Loading from "components/Loading";
+import withDataFetching from "components/withDataFetching";
 import { get } from "lib/api/client";
 import profileMenuItems from "data/profileMenuItems.json";
-import { useSession } from "next-auth/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
 
-function ProfilePage({ children }) {
-  const [user, setUser] = useState();
-  const session = useSession();
-  const userId = session.data.user.id;
+function Profile({ children, fetchedData: user }) {
   const pathname = useRouter().pathname;
-
-  useEffect(() => {
-    get(`/api/user?id=${userId}`).then(setUser);
-  }, [userId]);
 
   const menuItems = profileMenuItems.map(item => (
     <MenuItem
@@ -31,10 +22,6 @@ function ProfilePage({ children }) {
       className={styles["menu-item"]}
     />
   ));
-
-  if (!user) {
-    return <Loading />;
-  }
 
   return (
     <>
@@ -64,5 +51,8 @@ function ProfilePage({ children }) {
   );
 }
 
-ProfilePage.auth = true;
-export default ProfilePage;
+export default withDataFetching(
+  Profile,
+  ({ id }) => get(`/api/user?id=${id}`),
+  props => ({ id: props.sessionUser.id })
+);

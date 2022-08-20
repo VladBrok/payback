@@ -1,15 +1,15 @@
 import styles from "./ProfileOptionsPage.module.scss";
 import utilStyles from "styles/utils.module.scss";
-import ProfilePage from "components/ProfilePage";
+import Profile from "components/Profile";
 import { signOut } from "next-auth/react";
 
-function ProfileOptionsPage() {
+function ProfileOptionsPage({ sessionUser }) {
   async function handleSignOut() {
     await signOut({ redirect: false });
   }
 
   return (
-    <ProfilePage>
+    <Profile sessionUser={sessionUser}>
       <div className={styles.container}>
         <button
           type="button"
@@ -19,7 +19,7 @@ function ProfileOptionsPage() {
           Sign out
         </button>
       </div>
-    </ProfilePage>
+    </Profile>
   );
 }
 

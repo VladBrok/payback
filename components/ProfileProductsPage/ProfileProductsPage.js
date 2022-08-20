@@ -1,14 +1,14 @@
 import utilStyles from "styles/utils.module.scss";
 import ProductList from "components/ProductList";
-import ProfilePage from "components/ProfilePage";
+import Profile from "components/Profile";
 import Empty from "components/Empty";
 import { byUserId } from "lib/db/productFilters";
 import { FcInTransit } from "react-icons/fc";
 import Link from "next/link";
 
-function ProfileProductsPage() {
+function ProfileProductsPage({ sessionUser }) {
   return (
-    <ProfilePage>
+    <Profile sessionUser={sessionUser}>
       {user => (
         <ProductList
           filter={byUserId(user.id)}
@@ -25,7 +25,7 @@ function ProfileProductsPage() {
           }
         />
       )}
-    </ProfilePage>
+    </Profile>
   );
 }
 
