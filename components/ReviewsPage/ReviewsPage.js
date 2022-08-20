@@ -1,22 +1,11 @@
 import Rating from "components/Rating";
 import Subpage from "components/Subpage";
 import ReviewList from "components/ReviewList";
-import Loading from "components/Loading";
+import withDataFetching from "components/withDataFetching";
 import { get } from "lib/api/client";
 import Head from "next/head";
-import { useEffect, useState } from "react";
 
-export default function ReviewsPage({ id }) {
-  const [user, setUser] = useState();
-
-  useEffect(() => {
-    get(`/api/user?id=${id}`).then(setUser);
-  }, [id]);
-
-  if (!user) {
-    return <Loading />;
-  }
-
+function ReviewsPage({ fetchedData: user }) {
   return (
     <>
       <Head>
@@ -37,3 +26,9 @@ export default function ReviewsPage({ id }) {
     </>
   );
 }
+
+export default withDataFetching(
+  ReviewsPage,
+  ({ id }) => get(`/api/user?id=${id}`),
+  props => ({ id: props.id })
+);
