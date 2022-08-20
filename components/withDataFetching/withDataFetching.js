@@ -5,7 +5,8 @@ export default function withDataFetching(
   Component,
   fetchCallback,
   getFetchDeps,
-  renderIfFailedToFetch = false
+  renderIfFailedToFetch = false,
+  customStateInit = undefined
 ) {
   withDataFetching.displayName = `WithDataFetching(${getDisplayName(
     Component
@@ -14,19 +15,20 @@ export default function withDataFetching(
   return props => {
     const [fetchedData, setFetchedData] = useState();
     const [isLoaded, setIsLoaded] = useState(false);
+    const [customState, setCustomState] = useState(customStateInit);
     const fetchDeps = getFetchDeps(props);
-    console.log(Object.values(fetchDeps), fetchDeps);
+    console.log([...Object.values(fetchDeps), customState], fetchDeps);
 
     useEffect(() => {
       console.log("fetching...");
-      fetchCallback(fetchDeps)
+      fetchCallback(fetchDeps, customState)
         .then(result => {
           setFetchedData(result);
         })
         .finally(() => {
           setIsLoaded(true);
         });
-    }, Object.values(fetchDeps));
+    }, [...Object.values(fetchDeps), customState]);
 
     if (!isLoaded) {
       return <Loading />;
@@ -36,7 +38,14 @@ export default function withDataFetching(
       return;
     }
 
-    return <Component {...props} fetchedData={fetchedData} />;
+    return (
+      <Component
+        {...props}
+        fetchedData={fetchedData}
+        customState={customState}
+        setCustomState={setCustomState}
+      />
+    );
   };
 }
 

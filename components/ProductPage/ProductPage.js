@@ -7,28 +7,25 @@ import Section from "components/Section";
 import User from "components/User";
 import ProductList from "components/ProductList";
 import Rating from "components/Rating";
-import Loading from "components/Loading";
 import ReviewModal from "components/ReviewModal";
 import AuthButton from "components/AuthButton";
 import TestModeNotice from "components/TestModeNotice";
+import withDataFetching from "components/withDataFetching";
 import { bySimilar } from "lib/db/productFilters";
 import { makeProductPayment } from "lib/payment/client";
 import { get } from "lib/api/client";
 import { FcSearch } from "react-icons/fc";
 import Link from "next/link";
 import Head from "next/head";
-import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 
-export default function ProductPage({ id }) {
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [product, setProduct] = useState();
+function ProductPage({
+  fetchedData: product,
+  customState: modalIsOpen,
+  setCustomState: setModalIsOpen,
+}) {
   const { data } = useSession();
   const userId = data?.user?.id;
-
-  useEffect(() => {
-    get(`/api/product?id=${id}`).then(setProduct);
-  }, [id, modalIsOpen]);
 
   function handleModalClose() {
     setModalIsOpen(false);
@@ -36,10 +33,6 @@ export default function ProductPage({ id }) {
 
   function handleBuyClick() {
     makeProductPayment(product, () => setModalIsOpen(true));
-  }
-
-  if (!product) {
-    return <Loading />;
   }
 
   return (
@@ -117,3 +110,11 @@ export default function ProductPage({ id }) {
     </>
   );
 }
+
+export default withDataFetching(
+  ProductPage,
+  ({ id }) => get(`/api/product?id=${id}`),
+  props => ({ id: props.id }),
+  false,
+  false
+);
