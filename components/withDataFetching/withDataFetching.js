@@ -11,11 +11,7 @@ export default function withDataFetching(
   renderIfFailedToFetch = false,
   customStateInit = undefined
 ) {
-  withDataFetching.displayName = `WithDataFetching(${getDisplayName(
-    Component
-  )})`;
-
-  return props => {
+  const wrapper = props => {
     const [fetchedData, setFetchedData] = useState();
     const [isLoaded, setIsLoaded] = useState(false);
     const [showMore, setShowMore] = useState(false);
@@ -91,6 +87,9 @@ export default function withDataFetching(
       </>
     );
   };
+
+  wrapper.displayName = `WithDataFetching(${getDisplayName(Component)})`;
+  return wrapper;
 }
 
 function getDisplayName(Component) {
