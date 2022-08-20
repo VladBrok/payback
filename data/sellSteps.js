@@ -70,9 +70,9 @@ export const STEP_DATA = [
       <InputForm
         key={3}
         submitButton={<ContinueButton />}
-        min={100}
-        max={100000}
-        initialValue="100"
+        min={props.minPrice}
+        max={props.maxPrice}
+        initialValue={props.minPrice.toString()}
         onSubmit={handle}
         hint={`Service charges are ${props.serviceChargesPercent}%`}
         input={props => (
