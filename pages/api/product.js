@@ -6,7 +6,7 @@ import {
   PRODUCT_PAGE_SIZE,
 } from "lib/sharedConstants";
 import { processOrder } from "lib/payment/server";
-import { handle } from "lib/api/server";
+import { handle, withPagination } from "lib/api/server";
 import { postBlob } from "lib/api/client";
 import { enrichUser } from "lib/db/enrichUser";
 import { transaction } from "lib/db/transaction";
@@ -41,23 +41,20 @@ async function handlePost(req, res, session) {
 
   async function getProducts() {
     const pageCursor = req.query.pageCursor;
-    const products = await prisma.product.findMany({
-      where: pageCursor
-        ? { AND: [data.filter, { id: { lt: +pageCursor } }] }
-        : data.filter,
-      include: { category: true },
-      take: PRODUCT_PAGE_SIZE + 1,
-      orderBy: { id: "desc" },
-    });
 
-    const newCursor =
-      products.length >= PRODUCT_PAGE_SIZE + 1 ? products.at(-2).id : undefined;
-    const pageData =
-      products.length >= PRODUCT_PAGE_SIZE + 1
-        ? products.slice(0, -1)
-        : products;
+    const result = await withPagination(
+      prisma.product.findMany,
+      {
+        where: pageCursor
+          ? { AND: [data.filter, { id: { lt: +pageCursor } }] }
+          : data.filter,
+        include: { category: true },
+        orderBy: { id: "desc" },
+      },
+      PRODUCT_PAGE_SIZE
+    );
 
-    res.status(200).json({ pageData, pageCursor: newCursor });
+    res.status(200).json(result);
   }
 
   async function createProduct() {

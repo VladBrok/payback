@@ -1,7 +1,7 @@
 import prisma from "lib/db/prisma";
 import { createReview } from "lib/db/createReview";
 import { REVIEW_PAGE_SIZE } from "lib/sharedConstants";
-import { handle } from "lib/api/server";
+import { handle, withPagination } from "lib/api/server";
 
 export default async function handler(req, res) {
   await handle(req, res, {
@@ -15,19 +15,19 @@ async function handleGet(req, res) {
   const pageCursor = req.query.pageCursor;
   const filter = { product: { userId } };
 
-  const reviews = await prisma.review.findMany({
-    where: pageCursor ? { AND: [filter, { id: { lt: +pageCursor } }] } : filter,
-    include: { buyer: true, product: true },
-    take: REVIEW_PAGE_SIZE + 1,
-    orderBy: { id: "desc" },
-  });
+  const result = await withPagination(
+    prisma.review.findMany,
+    {
+      where: pageCursor
+        ? { AND: [filter, { id: { lt: +pageCursor } }] }
+        : filter,
+      include: { buyer: true, product: true },
+      orderBy: { id: "desc" },
+    },
+    REVIEW_PAGE_SIZE
+  );
 
-  const newCursor =
-    reviews.length >= REVIEW_PAGE_SIZE + 1 ? reviews.at(-2).id : undefined;
-  const pageData =
-    reviews.length >= REVIEW_PAGE_SIZE + 1 ? reviews.slice(0, -1) : reviews;
-
-  res.status(200).json({ pageData, pageCursor: newCursor });
+  res.status(200).json(result);
 }
 
 async function handlePost(req, res) {
