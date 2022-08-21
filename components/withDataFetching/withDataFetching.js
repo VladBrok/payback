@@ -22,10 +22,10 @@ export default function withDataFetching(
 
     const fetchDeps = getFetchDeps(props);
     const pageCursor = showMore ? curPageCursor : prevPageCursor;
+    const renderShowMore =
+      !showMore && fetchedData != undefined && curPageCursor != "";
 
     useEffect(() => {
-      console.log("fetching with cursor:", pageCursor);
-
       fetchCallback(fetchDeps, customState, pageCursor)
         .then(result => {
           if (result.pageData) {
@@ -75,11 +75,11 @@ export default function withDataFetching(
     );
 
     return (
-      <div className={styles.container}>
+      <>
         {renderAtTop && wrappedComponent}
 
         {showMore && <Loading />}
-        {!showMore && fetchedData != undefined && curPageCursor != "" && (
+        {renderShowMore && (
           <div className={styles["button-wrapper"]}>
             <button
               type="button"
@@ -92,7 +92,7 @@ export default function withDataFetching(
         )}
 
         {!renderAtTop && wrappedComponent}
-      </div>
+      </>
     );
   };
 
