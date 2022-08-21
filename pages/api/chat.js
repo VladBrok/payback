@@ -18,7 +18,9 @@ async function handleGet(_, res, session) {
     where: { users: { some: { userId } } },
     select: {
       id: true,
-      messages: true,
+      messages: {
+        where: { AND: [{ wasRead: false }, { NOT: { userId } }] },
+      },
       users: {
         where: { NOT: { userId } },
         select: {
@@ -31,9 +33,7 @@ async function handleGet(_, res, session) {
   res.status(200).json(
     chats.map(c => ({
       id: c.id,
-      messages: c.messages,
-      newMessageCount: c.messages.filter(m => !m.wasRead && m.userId != userId)
-        .length,
+      newMessageCount: c.messages.length,
       isVerified: c.users[0].user.isVerified,
       image: c.users[0].user.image,
       name: c.users[0].user.name,

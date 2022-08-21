@@ -3,18 +3,14 @@ import Subpage from "components/Subpage";
 import Chat from "components/Chat";
 import LinkToChat from "components/LinkToChat";
 import withDataFetching from "components/withDataFetching";
-import { isScrolledToBottom, scrollToBottom } from "lib/document";
-import { CHANNELS } from "lib/chat/constants";
-import { get, put } from "lib/api/client";
+import { get } from "lib/api/client";
 import Head from "next/head";
 import Error from "next/error";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { flushSync } from "react-dom";
 
 function ChatsPage({ fetchedData: chats, setFetchedData: setChats }) {
-  const [shouldScrollToBottom, setShouldScrollToBottom] = useState(true);
   const [chatConnector, setChatConnector] = useState({});
   const router = useRouter();
   const chatId = router.query?.id;
@@ -26,68 +22,32 @@ function ChatsPage({ fetchedData: chats, setFetchedData: setChats }) {
   useEffect(() => {
     // This module needs window object in order to work
     // so it can't be placed at the top with other modules
-    import("lib/chat/client").then(({ connect }) => {
-      setChatConnector({ connect });
+    import("lib/chat/client").then(module => {
+      setChatConnector(module);
     });
   }, []);
 
   useEffect(() => {
-    function handleMessage(message) {
-      setShouldScrollToBottom(
-        chatId != null && (message.userId == userId || isScrolledToBottom())
-      );
-
-      setChats(cur =>
-        cur?.map(c => {
-          if (c.id == message.chatId) {
-            return { ...c, messages: [...c.messages, message] };
-          }
-          return c;
-        })
-      );
-    }
-
     function handleChat(chat) {
       setChats(cur => (cur ? [...cur, chat] : [chat]));
     }
 
-    return chatConnector.connect?.(chats, userId, handleMessage, handleChat);
-  }, [userId, chatId, chats, chatConnector]);
-
-  useEffect(() => {
-    setShouldScrollToBottom(chatId != null);
-  }, [chatId]);
-
-  useEffect(() => {
-    if (shouldScrollToBottom) {
-      scrollToBottom();
-    }
-  }, [chats, shouldScrollToBottom]);
+    return chatConnector.connectToChats?.(userId, handleChat);
+  }, [userId, chatConnector]);
 
   function handleMessageInsideBounds(message) {
-    if (message.userId == userId || message.wasRead) {
-      return;
-    }
+    setChats(cur =>
+      cur.map(c => {
+        if (message.chatId == c.id) {
+          return {
+            ...c,
+            newMessageCount: c.newMessageCount - 1,
+          };
+        }
 
-    flushSync(() => {
-      setChats(
-        chats?.map(chat => {
-          if (chat.id == message.chatId) {
-            return {
-              ...chat,
-              messages: chat.messages.map(m =>
-                m.id == message.id ? { ...message, wasRead: true } : m
-              ),
-              newMessageCount: chat.newMessageCount - 1,
-            };
-          }
-
-          return chat;
-        })
-      );
-    });
-
-    put(`/api/message?id=${message.id}`, { wasRead: true });
+        return c;
+      })
+    );
   }
 
   let content = "";
@@ -107,9 +67,8 @@ function ChatsPage({ fetchedData: chats, setFetchedData: setChats }) {
       <Subpage title={chat.name}>
         <Chat
           userId={userId}
-          messages={chat.messages}
           chatId={chatId}
-          channelName={`${CHANNELS.ENCRYPTED_BASE}${chatId}`}
+          chatConnector={chatConnector}
           onMessageInsideBounds={handleMessageInsideBounds}
         />
       </Subpage>
