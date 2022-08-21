@@ -92,6 +92,7 @@ export const STEP_DATA = [
           description="Your product will be displayed on the main page"
           Icon={PremiumIcon}
           onClick={() => handle(true)}
+          buyable={true}
         >
           Select for {formatMoney(props.premiumCost)}
         </ProductStatus>
