@@ -29,6 +29,7 @@ async function handleGet(req, res) {
 
   res.status(200).json(result);
 }
+handleGet.allowUnauthorized = true;
 
 async function handlePost(req, res) {
   const data = req.body;
