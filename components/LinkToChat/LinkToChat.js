@@ -3,14 +3,8 @@ import User from "components/User";
 import NewMessages from "components/NewMessages";
 import Link from "next/link";
 import { FcApproval } from "react-icons/fc";
-import { useMemo } from "react";
 
-export default function LinkToChat({ chat, userId }) {
-  const newMessageCount = useMemo(
-    () => chat.messages.filter(m => !m.wasRead && m.userId != userId).length,
-    [chat.messages, userId]
-  );
-
+export default function LinkToChat({ chat }) {
   return (
     <Link href={`/chats?id=${chat.id}`} shallow>
       <a className={styles.container}>
@@ -19,7 +13,7 @@ export default function LinkToChat({ chat, userId }) {
             <span className={styles.username}>
               {chat.name}{" "}
               {chat.isVerified && <FcApproval className={styles.icon} />}{" "}
-              <NewMessages count={newMessageCount} />
+              <NewMessages count={chat.newMessageCount} />
             </span>
           }
           imageUrl={chat.image}

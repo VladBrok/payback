@@ -32,6 +32,8 @@ async function handleGet(_, res, session) {
     chats.map(c => ({
       id: c.id,
       messages: c.messages,
+      newMessageCount: c.messages.filter(m => !m.wasRead && m.userId != userId)
+        .length,
       isVerified: c.users[0].user.isVerified,
       image: c.users[0].user.image,
       name: c.users[0].user.name,

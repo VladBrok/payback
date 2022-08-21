@@ -78,6 +78,7 @@ function ChatsPage({ fetchedData: chats, setFetchedData: setChats }) {
               messages: chat.messages.map(m =>
                 m.id == message.id ? { ...message, wasRead: true } : m
               ),
+              newMessageCount: chat.newMessageCount - 1,
             };
           }
 
@@ -85,13 +86,14 @@ function ChatsPage({ fetchedData: chats, setFetchedData: setChats }) {
         })
       );
     });
+
     put(`/api/message?id=${message.id}`, { wasRead: true });
   }
 
   let content = "";
   if (chatId == null) {
     const chatList = chats?.map(chat => (
-      <li key={chat.id}>{<LinkToChat chat={chat} userId={userId} />}</li>
+      <li key={chat.id}>{<LinkToChat chat={chat} />}</li>
     ));
     content = (
       <>
