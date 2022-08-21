@@ -10,7 +10,11 @@ import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
-function ChatsPage({ fetchedData: chats, setFetchedData: setChats }) {
+function ChatsPage({
+  fetchedData: chats,
+  setFetchedData: setChats,
+  setDisplayShowMoreButton,
+}) {
   const [chatConnector, setChatConnector] = useState({});
   const router = useRouter();
   const chatId = router.query?.id;
@@ -34,6 +38,10 @@ function ChatsPage({ fetchedData: chats, setFetchedData: setChats }) {
 
     return chatConnector.connectToChats?.(userId, handleChat);
   }, [userId, chatConnector]);
+
+  useEffect(() => {
+    setDisplayShowMoreButton(chatId == null);
+  }, [chatId]);
 
   function handleMessageInsideBounds(message) {
     setChats(cur =>
