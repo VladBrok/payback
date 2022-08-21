@@ -45,9 +45,10 @@ async function handlePost(req, res, session) {
     const result = await withPagination(
       prisma.product.findMany,
       {
-        where: pageCursor
-          ? { AND: [data.filter, { id: { lt: +pageCursor } }] }
-          : data.filter,
+        where:
+          pageCursor != ""
+            ? { AND: [data.filter, { id: { lt: +pageCursor } }] }
+            : data.filter,
         include: { category: true },
         orderBy: { id: "desc" },
       },
