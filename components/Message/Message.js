@@ -1,16 +1,19 @@
 import styles from "./Message.module.scss";
 import { formatDistanceToNow } from "lib/date";
 import { checkIfInsideBounds } from "lib/document";
-import { useEffect, useRef } from "react";
+import { forwardRef, useEffect, useRef } from "react";
 
-export default function Message({
-  message,
-  userId,
-  topBound,
-  bottomBound,
-  onInsideBounds,
-}) {
+function Message(
+  { message, userId, topBound, bottomBound, onInsideBounds },
+  ref
+) {
   const elementRef = useRef();
+
+  useEffect(() => {
+    if (ref) {
+      ref.current = elementRef.current;
+    }
+  });
 
   useEffect(() => {
     function handleScroll() {
@@ -42,3 +45,5 @@ export default function Message({
     </li>
   );
 }
+
+export default forwardRef(Message);

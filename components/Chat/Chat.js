@@ -17,9 +17,14 @@ function Chat({
   fetchedData: messages,
   setFetchedData: setMessages,
 }) {
-  const inputRef = useRef();
   const [bottomBound, setBottomBound] = useState();
   const [shouldScrollToBottom, setShouldScrollToBottom] = useState(true);
+  const inputRef = useRef();
+  const topmostMessageRef = useRef();
+  const prevTopmostMessageRef = useRef();
+
+  prevTopmostMessageRef.current = topmostMessageRef.current;
+  const prevOffsetTop = topmostMessageRef.current?.getBoundingClientRect().top;
 
   useEffect(() => {
     function handleMessage(message) {
@@ -40,6 +45,28 @@ function Chat({
   useEffect(() => {
     setBottomBound(inputRef.current?.getBoundingClientRect().top);
   }, []);
+
+  useEffect(() => {
+    function restoreScrollPosition() {
+      document.documentElement.scrollTop =
+        prevTopmostMessageRef.current.offsetTop - prevOffsetTop;
+    }
+
+    const isLoadedNewPage =
+      prevTopmostMessageRef.current &&
+      topmostMessageRef.current &&
+      prevTopmostMessageRef.current !== topmostMessageRef.current;
+
+    if (isLoadedNewPage) {
+      restoreScrollPosition();
+    }
+  }, [
+    messages,
+    bottomBound,
+    topmostMessageRef,
+    prevTopmostMessageRef,
+    prevOffsetTop,
+  ]);
 
   useEffect(focusOnInput, []);
 
@@ -83,7 +110,7 @@ function Chat({
 
   const messagesList = bottomBound
     ? messages
-        ?.map(m => (
+        ?.map((m, _, messages) => (
           <Message
             key={m.id}
             message={m}
@@ -91,6 +118,7 @@ function Chat({
             topBound={0}
             bottomBound={bottomBound}
             onInsideBounds={() => handleMessageInsideBounds(m)}
+            ref={m === messages.at(-1) ? topmostMessageRef : undefined}
           />
         ))
         .reverse()
