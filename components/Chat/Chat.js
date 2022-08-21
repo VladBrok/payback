@@ -24,17 +24,18 @@ function Chat({
   useEffect(() => {
     function handleMessage(message) {
       setShouldScrollToBottom(message.userId == userId || isScrolledToBottom());
-      setMessages(cur => (cur ? [...cur, message] : [message]));
+      setMessages(cur => (cur ? [message, ...cur] : [message]));
     }
 
     return chatConnector.connectToMessages?.(chatId, handleMessage);
   }, [chatId, userId, chatConnector]);
 
   useEffect(() => {
-    if (shouldScrollToBottom) {
+    if (shouldScrollToBottom && bottomBound != null) {
       scrollToBottom();
+      setShouldScrollToBottom(false);
     }
-  }, [messages, shouldScrollToBottom]);
+  }, [messages, bottomBound, shouldScrollToBottom]);
 
   useEffect(() => {
     setBottomBound(inputRef.current?.getBoundingClientRect().top);
@@ -81,16 +82,18 @@ function Chat({
   }
 
   const messagesList = bottomBound
-    ? messages?.map(m => (
-        <Message
-          key={m.id}
-          message={m}
-          userId={userId}
-          topBound={0}
-          bottomBound={bottomBound}
-          onInsideBounds={() => handleMessageInsideBounds(m)}
-        />
-      ))
+    ? messages
+        ?.map(m => (
+          <Message
+            key={m.id}
+            message={m}
+            userId={userId}
+            topBound={0}
+            bottomBound={bottomBound}
+            onInsideBounds={() => handleMessageInsideBounds(m)}
+          />
+        ))
+        .reverse()
     : null;
 
   return (
@@ -115,7 +118,10 @@ function Chat({
 
 export default withDataFetching(
   Chat,
-  ({ chatId }) => get(`/api/message?chatId=${chatId}`),
+  ({ chatId }, _, pageCursor) =>
+    get(`/api/message?chatId=${chatId}&pageCursor=${pageCursor}`),
   props => ({ chatId: props.chatId }),
-  true
+  true,
+  undefined,
+  false
 );

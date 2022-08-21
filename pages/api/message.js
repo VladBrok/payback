@@ -1,7 +1,8 @@
 import { pusher } from "lib/chat/server";
 import { EVENTS, CHANNELS } from "lib/chat/constants";
 import prisma from "lib/db/prisma";
-import { handle } from "lib/api/server";
+import { handle, withPagination } from "lib/api/server";
+import { MESSAGE_PAGE_SIZE } from "lib/sharedConstants";
 
 export default async function handler(req, res) {
   await handle(req, res, {
@@ -13,8 +14,18 @@ export default async function handler(req, res) {
 
 async function handleGet(req, res) {
   const chatId = req.query.chatId;
-  const messages = await prisma.message.findMany({ where: { chatId } });
-  res.status(200).json(messages);
+  const pageCursor = req.query.pageCursor;
+  const result = await withPagination(
+    prisma.message.findMany,
+    {
+      where: pageCursor
+        ? { AND: [{ chatId }, { id: { lt: +pageCursor } }] }
+        : { chatId },
+      orderBy: { id: "desc" },
+    },
+    MESSAGE_PAGE_SIZE
+  );
+  res.status(200).json(result);
 }
 
 async function handlePost(req, res, session) {

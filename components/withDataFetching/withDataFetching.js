@@ -9,7 +9,8 @@ export default function withDataFetching(
   fetchCallback,
   getFetchDeps,
   renderIfFailedToFetch = false,
-  customStateInit = undefined
+  customStateInit = undefined,
+  renderAtTop = true
 ) {
   const Wrapper = props => {
     const [fetchedData, setFetchedData] = useState();
@@ -63,15 +64,20 @@ export default function withDataFetching(
       return;
     }
 
+    const wrappedComponent = (
+      <Component
+        {...props}
+        fetchedData={fetchedData}
+        setFetchedData={setFetchedData}
+        customState={customState}
+        setCustomState={setCustomState}
+      />
+    );
+
     return (
-      <>
-        <Component
-          {...props}
-          fetchedData={fetchedData}
-          setFetchedData={setFetchedData}
-          customState={customState}
-          setCustomState={setCustomState}
-        />
+      <div className={styles.container}>
+        {renderAtTop && wrappedComponent}
+
         {showMore && <Loading />}
         {!showMore && fetchedData != undefined && curPageCursor != "" && (
           <div className={styles["button-wrapper"]}>
@@ -84,7 +90,9 @@ export default function withDataFetching(
             </button>
           </div>
         )}
-      </>
+
+        {!renderAtTop && wrappedComponent}
+      </div>
     );
   };
 
