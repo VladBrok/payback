@@ -90,7 +90,7 @@ function ChatsPage({ fetchedData: chats, setFetchedData: setChats }) {
 ChatsPage.auth = true;
 const hoc = withDataFetching(
   ChatsPage,
-  () => get("/api/chat"),
+  (_x, _y, pageCursor) => get(`/api/chat?pageCursor=${pageCursor}`),
   () => ({}),
   true
 );

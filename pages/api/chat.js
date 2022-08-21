@@ -3,7 +3,8 @@ import { getUserIdsFromChatId } from "lib/chat/chatId";
 import { EVENTS, CHANNELS } from "lib/chat/constants";
 import prisma from "lib/db/prisma";
 import { transaction } from "lib/db/transaction";
-import { handle } from "lib/api/server";
+import { withPagination, handle } from "lib/api/server";
+import { CHAT_PAGE_SIZE } from "lib/sharedConstants";
 
 export default async function handler(req, res) {
   await handle(req, res, {
@@ -12,33 +13,42 @@ export default async function handler(req, res) {
   });
 }
 
-async function handleGet(_, res, session) {
+async function handleGet(req, res, session) {
   const userId = +session.user.id;
-  const chats = await prisma.chat.findMany({
-    where: { users: { some: { userId } } },
-    select: {
-      id: true,
-      messages: {
-        where: { AND: [{ wasRead: false }, { NOT: { userId } }] },
-      },
-      users: {
-        where: { NOT: { userId } },
-        select: {
-          user: { select: { image: true, name: true, isVerified: true } },
+  const pageCursor = req.query.pageCursor;
+  const filter = { users: { some: { userId } } };
+
+  const result = await withPagination(
+    prisma.chat.findMany,
+    {
+      where: pageCursor
+        ? { AND: [filter, { id: { gt: pageCursor } }] }
+        : filter,
+      orderBy: { id: "asc" },
+      select: {
+        id: true,
+        messages: {
+          where: { AND: [{ wasRead: false }, { NOT: { userId } }] },
+        },
+        users: {
+          where: { NOT: { userId } },
+          select: {
+            user: { select: { image: true, name: true, isVerified: true } },
+          },
         },
       },
     },
-  });
-
-  res.status(200).json(
-    chats.map(c => ({
-      id: c.id,
-      newMessageCount: c.messages.length,
-      isVerified: c.users[0].user.isVerified,
-      image: c.users[0].user.image,
-      name: c.users[0].user.name,
-    }))
+    CHAT_PAGE_SIZE
   );
+
+  result.pageData = result.pageData.map(chat => ({
+    id: chat.id,
+    newMessageCount: chat.messages.length,
+    isVerified: chat.users[0].user.isVerified,
+    image: chat.users[0].user.image,
+    name: chat.users[0].user.name,
+  }));
+  res.status(200).json(result);
 }
 
 async function handlePost(req, res) {
