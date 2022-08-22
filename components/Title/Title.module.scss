@@ -1,4 +1,4 @@
-@use "styles/mixins.scss" as m;
+@use "styles/mixins" as m;
 
 .container {
   @include m.title-2xl;

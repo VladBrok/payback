@@ -1,4 +1,4 @@
-@use "styles/breakpoints.scss" as b;
+@use "styles/breakpoints" as b;
 
 $p: 1.7rem;
 $p-big: calc(var(--menu-size) + $p);

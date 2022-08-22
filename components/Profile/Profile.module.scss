@@ -1,5 +1,5 @@
-@use "styles/mixins.scss" as m;
-@use "styles/breakpoints.scss" as b;
+@use "styles/mixins" as m;
+@use "styles/breakpoints" as b;
 
 .title {
   @include m.title-2xl;
