@@ -29,6 +29,7 @@ export default function MyApp({ Component: Page, pageProps }) {
 
   useEffect(() => {
     function handleError(e) {
+      e.preventDefault();
       const isCustom = e.reason.name === "PaybackError";
       const message = isCustom ? e.reason.message : "Please try again later";
       const title = isCustom ? "Error" : "Failed to load data";
