@@ -52,10 +52,15 @@ async function handleGet(req, res, session) {
 }
 
 async function handlePost(req, res) {
-  // todo: prevent from creating chat with yourself
   const chatId = req.body.chatId;
-  const userIds = getUserIdsFromChatId(chatId).map(x => ({ userId: +x }));
+  const ids = getUserIdsFromChatId(chatId);
+  const uniqueIds = new Set(ids);
 
+  if (ids.length !== uniqueIds.size) {
+    throw new Error("Chat cannot contain duplicate users");
+  }
+
+  const userIds = ids.map(x => ({ userId: +x }));
   const chat = await transaction(prisma, async prisma => {
     if ((await prisma.chat.count({ where: { id: chatId } })) === 0) {
       const chat = await prisma.chat.create({
