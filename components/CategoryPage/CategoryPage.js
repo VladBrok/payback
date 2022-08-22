@@ -6,18 +6,30 @@ import withDataFetching from "components/withDataFetching";
 import { get } from "lib/api/client";
 import { byCategoryAndPrice } from "lib/db/productFilters";
 import Head from "next/head";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function CategoryPage({ fetchedData: category }) {
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
+  const [reset, setReset] = useState(false);
+
+  useEffect(() => {
+    if (reset) {
+      setReset(false);
+    }
+  }, [reset]);
 
   function handleMinPriceChange(e) {
-    setMinPrice(extractValue(e));
+    handlePriceChange(setMinPrice, e);
   }
 
   function handleMaxPriceChange(e) {
-    setMaxPrice(extractValue(e));
+    handlePriceChange(setMaxPrice, e);
+  }
+
+  function handlePriceChange(setter, e) {
+    setter(e.target.value);
+    setReset(true);
   }
 
   return (
@@ -36,14 +48,11 @@ function CategoryPage({ fetchedData: category }) {
         <ProductList
           filter={byCategoryAndPrice(category.name, minPrice, maxPrice)}
           includeCategory={false}
+          reset={reset}
         />
       </Subpage>
     </>
   );
-}
-
-function extractValue(e) {
-  return e.target.value;
 }
 
 export default withDataFetching(

@@ -16,23 +16,30 @@ export default function withDataFetching(
     const [fetchedData, setFetchedData] = useState();
     const [isLoaded, setIsLoaded] = useState(false);
     const [showMore, setShowMore] = useState(false);
-    const [displayShowMoreButton, setDisplayShowMoreButton] = useState(true)
+    const [displayShowMoreButton, setDisplayShowMoreButton] = useState(true);
     const [curPageCursor, setCurPageCursor] = useState("");
     const [prevPageCursor, setPrevPageCursor] = useState("");
     const [customState, setCustomState] = useState(customStateInit);
 
     const fetchDeps = getFetchDeps(props);
-    const pageCursor = showMore ? curPageCursor : prevPageCursor;
+    const pageCursor = props.reset
+      ? ""
+      : showMore
+      ? curPageCursor
+      : prevPageCursor;
     const renderShowMore =
-      !showMore && fetchedData != undefined && curPageCursor != "" && displayShowMoreButton;
+      !showMore &&
+      fetchedData != undefined &&
+      curPageCursor != "" &&
+      displayShowMoreButton;
 
     useEffect(() => {
       fetchCallback(fetchDeps, customState, pageCursor)
         .then(result => {
           if (result.pageData) {
-            setFetchedData(
-              fetchedData
-                ? uniqueById([...fetchedData, ...result.pageData])
+            setFetchedData(cur =>
+              cur && !props.reset
+                ? uniqueById([...cur, ...result.pageData])
                 : result.pageData
             );
           } else {
@@ -45,13 +52,20 @@ export default function withDataFetching(
           setIsLoaded(true);
           setShowMore(false);
         });
-    }, [...Object.values(fetchDeps), customState, pageCursor]);
+    }, [...Object.values(fetchDeps), customState, props.reset, pageCursor]);
 
     useEffect(() => {
       if (showMore) {
         setPrevPageCursor(pageCursor);
       }
     }, [showMore, pageCursor]);
+
+    useEffect(() => {
+      if (props.reset) {
+        setPrevPageCursor("");
+        setCurPageCursor("");
+      }
+    }, [props.reset]);
 
     function handleShowMoreClick() {
       setShowMore(true);
