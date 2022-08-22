@@ -5,6 +5,7 @@ import withDataFetching from "components/withDataFetching";
 import { PaybackError } from "lib/errors";
 import { get, post, put } from "lib/api/client";
 import { isScrolledToBottom, scrollToBottom } from "lib/document";
+import useChatConnector from "hooks/useChatConnector";
 import { RiSendPlaneFill } from "react-icons/ri";
 import { useEffect, useRef, useState } from "react";
 import { flushSync } from "react-dom";
@@ -13,12 +14,12 @@ function Chat({
   userId,
   chatId,
   onMessageInsideBounds,
-  chatConnector = undefined,
   fetchedData: messages,
   setFetchedData: setMessages,
 }) {
   const [bottomBound, setBottomBound] = useState();
   const [shouldScrollToBottom, setShouldScrollToBottom] = useState(true);
+  const chatConnector = useChatConnector();
   const inputRef = useRef();
   const topmostMessageRef = useRef();
   const prevTopmostMessageRef = useRef();
@@ -32,7 +33,7 @@ function Chat({
       setMessages(cur => (cur ? [message, ...cur] : [message]));
     }
 
-    return chatConnector.connectToMessages?.(chatId, handleMessage);
+    return chatConnector?.connectToMessages(chatId, handleMessage);
   }, [chatId, userId, chatConnector]);
 
   useEffect(() => {

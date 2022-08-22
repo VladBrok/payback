@@ -4,18 +4,19 @@ import Chat from "components/Chat";
 import LinkToChat from "components/LinkToChat";
 import withDataFetching from "components/withDataFetching";
 import { get } from "lib/api/client";
+import useChatConnector from "hooks/useChatConnector";
 import Head from "next/head";
 import Error from "next/error";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 function ChatsPage({
   fetchedData: chats,
   setFetchedData: setChats,
   setDisplayShowMoreButton,
 }) {
-  const [chatConnector, setChatConnector] = useState({});
+  const chatConnector = useChatConnector();
   const router = useRouter();
   const chatId = router.query?.id;
   const {
@@ -24,19 +25,11 @@ function ChatsPage({
   const userId = user.id;
 
   useEffect(() => {
-    // This module needs window object in order to work
-    // so it can't be placed at the top with other modules
-    import("lib/chat/client").then(module => {
-      setChatConnector(module);
-    });
-  }, []);
-
-  useEffect(() => {
     function handleChat(chat) {
       setChats(cur => (cur ? [...cur, chat] : [chat]));
     }
 
-    return chatConnector.connectToChats?.(userId, handleChat);
+    return chatConnector?.connectToChats(userId, handleChat);
   }, [userId, chatConnector]);
 
   useEffect(() => {
@@ -76,7 +69,6 @@ function ChatsPage({
         <Chat
           userId={userId}
           chatId={chatId}
-          chatConnector={chatConnector}
           onMessageInsideBounds={handleMessageInsideBounds}
         />
       </Subpage>
