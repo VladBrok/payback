@@ -13,7 +13,6 @@ import { flushSync } from "react-dom";
 function Chat({
   userId,
   chatId,
-  onMessageInsideBounds,
   fetchedData: messages,
   setFetchedData: setMessages,
 }) {
@@ -97,7 +96,6 @@ function Chat({
       return;
     }
 
-    onMessageInsideBounds(message);
     flushSync(() => {
       setMessages(
         messages.map(m =>

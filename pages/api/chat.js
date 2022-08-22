@@ -15,6 +15,28 @@ export default async function handler(req, res) {
 
 async function handleGet(req, res, session) {
   const userId = +session.user.id;
+  const id = req.query.id;
+
+  if (id) {
+    const chat = await prisma.chat.findFirst({
+      where: { id },
+      include: {
+        users: {
+          where: { NOT: { userId } },
+          select: {
+            user: { select: { image: true, name: true, isVerified: true } },
+          },
+        },
+      },
+    });
+    if (!chat) {
+      res.status(404).end();
+    } else {
+      res.status(200).json(mapChat(chat));
+    }
+    return;
+  }
+
   const pageCursor = req.query.pageCursor;
   const filter = { users: { some: { userId } } };
 
@@ -41,14 +63,18 @@ async function handleGet(req, res, session) {
     CHAT_PAGE_SIZE
   );
 
-  result.pageData = result.pageData.map(chat => ({
+  result.pageData = result.pageData.map(mapChat);
+  res.status(200).json(result);
+}
+
+function mapChat(chat) {
+  return {
     id: chat.id,
-    newMessageCount: chat.messages.length,
+    newMessageCount: chat.messages?.length,
     isVerified: chat.users[0].user.isVerified,
     image: chat.users[0].user.image,
     name: chat.users[0].user.name,
-  }));
-  res.status(200).json(result);
+  };
 }
 
 async function handlePost(req, res) {

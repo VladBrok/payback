@@ -18,7 +18,6 @@ export default function withDataFetching(
     const [isLoaded, setIsLoaded] = useState(false);
     const [notFound, setNotFound] = useState(false);
     const [showMore, setShowMore] = useState(false);
-    const [displayShowMoreButton, setDisplayShowMoreButton] = useState(true);
     const [curPageCursor, setCurPageCursor] = useState("");
     const [prevPageCursor, setPrevPageCursor] = useState("");
     const [customState, setCustomState] = useState(customStateInit);
@@ -30,10 +29,7 @@ export default function withDataFetching(
       ? curPageCursor
       : prevPageCursor;
     const renderShowMore =
-      !showMore &&
-      fetchedData != undefined &&
-      curPageCursor != "" &&
-      displayShowMoreButton;
+      !showMore && fetchedData != undefined && curPageCursor != "";
 
     useEffect(() => {
       fetchCallback(fetchDeps, customState, pageCursor)
@@ -99,7 +95,6 @@ export default function withDataFetching(
         setFetchedData={setFetchedData}
         customState={customState}
         setCustomState={setCustomState}
-        setDisplayShowMoreButton={setDisplayShowMoreButton}
       />
     );
 

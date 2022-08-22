@@ -6,7 +6,7 @@ import { FcApproval } from "react-icons/fc";
 
 export default function LinkToChat({ chat }) {
   return (
-    <Link href={`/chats?id=${chat.id}`} shallow>
+    <Link href={`/chats/${chat.id}`}>
       <a className={styles.container}>
         <User
           name={

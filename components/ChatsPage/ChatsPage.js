@@ -1,24 +1,14 @@
 import styles from "./ChatsPage.module.scss";
-import Subpage from "components/Subpage";
-import Chat from "components/Chat";
 import LinkToChat from "components/LinkToChat";
 import withDataFetching from "components/withDataFetching";
 import { get } from "lib/api/client";
 import useChatConnector from "hooks/useChatConnector";
 import Head from "next/head";
-import Error from "next/error";
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 
-function ChatsPage({
-  fetchedData: chats,
-  setFetchedData: setChats,
-  setDisplayShowMoreButton,
-}) {
+function ChatsPage({ fetchedData: chats, setFetchedData: setChats }) {
   const chatConnector = useChatConnector();
-  const router = useRouter();
-  const chatId = router.query?.id;
   const {
     data: { user },
   } = useSession();
@@ -32,57 +22,17 @@ function ChatsPage({
     return chatConnector?.connectToChats(userId, handleChat);
   }, [userId, chatConnector]);
 
-  useEffect(() => {
-    setDisplayShowMoreButton(chatId == null);
-  }, [chatId]);
-
-  function handleMessageInsideBounds(message) {
-    setChats(cur =>
-      cur.map(c => {
-        if (message.chatId == c.id) {
-          return {
-            ...c,
-            newMessageCount: c.newMessageCount - 1,
-          };
-        }
-
-        return c;
-      })
-    );
-  }
-
-  let content = "";
-  if (chatId == null) {
-    const chatList = chats?.map(chat => (
-      <li key={chat.id}>{<LinkToChat chat={chat} />}</li>
-    ));
-    content = (
-      <>
-        <h1 className={styles.title}>Chats</h1>
-        <ul className={styles.list}>{chatList}</ul>
-      </>
-    );
-  } else {
-    const chat = chats?.find(c => c.id == chatId);
-    content = chat ? (
-      <Subpage title={chat.name}>
-        <Chat
-          userId={userId}
-          chatId={chatId}
-          onMessageInsideBounds={handleMessageInsideBounds}
-        />
-      </Subpage>
-    ) : (
-      <Error statusCode={404} />
-    );
-  }
+  const chatList = chats?.map(chat => (
+    <li key={chat.id}>{<LinkToChat chat={chat} />}</li>
+  ));
 
   return (
     <>
       <Head>
         <title>Chats</title>
       </Head>
-      {content}
+      <h1 className={styles.title}>Chats</h1>
+      <ul className={styles.list}>{chatList}</ul>
     </>
   );
 }

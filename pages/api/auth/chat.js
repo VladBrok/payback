@@ -8,6 +8,7 @@ export default async function handler(req, res) {
 }
 
 function handlePost(req, res, session) {
+  // todo: check if user can access that particular chat
   const { socket_id: socketId, channel_name: channel } = req.body;
   const auth = pusher.authenticate(socketId, channel, {
     user_id: session.user.id,
