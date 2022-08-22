@@ -1,7 +1,17 @@
-@use "styles/colors.scss" as c;
-@use "styles/mixins.scss" as m;
+@use "styles/colors" as c;
+@use "styles/mixins" as m;
 
 $button-padding: 0.8rem;
+
+@mixin button-states {
+  &:not(:disabled):hover {
+    filter: brightness(110%);
+  }
+
+  &:not(:disabled):active {
+    filter: brightness(95%);
+  }
+}
 
 @mixin button {
   padding: $button-padding calc($button-padding + 0.3rem);
@@ -10,6 +20,7 @@ $button-padding: 0.8rem;
 
 @mixin button-primary {
   @include button;
+  @include button-states;
   display: block;
   width: 100%;
   margin-top: 1.5rem;
@@ -39,6 +50,7 @@ $button-padding: 0.8rem;
 }
 
 .button-tertiary {
+  @include button-states;
   color: c.$highlight;
 }
 

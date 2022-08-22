@@ -54,6 +54,10 @@ button:not(:disabled):hover {
   cursor: pointer;
 }
 
+button:disabled {
+  opacity: 0.7;
+}
+
 textarea {
   font: inherit;
 }
