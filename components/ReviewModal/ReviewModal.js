@@ -37,6 +37,7 @@ export default function ReviewModal({ isOpen, close, productId, buyerId }) {
         />
       </div>
       <div className={styles["form-container"]}>
+        {/* todo: disable button when clicked */}
         <InputForm
           max={300}
           onSubmit={handleSubmit}

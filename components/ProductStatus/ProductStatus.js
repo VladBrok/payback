@@ -16,6 +16,7 @@ export default function ProductStatus({
       <h2 className={styles.title}>{name}</h2>
       <p>{description}</p>
       {buyable && <TestPaymentNotice />}
+      {/* todo: disable when clicked */}
       <button
         type="button"
         className={utilStyles["button-primary"]}

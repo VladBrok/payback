@@ -135,6 +135,7 @@ function Chat({
           name="message"
           ref={inputRef}
         />
+        {/* todo: disable when clicked */}
         <button className={styles.send} aria-label="send message">
           <RiSendPlaneFill />
         </button>
