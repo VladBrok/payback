@@ -1,6 +1,6 @@
 import styles from "./ProductList.module.scss";
 import Product from "components/Product";
-import Category from "components/Category";
+import CategoryLink from "components/CategoryLink";
 import Empty from "components/Empty";
 import { post } from "lib/api/client";
 import { FcInTransit } from "react-icons/fc";
@@ -17,7 +17,11 @@ function ProductList({
   const productList = products?.map(p => (
     <div key={p.id}>
       {includeCategory && (
-        <Category name={p.category.name} image={p.category.image} />
+        <CategoryLink
+          id={p.category.id}
+          name={p.category.name}
+          image={p.category.image}
+        />
       )}
       <Link href={`/products/${p.id}`}>
         <a>
