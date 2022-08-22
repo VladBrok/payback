@@ -26,6 +26,11 @@ async function handleGet(req, res) {
     include: { category: true, user: true },
   });
 
+  if (!product) {
+    res.status(404).end();
+    return;
+  }
+
   await enrichUser(product.user.id, product.user);
   res.status(200).json(product);
 }

@@ -13,8 +13,13 @@ async function handleGet(req, res) {
   const user = await prisma.user.findFirst({
     where: { id },
   });
-  await enrichUser(id, user);
 
+  if (!user) {
+    res.status(404).end();
+    return;
+  }
+
+  await enrichUser(id, user);
   res.status(200).json(user);
 }
 handleGet.allowUnauthorized = true;

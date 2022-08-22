@@ -2,6 +2,7 @@ import styles from "./withDataFetching.module.scss";
 import utilStyles from "styles/utils.module.scss";
 import Loading from "components/Loading";
 import { uniqueById } from "lib/db/uniqueById";
+import Error from "next/error";
 import { useEffect, useState } from "react";
 
 export default function withDataFetching(
@@ -15,6 +16,7 @@ export default function withDataFetching(
   const Wrapper = props => {
     const [fetchedData, setFetchedData] = useState();
     const [isLoaded, setIsLoaded] = useState(false);
+    const [notFound, setNotFound] = useState(false);
     const [showMore, setShowMore] = useState(false);
     const [displayShowMoreButton, setDisplayShowMoreButton] = useState(true);
     const [curPageCursor, setCurPageCursor] = useState("");
@@ -48,6 +50,13 @@ export default function withDataFetching(
 
           setCurPageCursor(result.pageCursor ?? "");
         })
+        .catch(err => {
+          if (err.message == 404) {
+            setNotFound(true);
+          } else {
+            throw err;
+          }
+        })
         .finally(() => {
           setIsLoaded(true);
           setShowMore(false);
@@ -73,6 +82,10 @@ export default function withDataFetching(
 
     if (!isLoaded) {
       return <Loading />;
+    }
+
+    if (notFound) {
+      return <Error statusCode={404} />;
     }
 
     if (fetchedData == undefined && !renderIfFailedToFetch) {

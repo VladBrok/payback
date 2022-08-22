@@ -13,6 +13,10 @@ async function handleGet(req, res) {
 
   if (id != null) {
     const category = await prisma.category.findFirst({ where: { id } });
+    if (!category) {
+      res.status(404).end();
+      return;
+    }
     res.status(200).json(category);
   } else {
     const args = nameSubstr
