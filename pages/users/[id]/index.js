@@ -1,9 +1,24 @@
+import { getServerSideSessionUser } from "lib/serverSideProps";
+
 export { default } from "components/UserPage";
 
-export function getServerSideProps(context) {
+export async function getServerSideProps(context) {
+  const requestedUserId = +context.query.id;
+  const sessionUser = (await getServerSideSessionUser(context)).props
+    .sessionUser;
+
+  if (sessionUser?.id == requestedUserId) {
+    return {
+      redirect: {
+        destination: "/profile/products",
+        permanent: false,
+      },
+    };
+  }
+
   return {
     props: {
-      id: +context.query.id,
+      id: requestedUserId,
     },
   };
 }
