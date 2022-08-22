@@ -15,7 +15,7 @@ import { useEffect, useState } from "react";
 import { flushSync } from "react-dom";
 
 const progress = new ProgressBar({
-  delay: 100,
+  delay: 500,
 });
 router.events.on("routeChangeStart", progress.start);
 router.events.on("routeChangeComplete", progress.finish);
