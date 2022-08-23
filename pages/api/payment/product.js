@@ -16,6 +16,6 @@ async function handleGet(req, res) {
     throw new Error(`Product with id ${productId} not found.`);
   }
 
-  const order = await createOrder(price);
+  const order = await createOrder(+price);
   res.status(200).json(order);
 }
