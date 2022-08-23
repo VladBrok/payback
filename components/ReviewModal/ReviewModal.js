@@ -4,14 +4,24 @@ import Modal from "components/Modal";
 import InputForm from "components/InputForm";
 import Stars from "components/Stars";
 import { MAX_RATING } from "lib/sharedConstants";
-import { useState } from "react";
 import { post } from "lib/api/client";
+import { PaybackError } from "lib/errors";
+import { useState } from "react";
 
 export default function ReviewModal({ isOpen, close, productId, buyerId }) {
   const [rating, setRating] = useState(MAX_RATING);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   function handleSubmit(text) {
-    post("/api/review", { rating, text, productId, buyerId }).then(close);
+    setIsSubmitting(true);
+    post("/api/review", { rating, text, productId, buyerId })
+      .then(close)
+      .catch(err => {
+        throw new PaybackError("Cannot create a review", err);
+      })
+      .finally(() => {
+        setIsSubmitting(false);
+      });
   }
 
   function handleStarClick(index) {
@@ -37,12 +47,16 @@ export default function ReviewModal({ isOpen, close, productId, buyerId }) {
         />
       </div>
       <div className={styles["form-container"]}>
-        {/* todo: disable button when clicked */}
         <InputForm
           max={300}
           onSubmit={handleSubmit}
           submitButton={
-            <button className={utilStyles["button-primary"]}>Submit</button>
+            <button
+              className={utilStyles["button-primary"]}
+              disabled={isSubmitting}
+            >
+              Submit
+            </button>
           }
           input={props => (
             <textarea

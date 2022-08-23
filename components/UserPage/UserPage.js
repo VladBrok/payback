@@ -15,14 +15,18 @@ import { FcInTransit } from "react-icons/fc";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import { useState } from "react";
 
 function UserPage({ id, fetchedData: user }) {
+  const [isLoadingChat, setIsLoadingChat] = useState(false);
   const session = useSession();
   const router = useRouter();
 
   function handleWriteMessageClick() {
     const authenticatedUserId = session.data.user.id;
     const chatId = makeChatId([authenticatedUserId, id]);
+
+    setIsLoadingChat(true);
     post("/api/chat", { chatId })
       .then(() => {
         router.push(`/chats/${chatId}`);
@@ -32,6 +36,9 @@ function UserPage({ id, fetchedData: user }) {
           `Failed to create or load a chat with ${user.name}`,
           err
         );
+      })
+      .finally(() => {
+        setIsLoadingChat(false);
       });
   }
 
@@ -54,6 +61,7 @@ function UserPage({ id, fetchedData: user }) {
             <AuthButton
               className={utilStyles["button-tertiary"]}
               onClick={handleWriteMessageClick}
+              disabled={isLoadingChat}
             >
               Write a message
             </AuthButton>

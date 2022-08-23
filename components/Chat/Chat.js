@@ -18,6 +18,7 @@ function Chat({
 }) {
   const [bottomBound, setBottomBound] = useState();
   const [shouldScrollToBottom, setShouldScrollToBottom] = useState(true);
+  const [isSending, setIsSending] = useState(false);
   const chatConnector = useChatConnector();
   const inputRef = useRef();
   const topmostMessageRef = useRef();
@@ -83,12 +84,17 @@ function Chat({
     }
 
     input.value = "";
+    setIsSending(true);
     post("/api/message", {
       text: messageText,
       chatId,
-    }).catch(err => {
-      throw new PaybackError("Failed to send a message", err);
-    });
+    })
+      .catch(err => {
+        throw new PaybackError("Failed to send a message", err);
+      })
+      .finally(() => {
+        setIsSending(false);
+      });
   }
 
   function handleMessageInsideBounds(message) {
@@ -135,8 +141,11 @@ function Chat({
           name="message"
           ref={inputRef}
         />
-        {/* todo: disable when clicked */}
-        <button className={styles.send} aria-label="send message">
+        <button
+          className={styles.send}
+          aria-label="send message"
+          disabled={isSending}
+        >
           <RiSendPlaneFill />
         </button>
       </Form>

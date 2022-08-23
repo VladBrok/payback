@@ -11,6 +11,7 @@ import { useState, useEffect } from "react";
 function SellPage(props) {
   const [step, setStep] = useState(STEPS.START);
   const [paymentData, setPaymentData] = useState();
+  const [isMakingPayment, setIsMakingPayment] = useState(false);
   const [productData, setProductData] = useState({});
   const router = useRouter();
   const currentStepData = STEP_DATA[step];
@@ -38,7 +39,10 @@ function SellPage(props) {
     };
 
     if (value) {
-      makePremiumPayment(end);
+      setIsMakingPayment(true);
+      makePremiumPayment(end).finally(() => {
+        setIsMakingPayment(false);
+      });
     } else {
       end();
     }
@@ -61,7 +65,7 @@ function SellPage(props) {
     <div className={styles.container}>
       {currentStepData.component(
         currentStepData.property === "isPremium" ? handlePremiumSelect : handle,
-        props
+        { ...props, isMakingPayment }
       )}
     </div>
   );

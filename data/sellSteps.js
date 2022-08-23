@@ -93,6 +93,7 @@ export const STEP_DATA = [
           Icon={PremiumIcon}
           onClick={() => handle(true)}
           buyable={true}
+          disabled={props.isMakingPayment}
         >
           Select for {formatMoney(props.premiumCost)}
         </ProductStatus>

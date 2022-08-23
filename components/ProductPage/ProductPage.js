@@ -13,17 +13,19 @@ import TestPaymentNotice from "components/TestPaymentNotice";
 import withDataFetching from "components/withDataFetching";
 import { bySimilar } from "lib/db/productFilters";
 import { makeProductPayment } from "lib/payment/client";
-import { get } from "lib/api/client";
+import { get, post } from "lib/api/client";
 import { FcSearch } from "react-icons/fc";
 import Link from "next/link";
 import Head from "next/head";
 import { useSession } from "next-auth/react";
+import { useState } from "react";
 
 function ProductPage({
   fetchedData: product,
   customState: modalIsOpen,
   setCustomState: setModalIsOpen,
 }) {
+  const [isBuying, setIsBuying] = useState(false);
   const { data } = useSession();
   const userId = data?.user?.id;
 
@@ -32,7 +34,19 @@ function ProductPage({
   }
 
   function handleBuyClick() {
-    makeProductPayment(product, () => setModalIsOpen(true));
+    setIsBuying(true);
+    makeProductPayment(product, handlePaymentSuccess).finally(() => {
+      setIsBuying(false);
+    });
+  }
+
+  function handlePaymentSuccess(res) {
+    setIsBuying(true);
+    post(`/api/sell?productId=${product.id}`, res)
+      .then(() => setModalIsOpen(true))
+      .finally(() => {
+        setIsBuying(false);
+      });
   }
 
   return (
@@ -72,6 +86,7 @@ function ProductPage({
                 type="button"
                 className={utilStyles["button-primary"]}
                 onClick={handleBuyClick}
+                disabled={isBuying}
               >
                 Buy
               </AuthButton>

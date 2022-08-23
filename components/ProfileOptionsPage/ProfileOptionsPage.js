@@ -11,7 +11,6 @@ function ProfileOptionsPage({ sessionUser }) {
   return (
     <Profile sessionUser={sessionUser}>
       <div className={styles.container}>
-        {/* todo: disable when clicked ? */}
         <button
           type="button"
           className={utilStyles["button-primary-danger"]}
