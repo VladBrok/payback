@@ -2,7 +2,7 @@ import styles from "./ProductPage.module.scss";
 import utilStyles from "styles/utils.module.scss";
 import Product from "components/Product";
 import Subpage from "components/Subpage";
-import Category from "components/Category";
+import CategoryLink from "components/CategoryLink";
 import Section from "components/Section";
 import User from "components/User";
 import ProductList from "components/ProductList";
@@ -58,7 +58,8 @@ function ProductPage({
 
       <Subpage
         title={
-          <Category
+          <CategoryLink
+            id={product.category.id}
             name={product.category.name}
             image={product.category.image}
           />
