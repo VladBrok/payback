@@ -10,7 +10,7 @@ export default function Menu({ activePath }) {
     <MenuItem
       key={name}
       isActive={getRoot(path) === activePath}
-      name={name}
+      name={<span>{name}</span>}
       href={path}
     >
       <span className={styles.icon}>
@@ -21,9 +21,7 @@ export default function Menu({ activePath }) {
 
   return (
     <nav>
-      <div className={styles.container}>
-        {items}
-      </div>
+      <div className={styles.container}>{items}</div>
     </nav>
   );
 }

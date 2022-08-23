@@ -79,7 +79,10 @@ function SellPage(props) {
       {step === STEPS.END ? (
         content
       ) : (
-        <Subpage title={currentStepData.title} onGoBack={handleGoBack}>
+        <Subpage
+          title={<h1>{currentStepData.title}</h1>}
+          onGoBack={handleGoBack}
+        >
           {content}
         </Subpage>
       )}

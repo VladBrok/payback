@@ -16,7 +16,7 @@ function ChatPage({ id, fetchedData: chat }) {
       <Head>
         <title>Chat with {chat?.name}</title>
       </Head>
-      <Subpage title={chat?.name}>
+      <Subpage title={<h1>{chat?.name}</h1>}>
         <Chat userId={userId} chatId={id} />
       </Subpage>
     </>

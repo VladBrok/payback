@@ -19,7 +19,7 @@ export default function MenuItem({
       <Link href={href}>
         <a className={styles.link}>
           {children}
-          <span>{name}</span>
+          {name}
         </a>
       </Link>
     </div>

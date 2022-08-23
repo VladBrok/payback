@@ -79,7 +79,7 @@ function ProductPage({
           imageSize="14rem"
           flexDirectionWhenExpanded="row"
         >
-          <h2>{product.title}</h2>
+          <h1>{product.title}</h1>
           {!product.isSold && (
             <>
               <TestPaymentNotice />

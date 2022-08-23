@@ -4,7 +4,9 @@ import PriceInput from "components/PriceInput";
 export default function PriceRange({ onMinChange, onMaxChange, min, max }) {
   return (
     <fieldset>
-      <legend>Price</legend>
+      <legend>
+        <h2>Price</h2>
+      </legend>
       <div className={styles["input-container"]}>
         <PriceInput placeholder="From" onChange={onMinChange} value={min} />
         <span>—</span>

@@ -13,11 +13,15 @@ import { useRouter } from "next/router";
 function Profile({ children, fetchedData: user }) {
   const pathname = useRouter().pathname;
 
+  function isActive(item) {
+    return pathname.includes(item);
+  }
+
   const menuItems = profileMenuItems.map(item => (
     <MenuItem
       key={item}
-      isActive={pathname.includes(item)}
-      name={item}
+      isActive={isActive(item)}
+      name={isActive(item) ? <h2>{item}</h2> : item}
       href={`/profile/${item}`}
       className={styles["menu-item"]}
     />

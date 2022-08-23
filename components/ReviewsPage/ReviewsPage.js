@@ -18,6 +18,7 @@ function ReviewsPage({ fetchedData: user }) {
             reviewCount={user.reviewCount}
             value={user.rating}
             valueFontSize="2rem"
+            reviewWrapper={review => <h1>{review}</h1>}
           />
         }
       >

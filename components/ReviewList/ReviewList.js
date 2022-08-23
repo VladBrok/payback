@@ -22,9 +22,8 @@ function ReviewList({ fetchedData: reviews }) {
               </User>
             </a>
           </Link>
-          <span className={styles.date}>
-            {formatRelativeToNow(review.date)}
-          </span>
+
+          <h2>{formatRelativeToNow(review.date)}</h2>
         </header>
 
         <p className={styles.text}>{review.text}</p>

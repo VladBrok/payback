@@ -50,7 +50,7 @@ function UserPage({ id, fetchedData: user }) {
 
       <Subpage
         title={
-          <User name={user.name} imageUrl={user.image}>
+          <User name={<h1>{user.name}</h1>} imageUrl={user.image}>
             <Rating
               value={user.rating}
               reviewCount={user.reviewCount}
@@ -68,6 +68,7 @@ function UserPage({ id, fetchedData: user }) {
           </User>
         }
       >
+        <h2 className={utilStyles["sr-only"]}>Products of {user.name}</h2>
         <ProductList
           filter={byUserId(id)}
           includeCategory={false}

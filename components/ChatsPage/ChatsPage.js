@@ -31,8 +31,12 @@ function ChatsPage({ fetchedData: chats, setFetchedData: setChats }) {
       <Head>
         <title>Chats</title>
       </Head>
-      <h1 className={styles.title}>Chats</h1>
-      <ul className={styles.list}>{chatList}</ul>
+      <header>
+        <h1 className={styles.title}>Chats</h1>
+      </header>
+      <main>
+        <ul className={styles.list}>{chatList}</ul>
+      </main>
     </>
   );
 }

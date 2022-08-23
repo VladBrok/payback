@@ -38,7 +38,11 @@ function CategoryPage({ fetchedData: category }) {
         <title>Buy {category.name}</title>
       </Head>
 
-      <Subpage title={<Category name={category.name} image={category.image} />}>
+      <Subpage
+        title={
+          <Category name={<h1>{category.name}</h1>} image={category.image} />
+        }
+      >
         <PriceRange
           onMinChange={handleMinPriceChange}
           onMaxChange={handleMaxPriceChange}
