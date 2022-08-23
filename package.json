@@ -7,6 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "dbpull": "npx prisma db pull",
+    "dbgen": "npx prisma generate",
     "postinstall": "prisma generate"
   },
   "prisma": {
