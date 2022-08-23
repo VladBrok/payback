@@ -25,7 +25,7 @@ function UserPage({ id, fetchedData: user }) {
     const chatId = makeChatId([authenticatedUserId, id]);
     post("/api/chat", { chatId })
       .then(() => {
-        router.push(`/chats?id=${chatId}`);
+        router.push(`/chats/${chatId}`);
       })
       .catch(err => {
         throw new PaybackError(
