@@ -14,10 +14,11 @@ export const STEP_DATA = [
   {
     title: "Select category",
     property: "category",
-    component: handle => (
+    component: (handle, { categories }) => (
       <CategorySearch
         searchBarLabel="Find"
         category={props => <CategoryButton onClick={handle} {...props} />}
+        categories={categories}
       />
     ),
   },
@@ -66,15 +67,15 @@ export const STEP_DATA = [
   {
     title: "Specify price",
     property: "price",
-    component: (handle, props) => (
+    component: (handle, { minPrice, maxPrice, serviceChargesPercent }) => (
       <InputForm
         key={3}
         submitButton={<ContinueButton />}
-        min={props.minPrice}
-        max={props.maxPrice}
-        initialValue={props.minPrice.toString()}
+        min={minPrice}
+        max={maxPrice}
+        initialValue={minPrice.toString()}
         onSubmit={handle}
-        hint={`Service charges are ${props.serviceChargesPercent}%`}
+        hint={`Service charges are ${serviceChargesPercent}%`}
         input={props => (
           <PriceInput {...props} placeholder="Enter product price" />
         )}
@@ -84,7 +85,7 @@ export const STEP_DATA = [
   {
     title: "Select status",
     property: "isPremium",
-    component: (handle, props) => (
+    component: (handle, { isMakingPayment, premiumCost }) => (
       <>
         <ProductStatus
           key={4}
@@ -93,9 +94,9 @@ export const STEP_DATA = [
           Icon={PremiumIcon}
           onClick={() => handle(true)}
           buyable={true}
-          disabled={props.isMakingPayment}
+          disabled={isMakingPayment}
         >
-          Select for {formatMoney(props.premiumCost)}
+          Select for {formatMoney(premiumCost)}
         </ProductStatus>
         <ProductStatus
           key={5}

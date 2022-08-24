@@ -3,7 +3,12 @@ import SearchBar from "components/SearchBar";
 import CategoryList from "components/CategoryList";
 import { useState } from "react";
 
-export default function CategorySearch({ children, searchBarLabel, category }) {
+export default function CategorySearch({
+  children,
+  searchBarLabel,
+  category,
+  categories,
+}) {
   const [searchQuery, setSearchQuery] = useState();
 
   function handleSearchQueryChange(e) {
@@ -25,6 +30,7 @@ export default function CategorySearch({ children, searchBarLabel, category }) {
         nameSubstr={searchQuery}
         fallback="Not found"
         category={category}
+        data={categories}
       />
     </>
   );

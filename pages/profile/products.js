@@ -1,4 +1,4 @@
-import { getServerSideSessionUser } from "lib/serverSideProps";
+import { getServerSideSessionUser } from "lib/serverSide";
 
 export { default } from "components/ProfileProductsPage";
 
