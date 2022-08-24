@@ -1,5 +1,5 @@
 import { handle } from "lib/api/server";
-import prisma from "lib/db/prisma";
+import { getCategories, getCategory } from "lib/db/category";
 
 export default async function handler(req, res) {
   await handle(req, res, {
@@ -12,18 +12,14 @@ async function handleGet(req, res) {
   const nameSubstr = req.query.nameSubstr;
 
   if (id != null) {
-    const category = await prisma.category.findFirst({ where: { id } });
+    const category = await getCategory(id);
     if (!category) {
       res.status(404).end();
-      return;
+    } else {
+      res.status(200).json(category);
     }
-    res.status(200).json(category);
   } else {
-    const args = nameSubstr
-      ? { where: { name: { contains: nameSubstr } } }
-      : undefined;
-    const categories = await prisma.category.findMany(args);
-    res.status(200).json(categories);
+    res.status(200).json(await getCategories(nameSubstr));
   }
 }
 handleGet.allowUnauthorized = true;

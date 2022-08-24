@@ -1,10 +1,10 @@
-import prisma from "lib/db/prisma";
+import { getCategories } from "lib/db/category";
 import { fetchServerSide } from "lib/serverSide";
 
 export { default } from "components/SellPage";
 
 export async function getStaticProps() {
-  const result = await fetchServerSide(prisma.category.findMany);
+  const result = await fetchServerSide(getCategories);
   if (result.error) {
     throw new Error();
   }

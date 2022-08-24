@@ -15,6 +15,11 @@ export async function getServerSideProps(context) {
   }
 
   const chat = await fetchServerSide(() => getChat(chatId, userId));
+  if (chat.notFound) {
+    return {
+      notFound: true,
+    };
+  }
 
   return {
     props: {
