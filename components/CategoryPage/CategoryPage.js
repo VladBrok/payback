@@ -8,7 +8,7 @@ import { byCategoryAndPrice } from "lib/db/productFilters";
 import Head from "next/head";
 import { useState, useEffect } from "react";
 
-function CategoryPage({ fetchedData: category }) {
+function CategoryPage({ fetchedData: category, products }) {
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
   const [reset, setReset] = useState(false);
@@ -51,6 +51,7 @@ function CategoryPage({ fetchedData: category }) {
         />
         <ProductList
           filter={byCategoryAndPrice(category.name, minPrice, maxPrice)}
+          data={products}
           includeCategory={false}
           reset={reset}
         />
