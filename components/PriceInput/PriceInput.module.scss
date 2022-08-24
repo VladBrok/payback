@@ -5,6 +5,7 @@
 
   .input {
     @include m.input;
+    padding-right: 2rem;
     -moz-appearance: textfield;
 
     &::-webkit-outer-spin-button,
