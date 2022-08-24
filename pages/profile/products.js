@@ -1,7 +1,11 @@
-import { getServerSideSessionUser } from "lib/serverSide";
+import { getSessionUser } from "lib/serverSide";
 
 export { default } from "components/ProfileProductsPage";
 
 export async function getServerSideProps(context) {
-  return await getServerSideSessionUser(context);
+  return {
+    props: {
+      sessionUser: await getSessionUser(context),
+    },
+  };
 }

@@ -1,14 +1,13 @@
 import { getProducts } from "lib/db/getProducts";
 import { getUser } from "lib/db/getUser";
 import { byUserId } from "lib/db/productFilters";
-import { fetchServerSide, getServerSideSessionUser } from "lib/serverSide";
+import { fetchServerSide, getSessionUser } from "lib/serverSide";
 
 export { default } from "components/UserPage";
 
 export async function getServerSideProps(context) {
   const requestedUserId = +context.query.id;
-  const sessionUser = (await getServerSideSessionUser(context)).props
-    .sessionUser;
+  const sessionUser = await getSessionUser(context);
 
   if (sessionUser?.id == requestedUserId) {
     return {

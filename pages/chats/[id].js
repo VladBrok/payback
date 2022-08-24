@@ -1,12 +1,11 @@
 import { canAccessChat } from "lib/chat/server";
-import { getServerSideSessionUser } from "lib/serverSide";
+import { getSessionUser } from "lib/serverSide";
 
 export { default } from "components/ChatPage";
 
 export async function getServerSideProps(context) {
   const chatId = context.query.id;
-  const sessionUser = (await getServerSideSessionUser(context)).props
-    .sessionUser;
+  const sessionUser = await getSessionUser(context);
 
   if (!canAccessChat(sessionUser?.id, chatId)) {
     return {
