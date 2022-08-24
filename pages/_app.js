@@ -50,10 +50,8 @@ export default function MyApp({ Component: Page, pageProps }) {
   }, [error]);
 
   useEffect(() => {
-    if (error) {
-      NotificationManager.removeAll();
-      setError();
-    }
+    NotificationManager.removeAll();
+    setError();
   }, [pathname]);
 
   return (

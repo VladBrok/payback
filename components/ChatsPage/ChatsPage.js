@@ -20,7 +20,7 @@ function ChatsPage({ fetchedData: chats, setFetchedData: setChats }) {
     }
 
     return chatConnector?.connectToChats(userId, handleChat);
-  }, [userId, chatConnector]);
+  }, [userId, chatConnector, setChats]);
 
   const chatList = chats?.map(chat => (
     <li key={chat.id}>{<LinkToChat chat={chat} />}</li>

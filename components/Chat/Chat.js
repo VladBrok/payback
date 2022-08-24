@@ -33,7 +33,7 @@ function Chat({
     }
 
     return chatConnector?.connectToMessages(chatId, handleMessage);
-  }, [chatId, userId, chatConnector]);
+  }, [chatId, userId, chatConnector, setMessages]);
 
   useEffect(() => {
     if (shouldScrollToBottom) {
