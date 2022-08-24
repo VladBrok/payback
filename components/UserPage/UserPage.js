@@ -7,7 +7,6 @@ import Rating from "components/Rating";
 import ReviewLink from "components/ReviewLink";
 import AuthButton from "components/AuthButton";
 import withDataFetching from "components/withDataFetching";
-import { byUserId } from "lib/db/productFilters";
 import { get, post } from "lib/api/client";
 import { makeChatId } from "lib/chat/chatId";
 import { PaybackError } from "lib/errors";
@@ -17,7 +16,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
-function UserPage({ id, fetchedData: user }) {
+function UserPage({ id, products, productFilter, fetchedData: user }) {
   const [isLoadingChat, setIsLoadingChat] = useState(false);
   const session = useSession();
   const router = useRouter();
@@ -70,7 +69,8 @@ function UserPage({ id, fetchedData: user }) {
       >
         <h2 className={utilStyles["sr-only"]}>Products of {user.name}</h2>
         <ProductList
-          filter={byUserId(id)}
+          data={products}
+          filter={productFilter}
           includeCategory={false}
           fallback={
             <Empty

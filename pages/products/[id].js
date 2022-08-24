@@ -10,7 +10,7 @@ export async function getServerSideProps(context) {
   const productId = +context.query.id;
 
   const result = await fetchServerSide(getProduct);
-  if (!result.data && !result.error) {
+  if (result.notFound) {
     return {
       notFound: true,
     };
