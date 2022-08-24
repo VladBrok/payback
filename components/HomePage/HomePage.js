@@ -3,7 +3,7 @@ import Main from "components/Main";
 import Footer from "components/Footer";
 import Head from "next/head";
 
-export default function HomePage({ products, categories }) {
+export default function HomePage({ products, categories, productFilter }) {
   return (
     <>
       <Head>
@@ -11,7 +11,11 @@ export default function HomePage({ products, categories }) {
       </Head>
 
       <Header />
-      <Main products={products} categories={categories} />
+      <Main
+        products={products}
+        categories={categories}
+        productFilter={productFilter}
+      />
       <Footer />
     </>
   );

@@ -21,6 +21,7 @@ import { useSession } from "next-auth/react";
 import { useState } from "react";
 
 function ProductPage({
+  products,
   fetchedData: product,
   customState: modalIsOpen,
   setCustomState: setModalIsOpen,
@@ -115,7 +116,7 @@ function ProductPage({
         </Section>
 
         <Section title="Similar products" Icon={FcSearch}>
-          <ProductList filter={bySimilar(product)} />
+          <ProductList filter={bySimilar(product)} data={products} />
         </Section>
       </Subpage>
     </>

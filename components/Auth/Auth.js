@@ -11,7 +11,9 @@ export default function Auth({ children }) {
     },
   });
 
+  // fixme: use ssr
   if (session.status === "loading") {
+    console.log("auth");
     return <Loading />;
   }
 

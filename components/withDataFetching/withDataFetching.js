@@ -77,6 +77,7 @@ export default function withDataFetching(
       return <Loading />;
     }
 
+    // todo: remove (handled by ssr) ?
     if (notFound) {
       return <Error statusCode={404} />;
     }

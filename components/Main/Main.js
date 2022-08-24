@@ -5,11 +5,10 @@ import CategoryList from "components/CategoryList";
 import ProductList from "components/ProductList";
 import CategorySearchModal from "components/CategorySearchModal";
 import PremiumIcon from "components/PremiumIcon";
-import { byPremium } from "lib/db/productFilters";
 import { FcFinePrint } from "react-icons/fc";
 import { useState } from "react";
 
-export default function Main({ products, categories }) {
+export default function Main({ products, categories, productFilter }) {
   const [modalIsOpen, setIsOpen] = useState(false);
 
   function openModal() {
@@ -36,7 +35,7 @@ export default function Main({ products, categories }) {
       </Section>
 
       <Section title="Premium products" Icon={PremiumIcon}>
-        <ProductList data={products} filter={byPremium()} />
+        <ProductList data={products} filter={productFilter} />
       </Section>
     </main>
   );
