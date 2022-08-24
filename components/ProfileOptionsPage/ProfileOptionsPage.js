@@ -3,13 +3,13 @@ import utilStyles from "styles/utils.module.scss";
 import Profile from "components/Profile";
 import { signOut } from "next-auth/react";
 
-function ProfileOptionsPage({ sessionUser }) {
+function ProfileOptionsPage({ user }) {
   async function handleSignOut() {
     await signOut({ redirect: false });
   }
 
   return (
-    <Profile sessionUser={sessionUser}>
+    <Profile data={user} userId={user.id}>
       <div className={styles.container}>
         <button
           type="button"

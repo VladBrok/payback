@@ -1,11 +1,15 @@
-import { getSessionUser } from "lib/serverSide";
+import { getUser } from "lib/db/getUser";
+import { fetchServerSide, getSessionUser } from "lib/serverSide";
 
 export { default } from "components/ProfileOptionsPage";
 
 export async function getServerSideProps(context) {
+  const userId = (await getSessionUser(context))?.id;
+  const user = await fetchServerSide(() => getUser(userId));
+
   return {
     props: {
-      sessionUser: await getSessionUser(context),
+      user: user.data,
     },
   };
 }

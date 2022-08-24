@@ -14,7 +14,6 @@ export default function withDataFetching(
   renderAtTop = true
 ) {
   const Wrapper = ({ data, reset, ...props }) => {
-    console.log(data);
     const [fetchedData, setFetchedData] = useState(data?.pageData ?? data);
     const [isLoaded, setIsLoaded] = useState(data != null);
     const [notFound, setNotFound] = useState(false);
@@ -28,7 +27,10 @@ export default function withDataFetching(
     const renderShowMore =
       !showMore && fetchedData != undefined && curPageCursor != "";
 
+    console.log(data);
+
     useEffect(() => {
+      console.log("fetching with cursor:", pageCursor);
       fetchCallback(fetchDeps, customState, pageCursor)
         .then(result => {
           if (result.pageData) {

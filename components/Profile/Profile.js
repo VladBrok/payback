@@ -13,19 +13,18 @@ import { useRouter } from "next/router";
 function Profile({ children, fetchedData: user }) {
   const pathname = useRouter().pathname;
 
-  function isActive(item) {
-    return pathname.includes(item);
-  }
-
-  const menuItems = profileMenuItems.map(item => (
-    <MenuItem
-      key={item}
-      isActive={isActive(item)}
-      name={isActive(item) ? <h2>{item}</h2> : item}
-      href={`/profile/${item}`}
-      className={styles["menu-item"]}
-    />
-  ));
+  const menuItems = profileMenuItems.map(item => {
+    const isActive = pathname.includes(item);
+    return (
+      <MenuItem
+        key={item}
+        isActive={isActive}
+        name={isActive ? <h2>{item}</h2> : item}
+        href={`/profile/${item}`}
+        className={styles["menu-item"]}
+      />
+    );
+  });
 
   return (
     <>
@@ -49,7 +48,7 @@ function Profile({ children, fetchedData: user }) {
           <CurrentBalance money={user.money} />
         </User>
         <div className={styles.menu}>{menuItems}</div>
-        {typeof children === "function" ? children(user) : children}
+        {children}
       </main>
     </>
   );
@@ -58,5 +57,5 @@ function Profile({ children, fetchedData: user }) {
 export default withDataFetching(
   Profile,
   ({ id }) => get(`/api/user?id=${id}`),
-  props => ({ id: props.sessionUser.id })
+  props => ({ id: props.userId })
 );
