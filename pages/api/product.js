@@ -1,17 +1,13 @@
 import prisma from "lib/db/prisma";
 import { toMegabytes } from "lib/file";
-import {
-  BYTES_IN_MEGABYTE,
-  MAX_FILE_SIZE_IN_BYTES,
-  PRODUCT_PAGE_SIZE,
-} from "lib/sharedConstants";
+import { BYTES_IN_MEGABYTE, MAX_FILE_SIZE_IN_BYTES } from "lib/sharedConstants";
 import { processOrder } from "lib/payment/server";
 import { handle } from "lib/api/server";
-import { withPagination } from "lib/db/withPagination";
 import { postBlob } from "lib/api/client";
-import { enrichUser } from "lib/db/enrichUser";
+import { enrichUser } from "lib/db/user";
 import { transaction } from "lib/db/transaction";
 import FormData from "form-data";
+import { getProducts } from "lib/db/product";
 
 export default async function handler(req, res) {
   await handle(req, res, {
@@ -39,29 +35,12 @@ handleGet.allowUnauthorized = true;
 
 async function handlePost(req, res, session) {
   const data = req.body;
+  const pageCursor = req.query.pageCursor;
+
   if (data.filter) {
-    await getProducts();
+    res.status(200).json(await getProducts(data.filter, pageCursor));
   } else {
     await createProduct();
-  }
-
-  async function getProducts() {
-    const pageCursor = req.query.pageCursor;
-
-    const result = await withPagination(
-      prisma.product.findMany,
-      {
-        where:
-          pageCursor != ""
-            ? { AND: [data.filter, { id: { lt: +pageCursor } }] }
-            : data.filter,
-        include: { category: true },
-        orderBy: { id: "desc" },
-      },
-      PRODUCT_PAGE_SIZE
-    );
-
-    res.status(200).json(result);
   }
 
   async function createProduct() {

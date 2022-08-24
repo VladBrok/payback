@@ -1,7 +1,7 @@
 import prisma from "lib/db/prisma";
-import { createReview } from "lib/db/createReview";
+import { createReview } from "lib/db/review";
 import { handle } from "lib/api/server";
-import { getReviews } from "lib/db/getReviews";
+import { getReviews } from "lib/db/review";
 
 export default async function handler(req, res) {
   await handle(req, res, {

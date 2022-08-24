@@ -11,7 +11,7 @@ import ReviewModal from "components/ReviewModal";
 import AuthButton from "components/AuthButton";
 import TestPaymentNotice from "components/TestPaymentNotice";
 import withDataFetching from "components/withDataFetching";
-import { bySimilar } from "lib/db/productFilters";
+import { bySimilar } from "lib/db/product/filters";
 import { makeProductPayment } from "lib/payment/client";
 import { get, post } from "lib/api/client";
 import { FcSearch } from "react-icons/fc";

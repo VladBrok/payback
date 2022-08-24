@@ -1,6 +1,6 @@
-import { getProducts } from "lib/db/getProducts";
-import { getUser } from "lib/db/getUser";
-import { byUserId } from "lib/db/productFilters";
+import { getProducts } from "lib/db/product";
+import { getUser } from "lib/db/user";
+import { byUserId } from "lib/db/product/filters";
 import { fetchServerSide, getSessionUser } from "lib/serverSide";
 
 export { default } from "components/ProfileProductsPage";

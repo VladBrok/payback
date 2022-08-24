@@ -1,5 +1,5 @@
-import { getReviews } from "lib/db/getReviews";
-import { getUser } from "lib/db/getUser";
+import { getReviews } from "lib/db/review";
+import { getUser } from "lib/db/user";
 import { fetchServerSide } from "lib/serverSide";
 
 export { default } from "components/ReviewsPage";

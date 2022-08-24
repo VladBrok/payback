@@ -1,6 +1,6 @@
 import prisma from "../lib/db/prisma.js";
 import { MAX_RATING, SUPPORT_ID } from "../lib/sharedConstants.js";
-import { createReview } from "../lib/db/createReview.js";
+import { createReview } from "../lib/db/review.js";
 import { randomDate, randomNumber } from "../lib/random.js";
 import fetch from "node-fetch";
 

@@ -1,8 +1,8 @@
 import { fetchServerSide } from "lib/serverSide";
 import prisma from "lib/db/prisma";
-import { enrichUser } from "lib/db/enrichUser";
-import { getProducts } from "lib/db/getProducts";
-import { bySimilar } from "lib/db/productFilters";
+import { enrichUser } from "lib/db/user";
+import { getProducts } from "lib/db/product";
+import { bySimilar } from "lib/db/product/filters";
 
 export { default } from "components/ProductPage";
 

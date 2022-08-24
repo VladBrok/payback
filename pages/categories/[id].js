@@ -1,7 +1,7 @@
 import { fetchServerSide } from "lib/serverSide";
 import { getCategory } from "lib/db/category";
-import { byCategoryAndPrice } from "lib/db/productFilters";
-import { getProducts } from "lib/db/getProducts";
+import { byCategoryAndPrice } from "lib/db/product/filters";
+import { getProducts } from "lib/db/product";
 
 export { default } from "components/CategoryPage";
 

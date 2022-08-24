@@ -4,7 +4,7 @@ import ProductList from "components/ProductList";
 import PriceRange from "components/PriceRange";
 import withDataFetching from "components/withDataFetching";
 import { get } from "lib/api/client";
-import { byCategoryAndPrice } from "lib/db/productFilters";
+import { byCategoryAndPrice } from "lib/db/product/filters";
 import Head from "next/head";
 import { useState, useEffect } from "react";
 

@@ -1,4 +1,4 @@
-import { getUser } from "lib/db/getUser";
+import { getUser } from "lib/db/user";
 import { fetchServerSide, getSessionUser } from "lib/serverSide";
 
 export { default } from "components/ProfileOptionsPage";
