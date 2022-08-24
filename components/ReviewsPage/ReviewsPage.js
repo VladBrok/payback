@@ -5,7 +5,7 @@ import withDataFetching from "components/withDataFetching";
 import { get } from "lib/api/client";
 import Head from "next/head";
 
-function ReviewsPage({ fetchedData: user }) {
+function ReviewsPage({ fetchedData: user, reviews }) {
   return (
     <>
       <Head>
@@ -22,7 +22,7 @@ function ReviewsPage({ fetchedData: user }) {
           />
         }
       >
-        <ReviewList userId={user.id} />
+        <ReviewList userId={user.id} data={reviews} />
       </Subpage>
     </>
   );
