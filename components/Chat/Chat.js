@@ -16,7 +16,6 @@ function Chat({
   fetchedData: messages,
   setFetchedData: setMessages,
 }) {
-  const [bottomBound, setBottomBound] = useState();
   const [shouldScrollToBottom, setShouldScrollToBottom] = useState(true);
   const [isSending, setIsSending] = useState(false);
   const chatConnector = useChatConnector();
@@ -37,15 +36,11 @@ function Chat({
   }, [chatId, userId, chatConnector]);
 
   useEffect(() => {
-    if (shouldScrollToBottom && bottomBound != null) {
+    if (shouldScrollToBottom) {
       scrollToBottom();
       setShouldScrollToBottom(false);
     }
-  }, [messages, bottomBound, shouldScrollToBottom]);
-
-  useEffect(() => {
-    setBottomBound(inputRef.current?.getBoundingClientRect().top);
-  }, []);
+  }, [messages, shouldScrollToBottom]);
 
   useEffect(() => {
     function restoreScrollPosition() {
@@ -61,13 +56,7 @@ function Chat({
     if (isLoadedNewPage) {
       restoreScrollPosition();
     }
-  }, [
-    messages,
-    bottomBound,
-    topmostMessageRef,
-    prevTopmostMessageRef,
-    prevOffsetTop,
-  ]);
+  }, [messages, topmostMessageRef, prevTopmostMessageRef, prevOffsetTop]);
 
   useEffect(focusOnInput, []);
 
@@ -113,21 +102,19 @@ function Chat({
     put(`/api/message?id=${message.id}`, { wasRead: true });
   }
 
-  const messagesList = bottomBound
-    ? messages
-        ?.map((m, _, messages) => (
-          <Message
-            key={m.id}
-            message={m}
-            userId={userId}
-            topBound={0}
-            bottomBound={bottomBound}
-            onInsideBounds={() => handleMessageInsideBounds(m)}
-            ref={m === messages.at(-1) ? topmostMessageRef : undefined}
-          />
-        ))
-        .reverse()
-    : null;
+  const messagesList = messages
+    ?.map((m, _, messages) => (
+      <Message
+        key={m.id}
+        message={m}
+        userId={userId}
+        topBound={0}
+        bottomBound={inputRef.current?.getBoundingClientRect().top ?? 370} // fixme: remove hardcoded value
+        onInsideBounds={() => handleMessageInsideBounds(m)}
+        ref={m === messages.at(-1) ? topmostMessageRef : undefined}
+      />
+    ))
+    .reverse();
 
   return (
     <div className={styles.container}>

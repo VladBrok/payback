@@ -27,8 +27,6 @@ export default function withDataFetching(
     const renderShowMore =
       !showMore && fetchedData != undefined && curPageCursor != "";
 
-    console.log(data);
-
     useEffect(() => {
       console.log("fetching with cursor:", pageCursor);
       fetchCallback(fetchDeps, customState, pageCursor)
