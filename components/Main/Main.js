@@ -9,7 +9,7 @@ import { byPremium } from "lib/db/productFilters";
 import { FcFinePrint } from "react-icons/fc";
 import { useState } from "react";
 
-export default function Main() {
+export default function Main({ products, categories }) {
   const [modalIsOpen, setIsOpen] = useState(false);
 
   function openModal() {
@@ -32,11 +32,11 @@ export default function Main() {
       />
 
       <Section title="Categories" Icon={FcFinePrint}>
-        <CategoryList />
+        <CategoryList data={categories} />
       </Section>
 
       <Section title="Premium products" Icon={PremiumIcon}>
-        <ProductList filter={byPremium()} />
+        <ProductList data={products} filter={byPremium()} />
       </Section>
     </main>
   );

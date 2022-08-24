@@ -3,7 +3,8 @@ import { getUserIdsFromChatId } from "lib/chat/chatId";
 import { EVENTS, CHANNELS } from "lib/chat/constants";
 import prisma from "lib/db/prisma";
 import { transaction } from "lib/db/transaction";
-import { withPagination, handle } from "lib/api/server";
+import { handle } from "lib/api/server";
+import { withPagination } from "lib/db/withPagination";
 import { CHAT_PAGE_SIZE } from "lib/sharedConstants";
 
 export default async function handler(req, res) {

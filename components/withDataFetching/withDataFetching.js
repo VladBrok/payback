@@ -13,21 +13,18 @@ export default function withDataFetching(
   customStateInit = undefined,
   renderAtTop = true
 ) {
-  const Wrapper = props => {
-    const [fetchedData, setFetchedData] = useState();
-    const [isLoaded, setIsLoaded] = useState(false);
+  const Wrapper = ({ data, reset, ...props }) => {
+    console.log(data);
+    const [fetchedData, setFetchedData] = useState(data?.pageData ?? data);
+    const [isLoaded, setIsLoaded] = useState(data != null);
     const [notFound, setNotFound] = useState(false);
     const [showMore, setShowMore] = useState(false);
-    const [curPageCursor, setCurPageCursor] = useState("");
+    const [curPageCursor, setCurPageCursor] = useState(data?.pageCursor ?? "");
     const [prevPageCursor, setPrevPageCursor] = useState("");
     const [customState, setCustomState] = useState(customStateInit);
 
     const fetchDeps = getFetchDeps(props);
-    const pageCursor = props.reset
-      ? ""
-      : showMore
-      ? curPageCursor
-      : prevPageCursor;
+    const pageCursor = reset ? "" : showMore ? curPageCursor : prevPageCursor;
     const renderShowMore =
       !showMore && fetchedData != undefined && curPageCursor != "";
 
@@ -36,7 +33,7 @@ export default function withDataFetching(
         .then(result => {
           if (result.pageData) {
             setFetchedData(cur =>
-              cur && !props.reset
+              cur && !reset
                 ? uniqueById([...cur, ...result.pageData])
                 : result.pageData
             );
@@ -57,7 +54,7 @@ export default function withDataFetching(
           setIsLoaded(true);
           setShowMore(false);
         });
-    }, [...Object.values(fetchDeps), customState, props.reset, pageCursor]);
+    }, [...Object.values(fetchDeps), customState, reset, pageCursor]);
 
     useEffect(() => {
       if (showMore) {
@@ -66,11 +63,11 @@ export default function withDataFetching(
     }, [showMore, pageCursor]);
 
     useEffect(() => {
-      if (props.reset) {
+      if (reset) {
         setPrevPageCursor("");
         setCurPageCursor("");
       }
-    }, [props.reset]);
+    }, [reset]);
 
     function handleShowMoreClick() {
       setShowMore(true);

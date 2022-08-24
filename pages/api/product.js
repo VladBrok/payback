@@ -6,7 +6,8 @@ import {
   PRODUCT_PAGE_SIZE,
 } from "lib/sharedConstants";
 import { processOrder } from "lib/payment/server";
-import { handle, withPagination } from "lib/api/server";
+import { handle } from "lib/api/server";
+import { withPagination } from "lib/db/withPagination";
 import { postBlob } from "lib/api/client";
 import { enrichUser } from "lib/db/enrichUser";
 import { transaction } from "lib/db/transaction";

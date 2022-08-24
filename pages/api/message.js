@@ -1,7 +1,8 @@
 import { pusher } from "lib/chat/server";
 import { EVENTS, CHANNELS } from "lib/chat/constants";
 import prisma from "lib/db/prisma";
-import { handle, withPagination } from "lib/api/server";
+import { handle } from "lib/api/server";
+import { withPagination } from "lib/db/withPagination";
 import { MESSAGE_PAGE_SIZE } from "lib/sharedConstants";
 
 export default async function handler(req, res) {
