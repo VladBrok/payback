@@ -5,7 +5,6 @@ export function isScrolledToBottom() {
 }
 
 export function scrollToBottom() {
-  console.log("scrolling...");
   doc().scroll(0, doc().scrollHeight);
 }
 

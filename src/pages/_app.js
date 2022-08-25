@@ -19,8 +19,6 @@ export default function MyApp({ Component: Page, pageProps }) {
   const [error, setError] = useState();
   const pathname = useRouter().pathname;
 
-  console.log(pageProps);
-
   useEffect(() => {
     function handleError(e) {
       e.preventDefault();
@@ -52,7 +50,10 @@ export default function MyApp({ Component: Page, pageProps }) {
     <>
       <Head>
         <link rel="icon" type="image/png" href="/images/logo-small.png" />
-        <meta name="description" content="Buy and sell products on Payback - fully-featured e-commerce store." />
+        <meta
+          name="description"
+          content="Buy and sell products on Payback - fully-featured e-commerce store."
+        />
       </Head>
 
       <SessionUserProvider value={pageProps.sessionUser}>
