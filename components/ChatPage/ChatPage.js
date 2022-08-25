@@ -23,13 +23,9 @@ function ChatPage({ id, fetchedData: chat }) {
   );
 }
 
-ChatPage.auth = true;
-const hoc = withDataFetching(
+export default withDataFetching(
   ChatPage,
   ({ id }) => get(`/api/chat?id=${id}`),
   props => ({ id: props.id }),
   true
 );
-hoc.auth = ChatPage.auth;
-
-export default hoc;

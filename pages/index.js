@@ -5,10 +5,13 @@ import { getCategories } from "lib/db/category";
 
 export { default } from "components/HomePage";
 
-export async function getServerSideProps() {
-  return withServerProps(() => ({
-    products: () => getProducts(byPremium()),
-    productFilter: byPremium(),
-    categories: () => getCategories(),
-  }));
+export async function getServerSideProps(context) {
+  return withServerProps(
+    () => ({
+      products: () => getProducts(byPremium()),
+      productFilter: byPremium(),
+      categories: () => getCategories(),
+    }),
+    context
+  );
 }

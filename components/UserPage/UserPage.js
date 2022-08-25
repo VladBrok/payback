@@ -10,19 +10,19 @@ import withDataFetching from "components/withDataFetching";
 import { get, post } from "lib/api/client";
 import { makeChatId } from "lib/chat/chatId";
 import { PaybackError } from "lib/errors";
+import useSessionUser from "hooks/useSessionUser";
 import { FcInTransit } from "react-icons/fc";
-import { useSession } from "next-auth/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
 function UserPage({ id, products, productFilter, fetchedData: user }) {
   const [isLoadingChat, setIsLoadingChat] = useState(false);
-  const session = useSession();
+  const sessionUser = useSessionUser();
   const router = useRouter();
 
   function handleWriteMessageClick() {
-    const authenticatedUserId = session.data.user.id;
+    const authenticatedUserId = sessionUser.id;
     const chatId = makeChatId([authenticatedUserId, id]);
 
     setIsLoadingChat(true);

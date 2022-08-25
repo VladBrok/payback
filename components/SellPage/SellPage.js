@@ -8,7 +8,7 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import { useState, useEffect } from "react";
 
-function SellPage(props) {
+export default function SellPage(props) {
   const [step, setStep] = useState(STEPS.START);
   const [paymentData, setPaymentData] = useState();
   const [isMakingPayment, setIsMakingPayment] = useState(false);
@@ -89,6 +89,3 @@ function SellPage(props) {
     </>
   );
 }
-
-SellPage.auth = true;
-export default SellPage;

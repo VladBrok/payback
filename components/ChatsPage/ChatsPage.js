@@ -3,16 +3,14 @@ import LinkToChat from "components/LinkToChat";
 import withDataFetching from "components/withDataFetching";
 import { get } from "lib/api/client";
 import useChatConnector from "hooks/useChatConnector";
+import useSessionUser from "hooks/useSessionUser";
 import Head from "next/head";
-import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 
 function ChatsPage({ fetchedData: chats, setFetchedData: setChats }) {
   const chatConnector = useChatConnector();
-  const {
-    data: { user },
-  } = useSession();
-  const userId = user.id;
+  const sessionUser = useSessionUser();
+  const userId = sessionUser.id;
 
   useEffect(() => {
     function handleChat(chat) {
@@ -41,13 +39,9 @@ function ChatsPage({ fetchedData: chats, setFetchedData: setChats }) {
   );
 }
 
-ChatsPage.auth = true;
-const hoc = withDataFetching(
+export default withDataFetching(
   ChatsPage,
   (_x, _y, pageCursor) => get(`/api/chat?pageCursor=${pageCursor}`),
   () => ({}),
   true
 );
-hoc.auth = ChatsPage.auth;
-
-export default hoc;

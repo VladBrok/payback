@@ -5,7 +5,7 @@ import Empty from "components/Empty";
 import { FcInTransit } from "react-icons/fc";
 import Link from "next/link";
 
-function ProfileProductsPage({ user, products, productFilter }) {
+export default function ProfileProductsPage({ user, products, productFilter }) {
   return (
     <Profile data={user} userId={user.id}>
       <ProductList
@@ -26,6 +26,3 @@ function ProfileProductsPage({ user, products, productFilter }) {
     </Profile>
   );
 }
-
-ProfileProductsPage.auth = true;
-export default ProfileProductsPage;

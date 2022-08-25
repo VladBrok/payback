@@ -14,10 +14,10 @@ import withDataFetching from "components/withDataFetching";
 import { bySimilar } from "lib/db/product/filters";
 import { makeProductPayment } from "lib/payment/client";
 import { get, post } from "lib/api/client";
+import useSessionUser from "hooks/useSessionUser";
 import { FcSearch } from "react-icons/fc";
 import Link from "next/link";
 import Head from "next/head";
-import { useSession } from "next-auth/react";
 import { useState } from "react";
 
 function ProductPage({
@@ -27,8 +27,8 @@ function ProductPage({
   setCustomState: setModalIsOpen,
 }) {
   const [isBuying, setIsBuying] = useState(false);
-  const { data } = useSession();
-  const userId = data?.user?.id;
+  const sessionUser = useSessionUser();
+  const userId = sessionUser?.id;
 
   function handleModalClose() {
     setModalIsOpen(false);

@@ -2,30 +2,24 @@ import "styles/globals.scss";
 import "react-notifications/lib/notifications.css";
 import Menu from "components/Menu";
 import Container from "components/Container";
-import Auth from "components/Auth";
+import { SessionUserProvider } from "context/SessionUser";
 import ProgressBar from "@badrap/bar-of-progress";
 import {
   NotificationContainer,
   NotificationManager,
 } from "react-notifications";
-import { SessionProvider } from "next-auth/react";
 import router, { useRouter } from "next/router";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import { flushSync } from "react-dom";
-
-const progress = new ProgressBar({
-  delay: 500,
-});
-router.events.on("routeChangeStart", progress.start);
-router.events.on("routeChangeComplete", progress.finish);
-router.events.on("routeChangeError", progress.finish);
 
 const NOTIFICATION_LIFETIME_MS = 10000000;
 
 export default function MyApp({ Component: Page, pageProps }) {
   const [error, setError] = useState();
   const pathname = useRouter().pathname;
+
+  console.log(pageProps);
 
   useEffect(() => {
     function handleError(e) {
@@ -60,19 +54,20 @@ export default function MyApp({ Component: Page, pageProps }) {
         <link rel="icon" type="image/png" href="/images/logo-small.png" />
       </Head>
 
-      <SessionProvider session={pageProps.session} refetchInterval={0}>
+      <SessionUserProvider value={pageProps.sessionUser}>
         <Container>
-          {Page.auth ? (
-            <Auth>
-              <Page {...pageProps} />
-            </Auth>
-          ) : (
-            <Page {...pageProps} />
-          )}
+          <Page {...pageProps} />
         </Container>
         <Menu activePath={pathname} />
         <NotificationContainer />
-      </SessionProvider>
+      </SessionUserProvider>
     </>
   );
 }
+
+const progress = new ProgressBar({
+  delay: 500,
+});
+router.events.on("routeChangeStart", progress.start);
+router.events.on("routeChangeComplete", progress.finish);
+router.events.on("routeChangeError", progress.finish);

@@ -1,12 +1,12 @@
-import { useSession } from "next-auth/react";
+import useSessionUser from "hooks/useSessionUser";
 import { useRouter } from "next/router";
 
 export default function AuthButton({ onClick, children, ...props }) {
-  const session = useSession();
+  const sessionUser = useSessionUser();
   const router = useRouter();
 
   function handleClick() {
-    if (session.status !== "authenticated") {
+    if (!sessionUser) {
       router.push("/profile/signIn");
     } else {
       onClick();

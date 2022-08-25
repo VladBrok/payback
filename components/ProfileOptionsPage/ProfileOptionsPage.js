@@ -3,7 +3,7 @@ import utilStyles from "styles/utils.module.scss";
 import Profile from "components/Profile";
 import { signOut } from "next-auth/react";
 
-function ProfileOptionsPage({ user }) {
+export default function ProfileOptionsPage({ user }) {
   async function handleSignOut() {
     await signOut({ redirect: false });
   }
@@ -22,6 +22,3 @@ function ProfileOptionsPage({ user }) {
     </Profile>
   );
 }
-
-ProfileOptionsPage.auth = true;
-export default ProfileOptionsPage;
