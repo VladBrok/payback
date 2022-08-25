@@ -7,12 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "postinstall": "prisma generate",
     "dbpull": "npx prisma db pull",
     "dbgen": "npx prisma generate",
-    "postinstall": "prisma generate"
-  },
-  "prisma": {
-    "seed": "node prisma/seed.js"
+    "dbfill": "node scripts/fill-db.js"
   },
   "dependencies": {
     "@badrap/bar-of-progress": "^0.2.1",
