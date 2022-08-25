@@ -22,9 +22,9 @@ async function clearTables() {
 }
 
 async function populateTables() {
-  const REVIEW_COUNT = 7;
-  const USER_COUNT = 4;
-  const PRODUCT_COUNT = 20;
+  const REVIEW_COUNT = 30;
+  const USER_COUNT = 10;
+  const PRODUCT_COUNT = 100;
 
   const users = await getUsers();
   const categories = await getCategories();
@@ -62,19 +62,25 @@ async function populateTables() {
 
   async function getProducts() {
     return {
-      data: shuffle(await get("https://fakestoreapi.com/products/")).map(
-        (p, i) => ({
+      data: shuffle([
+        ...(await get(`https://dummyjson.com/products?limit=${PRODUCT_COUNT}`))
+          .products,
+        ...(await get("https://fakestoreapi.com/products/")),
+      ])
+        .filter(p => Boolean(convertCategory(p.category, categories.data)))
+        .map((p, i) => ({
           id: i + 1,
           title: p.title,
           description: p.description,
           price: p.price,
-          image: p.image,
+          image: p.images?.[0] ?? p.image,
           isPremium: Math.random() < 0.8,
           isSold: i < REVIEW_COUNT,
-          categoryId: categories.data.find(c => c.name == p.category).id,
+          categoryId: categories.data.find(
+            c => c.name == convertCategory(p.category, categories.data)
+          ).id,
           userId: randomNumber(1 + SUPPORT_ID, users.data.length),
-        })
-      ),
+        })),
       table: "product",
     };
   }
@@ -114,5 +120,32 @@ async function populateTables() {
       ],
       table: "category",
     };
+  }
+}
+
+function convertCategory(name, categories) {
+  if (categories.some(c => c.name == name)) {
+    return name;
+  }
+
+  switch (name) {
+    case "smartphones":
+    case "laptops":
+    case "automotive":
+      return "electronics";
+
+    case "mens-shirts":
+    case "mens-shoes":
+      return "men's clothing";
+
+    case "womens-dresses":
+    case "womens-shoes":
+      return "women's clothing";
+
+    case "womens-jewellery":
+      return "jewelery";
+
+    default:
+      return;
   }
 }
