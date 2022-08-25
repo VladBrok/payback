@@ -1,30 +1,24 @@
 import { canAccessChat } from "lib/chat/server";
 import { getChat } from "lib/db/chat";
-import { getSessionUser, fetchServerSide } from "lib/serverSide";
+import { withServerProps } from "lib/serverSide";
 
 export { default } from "components/ChatPage";
 
 export async function getServerSideProps(context) {
   const chatId = context.query.id;
-  const userId = (await getSessionUser(context))?.id;
 
-  if (!canAccessChat(userId, chatId)) {
-    return {
-      notFound: true,
-    };
-  }
-
-  const chat = await fetchServerSide(() => getChat(chatId, userId));
-  if (chat.notFound) {
-    return {
-      notFound: true,
-    };
-  }
-
-  return {
-    props: {
+  return withServerProps(
+    sessionUser => ({
       id: chatId,
-      data: chat.data,
-    },
-  };
+      data: () => {
+        const userId = sessionUser.id;
+        if (!canAccessChat(userId, chatId)) {
+          return null;
+        }
+        return getChat(chatId, userId);
+      },
+    }),
+    context,
+    true
+  );
 }

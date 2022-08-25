@@ -1,7 +1,7 @@
 import { getProducts } from "lib/db/product";
 import { getUser } from "lib/db/user";
 import { byUserId } from "lib/db/product/filters";
-import { fetchServerSide, getSessionUser } from "lib/serverSide";
+import { getSessionUser, withServerProps } from "lib/serverSide";
 
 export { default } from "components/UserPage";
 
@@ -18,24 +18,13 @@ export async function getServerSideProps(context) {
     };
   }
 
-  const result = await fetchServerSide(() => getUser(requestedUserId));
-  if (result.notFound) {
-    return {
-      notFound: true,
-    };
-  }
-
-  // fixme: dups
-  const products = await fetchServerSide(() =>
-    getProducts(byUserId(requestedUserId))
-  );
-
-  return {
-    props: {
+  return withServerProps(
+    () => ({
       id: requestedUserId,
-      data: result.data,
-      products: products.data,
+      data: () => getUser(requestedUserId),
+      products: () => getProducts(byUserId(requestedUserId)),
       productFilter: byUserId(requestedUserId),
-    },
-  };
+    }),
+    context
+  );
 }

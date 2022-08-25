@@ -1,21 +1,18 @@
 import { getCategories } from "lib/db/category";
-import { fetchServerSide } from "lib/serverSide";
+import { withServerProps } from "lib/serverSide";
 
 export { default } from "components/SellPage";
 
-export async function getStaticProps() {
-  const result = await fetchServerSide(getCategories);
-  if (result.error) {
-    throw new Error();
-  }
-
-  return {
-    props: {
-      categories: result.data,
+export async function getServerSideProps(context) {
+  return withServerProps(
+    () => ({
+      categories: () => getCategories(),
       serviceChargesPercent: process.env.SERVICE_CHARGES_PERCENT,
       premiumCost: process.env.PREMIUM_COST,
       minPrice: process.env.MIN_PRICE,
       maxPrice: process.env.MAX_PRICE,
-    },
-  };
+    }),
+    context,
+    true
+  );
 }
