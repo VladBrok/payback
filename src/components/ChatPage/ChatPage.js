@@ -2,14 +2,12 @@ import Subpage from "components/Subpage";
 import Chat from "components/Chat";
 import withDataFetching from "components/withDataFetching";
 import { get } from "lib/api/client";
+import useSessionUser from "hooks/useSessionUser";
 import Head from "next/head";
-import { useSession } from "next-auth/react";
 
 function ChatPage({ id, fetchedData: chat }) {
-  const {
-    data: { user },
-  } = useSession();
-  const userId = user.id;
+  const sessionUser = useSessionUser();
+  const userId = sessionUser.id;
 
   return (
     <>
