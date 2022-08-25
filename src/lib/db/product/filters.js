@@ -11,10 +11,11 @@ export function bySimilar(product) {
 
 export function byCategoryAndPrice(name, min = "", max = "") {
   const BIG_NUMBER = 1e6;
-  const MAX_INPUT_LENGTH = 7;
+  const MIN = -BIG_NUMBER;
+  const MAX = BIG_NUMBER;
 
-  min = isValid(min) ? +min : -BIG_NUMBER;
-  max = isValid(max) ? +max : BIG_NUMBER;
+  min = isEmpty(min) ? MIN : clamp(+min);
+  max = isEmpty(max) ? MAX : clamp(+max);
 
   return {
     AND: [
@@ -25,8 +26,12 @@ export function byCategoryAndPrice(name, min = "", max = "") {
     ],
   };
 
-  function isValid(value) {
-    return value !== "" && value.length <= MAX_INPUT_LENGTH;
+  function isEmpty(value) {
+    return value === "";
+  }
+
+  function clamp(value) {
+    return Math.max(Math.min(value, MAX), MIN);
   }
 }
 
