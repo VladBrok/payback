@@ -29,7 +29,8 @@ async function handleGet(req, res, sessionUser) {
 
 async function handlePost(req, res) {
   const chatId = req.body.chatId;
-  const chat = await createChat(chatId);
+
+  const { chat, userIds } = await createChat(chatId);
 
   if (chat) {
     await Promise.all(

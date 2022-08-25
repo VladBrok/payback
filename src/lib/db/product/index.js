@@ -65,11 +65,3 @@ export async function createProduct(
     });
   });
 }
-
-export async function updateProduct(data, id) {
-  return await prisma.product.update({
-    where: { id },
-    data,
-    include: { user: true },
-  });
-}

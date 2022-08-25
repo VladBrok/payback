@@ -24,10 +24,17 @@ async function handlePost(req, res) {
       process.env.SERVICE_CHARGES_PERCENT
     );
 
-    const product = await updateProduct({ isSold: true }, productId);
+    const product = await prisma.product.update({
+      where: { id: productId },
+      data: { isSold: true },
+      include: { user: true },
+    });
     const newMoney = +product.user.money + formatMoneyFromRazorpay(gain);
 
-    await updateUser({ money: newMoney }, product.userId);
+    await prisma.user.update({
+      where: { id: product.userId },
+      data: { money: newMoney },
+    });
   });
 
   res.status(200).end();

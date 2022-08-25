@@ -74,14 +74,17 @@ export async function createChat(id) {
 
   const userIds = ids.map(x => ({ userId: +x }));
 
-  return await transaction(prisma, async prisma => {
-    if ((await prisma.chat.count({ where: { id } })) === 0) {
-      const chat = await prisma.chat.create({
-        data: { id, users: { createMany: { data: userIds } } },
-      });
-      return chat;
-    }
+  return {
+    chat: await transaction(prisma, async prisma => {
+      if ((await prisma.chat.count({ where: { id } })) === 0) {
+        const chat = await prisma.chat.create({
+          data: { id, users: { createMany: { data: userIds } } },
+        });
+        return chat;
+      }
 
-    return null;
-  });
+      return null;
+    }),
+    userIds,
+  };
 }
