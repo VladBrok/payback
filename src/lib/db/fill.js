@@ -1,7 +1,8 @@
 import prisma from "lib/db/prisma.js";
 import { MAX_RATING, SUPPORT_ID } from "lib/sharedConstants.js";
 import { createReview } from "lib/db/review.js";
-import { randomDate, randomNumber } from "lib/random.js";
+import { randomDate, randomNumber, shuffle } from "lib/random.js";
+import { get } from "lib/api/client";
 
 export async function fillDatabase() {
   console.log("Start filling database...");
@@ -22,6 +23,9 @@ async function clearTables() {
 
 async function populateTables() {
   const REVIEW_COUNT = 7;
+  const USER_COUNT = 4;
+  const PRODUCT_COUNT = 20;
+
   const users = await getUsers();
   const categories = await getCategories();
   const products = await getProducts();
@@ -45,7 +49,7 @@ async function populateTables() {
           isVerified: true,
         },
         ...(
-          await (await fetch("https://randomuser.me/api/?results=4")).json()
+          await get(`https://randomuser.me/api/?results=${USER_COUNT}`)
         ).results.map((u, i) => ({
           id: i + 1 + SUPPORT_ID,
           name: u.login.username,
@@ -58,19 +62,19 @@ async function populateTables() {
 
   async function getProducts() {
     return {
-      data: (
-        await (await fetch("https://fakestoreapi.com/products/")).json()
-      ).map((p, i) => ({
-        id: i + 1,
-        title: p.title,
-        description: p.description,
-        price: p.price,
-        image: p.image,
-        isPremium: Math.random() < 0.8,
-        isSold: i < REVIEW_COUNT,
-        categoryId: categories.data.find(c => c.name == p.category).id,
-        userId: randomNumber(1 + SUPPORT_ID, users.data.length),
-      })),
+      data: shuffle(await get("https://fakestoreapi.com/products/")).map(
+        (p, i) => ({
+          id: i + 1,
+          title: p.title,
+          description: p.description,
+          price: p.price,
+          image: p.image,
+          isPremium: Math.random() < 0.8,
+          isSold: i < REVIEW_COUNT,
+          categoryId: categories.data.find(c => c.name == p.category).id,
+          userId: randomNumber(1 + SUPPORT_ID, users.data.length),
+        })
+      ),
       table: "product",
     };
   }
@@ -85,6 +89,7 @@ async function populateTables() {
         }
       )
     ).json();
+
     return {
       data: products.data.slice(0, REVIEW_COUNT).map((p, i) => ({
         id: i + 1,

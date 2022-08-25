@@ -7,3 +7,7 @@ export function randomDate(maxHoursOffset) {
   now.setHours(now.getHours() - randomNumber(1, maxHoursOffset));
   return now;
 }
+
+export function shuffle(array) {
+  return array.slice().sort(() => Math.random() - Math.random());
+}
