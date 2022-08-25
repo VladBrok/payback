@@ -1,4 +1,3 @@
-import prisma from "lib/db/prisma";
 import { createReview } from "lib/db/review";
 import { handle } from "lib/api/server";
 import { getReviews } from "lib/db/review";
@@ -20,6 +19,6 @@ handleGet.allowUnauthorized = true;
 
 async function handlePost(req, res) {
   const data = req.body;
-  await createReview(data, prisma);
+  await createReview(data);
   res.status(200).end();
 }

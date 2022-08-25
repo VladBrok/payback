@@ -21,7 +21,7 @@ export async function getReviews(userId, pageCursor) {
   return result;
 }
 
-export async function createReview(data, prisma) {
+export async function createReview(data) {
   await transaction(prisma, async prisma => {
     const review = await prisma.review.create({
       data: {
