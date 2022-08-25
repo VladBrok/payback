@@ -20,3 +20,10 @@ export async function enrichUser(id, user) {
 
   user.reviewCount = reviewCount;
 }
+
+export async function updateUser(data, id) {
+  return await prisma.user.update({
+    where: { id },
+    data,
+  });
+}

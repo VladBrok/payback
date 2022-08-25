@@ -1,10 +1,7 @@
 import { pusher } from "lib/chat/server";
-import { getUserIdsFromChatId } from "lib/chat/chatId";
 import { EVENTS, CHANNELS } from "lib/chat/constants";
-import prisma from "lib/db/prisma";
-import { transaction } from "lib/db/transaction";
 import { handle } from "lib/api/server";
-import { getChat, getChats } from "lib/db/chat";
+import { createChat, getChat, getChats } from "lib/db/chat";
 
 export default async function handler(req, res) {
   await handle(req, res, {
@@ -32,24 +29,7 @@ async function handleGet(req, res, sessionUser) {
 
 async function handlePost(req, res) {
   const chatId = req.body.chatId;
-  const ids = getUserIdsFromChatId(chatId);
-  const uniqueIds = new Set(ids);
-
-  if (ids.length !== uniqueIds.size) {
-    throw new Error("Chat cannot contain duplicate users");
-  }
-
-  const userIds = ids.map(x => ({ userId: +x }));
-  const chat = await transaction(prisma, async prisma => {
-    if ((await prisma.chat.count({ where: { id: chatId } })) === 0) {
-      const chat = await prisma.chat.create({
-        data: { id: chatId, users: { createMany: { data: userIds } } },
-      });
-      return chat;
-    }
-
-    return null;
-  });
+  const chat = await createChat(chatId);
 
   if (chat) {
     await Promise.all(

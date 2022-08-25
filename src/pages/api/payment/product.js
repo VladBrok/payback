@@ -1,6 +1,6 @@
 import { handle } from "lib/api/server";
 import { createOrder } from "lib/payment/server";
-import prisma from "lib/db/prisma";
+import { getProduct } from "lib/db/product";
 
 export default async function handler(req, res) {
   await handle(req, res, {
@@ -10,10 +10,10 @@ export default async function handler(req, res) {
 
 async function handleGet(req, res) {
   const productId = +req.query.id;
-  const price = (await prisma.product.findFirst({ where: { id: productId } }))
-    ?.price;
+  const price = (await getProduct(productId))?.price;
   if (price == null) {
-    throw new Error(`Product with id ${productId} not found.`);
+    res.status(404).end();
+    return;
   }
 
   const order = await createOrder(+price);

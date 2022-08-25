@@ -1,13 +1,7 @@
-import prisma from "lib/db/prisma";
 import { toMegabytes } from "lib/file";
 import { BYTES_IN_MEGABYTE, MAX_FILE_SIZE_IN_BYTES } from "lib/sharedConstants";
-import { processOrder } from "lib/payment/server";
 import { handle } from "lib/api/server";
-import { postBlob } from "lib/api/client";
-import { enrichUser } from "lib/db/user";
-import { transaction } from "lib/db/transaction";
-import FormData from "form-data";
-import { getProducts } from "lib/db/product";
+import { getProduct, getProducts } from "lib/db/product";
 
 export default async function handler(req, res) {
   await handle(req, res, {
@@ -18,17 +12,13 @@ export default async function handler(req, res) {
 
 async function handleGet(req, res) {
   const id = +req.query.id;
-  const product = await prisma.product.findFirst({
-    where: { id },
-    include: { category: true, user: true },
-  });
+  const product = await getProduct(id);
 
   if (!product) {
     res.status(404).end();
     return;
   }
 
-  await enrichUser(product.user.id, product.user);
   res.status(200).json(product);
 }
 handleGet.allowUnauthorized = true;
@@ -40,45 +30,12 @@ async function handlePost(req, res, sessionUser) {
   if (data.filter) {
     res.status(200).json(await getProducts(data.filter, pageCursor));
   } else {
-    await createProduct();
-  }
-
-  async function createProduct() {
     if (!sessionUser) {
       res.status(401).end();
       return;
     }
 
-    await transaction(prisma, async prisma => {
-      if (data.isPremium) {
-        await processOrder(data.paymentData);
-      }
-
-      const formData = new FormData();
-      formData.append(
-        "image",
-        data.photoBlob.slice(data.photoBlob.indexOf(",") + 1)
-      );
-
-      const json = await postBlob(
-        `https://api.imgbb.com/1/upload?key=${process.env.IMAGE_HOSTING_API_KEY}`,
-        formData
-      );
-
-      const image = json.data.image.url;
-      await prisma.product.create({
-        data: {
-          title: data.title,
-          description: data.description,
-          image,
-          price: data.price,
-          isPremium: data.isPremium,
-          user: { connect: { id: +sessionUser.id } },
-          category: { connect: { id: +data.category } },
-        },
-      });
-    });
-
+    await createProduct(data, sessionUser);
     res.status(200).end();
   }
 }

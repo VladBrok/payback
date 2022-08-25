@@ -1,6 +1,8 @@
 import prisma from "lib/db/prisma";
 import { withPagination } from "lib/db/withPagination";
 import { CHAT_PAGE_SIZE } from "lib/sharedConstants";
+import { getUserIdsFromChatId } from "lib/chat/chatId";
+import { transaction } from "lib/db/transaction";
 
 export async function getChat(id, userId) {
   const chat = await prisma.chat.findFirst({
@@ -60,4 +62,26 @@ function mapChat(chat) {
     image: chat.users[0].user.image,
     name: chat.users[0].user.name,
   };
+}
+
+export async function createChat(id) {
+  const ids = getUserIdsFromChatId(id);
+  const uniqueIds = new Set(ids);
+
+  if (ids.length !== uniqueIds.size) {
+    throw new Error("Chat cannot contain duplicate users");
+  }
+
+  const userIds = ids.map(x => ({ userId: +x }));
+
+  return await transaction(prisma, async prisma => {
+    if ((await prisma.chat.count({ where: { id } })) === 0) {
+      const chat = await prisma.chat.create({
+        data: { id, users: { createMany: { data: userIds } } },
+      });
+      return chat;
+    }
+
+    return null;
+  });
 }

@@ -4,6 +4,8 @@ import prisma from "lib/db/prisma";
 import { transaction } from "lib/db/transaction";
 import { subtractPercent } from "lib/percentage";
 import { handle } from "lib/api/server";
+import { updateProduct } from "lib/db/product";
+import { updateUser } from "lib/db/user";
 
 export default async function handler(req, res) {
   await handle(req, res, {
@@ -22,17 +24,10 @@ async function handlePost(req, res) {
       process.env.SERVICE_CHARGES_PERCENT
     );
 
-    const product = await prisma.product.update({
-      where: { id: productId },
-      data: { isSold: true },
-      include: { user: true },
-    });
-
+    const product = await updateProduct({ isSold: true }, productId);
     const newMoney = +product.user.money + formatMoneyFromRazorpay(gain);
-    await prisma.user.update({
-      where: { id: product.userId },
-      data: { money: newMoney },
-    });
+
+    await updateUser({ money: newMoney }, product.userId);
   });
 
   res.status(200).end();
