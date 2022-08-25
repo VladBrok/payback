@@ -9,8 +9,7 @@
     "lint": "next lint",
     "postinstall": "prisma generate",
     "dbpull": "npx prisma db pull",
-    "dbgen": "npx prisma generate",
-    "dbfill": "node scripts/fill-db.js"
+    "dbgen": "npx prisma generate"
   },
   "dependencies": {
     "@badrap/bar-of-progress": "^0.2.1",
@@ -21,7 +20,6 @@
     "nanoid": "^4.0.0",
     "next": "12.2.3",
     "next-auth": "^4.10.3",
-    "node-fetch": "^3.2.10",
     "pusher": "^5.1.1-beta",
     "pusher-js": "^7.3.0",
     "razorpay": "^2.8.3",

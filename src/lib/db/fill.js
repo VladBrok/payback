@@ -1,27 +1,13 @@
-import prisma from "../src/lib/db/prisma.js";
-import { MAX_RATING, SUPPORT_ID } from "../src/lib/sharedConstants.js";
-import { createReview } from "../src/lib/db/review.js";
-import { randomDate, randomNumber } from "../src/lib/random.js";
-import fetch from "node-fetch";
+import prisma from "lib/db/prisma.js";
+import { MAX_RATING, SUPPORT_ID } from "lib/sharedConstants.js";
+import { createReview } from "lib/db/review.js";
+import { randomDate, randomNumber } from "lib/random.js";
 
-main()
-  .then(async () => {
-    await prisma.$disconnect();
-  })
-  .catch(async er => {
-    console.error(er);
-    await prisma.$disconnect();
-    process.exit(1);
-  });
-
-async function main() {
-  console.warn("!!! Seeding will delete all data. !!!");
-  await new Promise(resolve => setTimeout(resolve, 3000));
-
-  console.log("Start seeding ...");
+export async function fillDatabase() {
+  console.log("Start filling database...");
   await clearTables();
   await populateTables();
-  console.log("Seeding finished.");
+  console.log("Database is filled.");
 }
 
 async function clearTables() {
@@ -44,7 +30,7 @@ async function populateTables() {
   for (const source of [users, categories, products, reviews]) {
     for (const data of source.data) {
       await (source.create
-        ? source.create(data, prisma)
+        ? source.create(data)
         : prisma[source.table].create({ data }));
     }
   }
