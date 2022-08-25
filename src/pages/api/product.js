@@ -1,7 +1,7 @@
 import { toMegabytes } from "lib/file";
 import { BYTES_IN_MEGABYTE, MAX_FILE_SIZE_IN_BYTES } from "lib/sharedConstants";
 import { handle } from "lib/api/server";
-import { getProduct, getProducts } from "lib/db/product";
+import { getProduct, getProducts, createProduct } from "lib/db/product";
 
 export default async function handler(req, res) {
   await handle(req, res, {
