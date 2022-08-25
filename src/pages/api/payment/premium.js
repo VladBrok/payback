@@ -8,6 +8,6 @@ export default async function handler(req, res) {
 }
 
 async function handleGet(_, res) {
-  const order = await createOrder(process.env.PREMIUM_COST);
+  const order = await createOrder(+process.env.PREMIUM_COST);
   res.status(200).json(order);
 }
