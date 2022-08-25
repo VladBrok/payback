@@ -13,8 +13,8 @@ export default async function handler(req, res) {
   });
 }
 
-async function handleGet(req, res, session) {
-  const userId = +session.user.id;
+async function handleGet(req, res, sessionUser) {
+  const userId = +sessionUser.id;
   const id = req.query.id;
 
   if (id) {

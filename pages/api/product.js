@@ -33,7 +33,7 @@ async function handleGet(req, res) {
 }
 handleGet.allowUnauthorized = true;
 
-async function handlePost(req, res, session) {
+async function handlePost(req, res, sessionUser) {
   const data = req.body;
   const pageCursor = req.query.pageCursor;
 
@@ -44,7 +44,7 @@ async function handlePost(req, res, session) {
   }
 
   async function createProduct() {
-    if (!session) {
+    if (!sessionUser) {
       res.status(401).end();
       return;
     }
@@ -73,7 +73,7 @@ async function handlePost(req, res, session) {
           image,
           price: data.price,
           isPremium: data.isPremium,
-          user: { connect: { id: +session.user.id } },
+          user: { connect: { id: +sessionUser.id } },
           category: { connect: { id: +data.category } },
         },
       });

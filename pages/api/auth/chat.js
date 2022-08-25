@@ -8,10 +8,10 @@ export default async function handler(req, res) {
   });
 }
 
-function handlePost(req, res, session) {
+function handlePost(req, res, sessionUser) {
   const { socket_id: socketId, channel_name: channel } = req.body;
   const chatId = channel.slice(CHANNELS.ENCRYPTED_BASE.length);
-  const userId = session.user.id;
+  const userId = sessionUser.id;
 
   if (!canAccessChat(userId, chatId)) {
     res.status(401).end();

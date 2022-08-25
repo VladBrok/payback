@@ -29,12 +29,12 @@ async function handleGet(req, res) {
   res.status(200).json(result);
 }
 
-async function handlePost(req, res, session) {
+async function handlePost(req, res, sessionUser) {
   const { text, chatId } = req.body;
   const message = await prisma.message.create({
     data: {
       text: text,
-      user: { connect: { id: session.user.id } },
+      user: { connect: { id: sessionUser.id } },
       chat: { connect: { id: chatId } },
     },
   });
