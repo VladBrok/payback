@@ -7,7 +7,6 @@ import Section from "components/Section";
 import User from "components/User";
 import ProductList from "components/ProductList";
 import Rating from "components/Rating";
-import ReviewModal from "components/ReviewModal";
 import AuthButton from "components/AuthButton";
 import TestPaymentNotice from "components/TestPaymentNotice";
 import withDataFetching from "components/withDataFetching";
@@ -18,7 +17,12 @@ import useSessionUser from "hooks/useSessionUser";
 import { FcSearch } from "react-icons/fc";
 import Link from "next/link";
 import Head from "next/head";
+import dynamic from "next/dynamic";
 import { useState } from "react";
+
+const ReviewModal = dynamic(() => import("components/ReviewModal"), {
+  ssr: false,
+});
 
 function ProductPage({
   products,
@@ -67,12 +71,14 @@ function ProductPage({
           />
         }
       >
-        <ReviewModal
-          buyerId={userId}
-          productId={product.id}
-          isOpen={modalIsOpen}
-          close={handleModalClose}
-        />
+        {modalIsOpen && (
+          <ReviewModal
+            buyerId={userId}
+            productId={product.id}
+            isOpen={modalIsOpen}
+            close={handleModalClose}
+          />
+        )}
 
         {product.isSold && <div className={styles.sold}>Sold</div>}
         <Product
