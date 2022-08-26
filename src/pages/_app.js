@@ -1,22 +1,16 @@
 import "styles/globals.scss";
-import "react-notifications/lib/notifications.css";
 import Menu from "components/Menu";
 import Container from "components/Container";
 import { SessionUserProvider } from "context/SessionUser";
 import ProgressBar from "@badrap/bar-of-progress";
-import {
-  NotificationContainer,
-  NotificationManager,
-} from "react-notifications";
 import router, { useRouter } from "next/router";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import { flushSync } from "react-dom";
 
-const NOTIFICATION_LIFETIME_MS = 10000000;
-
 export default function MyApp({ Component: Page, pageProps }) {
   const [error, setError] = useState();
+  const [notificationContainer, setNotificationContainer] = useState();
   const pathname = useRouter().pathname;
 
   useEffect(() => {
@@ -31,10 +25,11 @@ export default function MyApp({ Component: Page, pageProps }) {
       }
 
       if (!error || error !== message) {
-        NotificationManager.error(message, title, NOTIFICATION_LIFETIME_MS);
+        flushSync(() => setError(message));
+        notify(message, title);
+      } else {
+        flushSync(() => setError(message));
       }
-
-      flushSync(() => setError(message));
     }
 
     window.addEventListener("unhandledrejection", handleError);
@@ -44,6 +39,20 @@ export default function MyApp({ Component: Page, pageProps }) {
   useEffect(() => {
     setError();
   }, [pathname]);
+
+  async function notify(message, title) {
+    if (!notificationContainer) {
+      await import("react-notifications/lib/notifications.css")
+        .then(() => import("react-notifications"))
+        .then(({ NotificationContainer }) => {
+          flushSync(() => setNotificationContainer(<NotificationContainer />));
+        });
+    }
+
+    const { NotificationManager } = await import("react-notifications");
+    const LIFETIME_MS = 10000000;
+    NotificationManager.error(message, title, LIFETIME_MS);
+  }
 
   return (
     <>
@@ -60,7 +69,7 @@ export default function MyApp({ Component: Page, pageProps }) {
           <Page {...pageProps} />
         </Container>
         <Menu activePath={pathname} />
-        <NotificationContainer />
+        {notificationContainer}
       </SessionUserProvider>
     </>
   );
