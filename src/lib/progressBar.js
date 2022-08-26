@@ -13,6 +13,7 @@ async function getBar() {
     const ProgressBar = (await import("@badrap/bar-of-progress")).default;
     bar = new ProgressBar({
       delay: 500,
+      size: "0.2rem",
     });
   }
 
