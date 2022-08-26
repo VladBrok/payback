@@ -1,4 +1,3 @@
-import styles from "./Modal.module.scss";
 import useScrollBarWidth from "hooks/useScrollBarWidth";
 import { useEffect } from "react";
 import ReactModal from "react-modal";
