@@ -18,6 +18,7 @@ function CategoryList({
       id: d.id,
       name: d.name,
       image: d.image,
+      priority: true,
     })
   );
 

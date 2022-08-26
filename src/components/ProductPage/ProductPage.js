@@ -63,6 +63,7 @@ function ProductPage({
             id={product.category.id}
             name={product.category.name}
             image={product.category.image}
+            priority
           />
         }
       >
@@ -77,6 +78,7 @@ function ProductPage({
         <Product
           price={product.price}
           image={product.image}
+          priority
           imageSize="14rem"
           flexDirectionWhenExpanded="row"
         >

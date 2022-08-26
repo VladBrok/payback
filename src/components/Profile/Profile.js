@@ -37,7 +37,7 @@ function Profile({ children, fetchedData: user }) {
       </header>
 
       <main className={styles.container}>
-        <User name={user.name} imageUrl={user.image}>
+        <User name={user.name} imageUrl={user.image} priority>
           <Rating
             reviewCount={user.reviewCount}
             value={user.rating}

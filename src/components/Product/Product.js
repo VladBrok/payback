@@ -4,9 +4,10 @@ import { formatMoney } from "lib/money";
 
 export default function Product({
   price,
-  image,
   children,
   imageSize,
+  image,
+  priority = false,
   flexDirection = "column",
   flexDirectionWhenExpanded = "column",
   alignItems = "stretch",
@@ -27,6 +28,7 @@ export default function Product({
           src={image}
           alt=""
           objectFit="contain"
+          priority={priority}
         />
         <div className={styles.info}>
           <p className={styles.price}>{formatMoney(price)}</p>

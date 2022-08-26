@@ -8,7 +8,7 @@ import { get } from "lib/api/client";
 import Link from "next/link";
 
 function ReviewList({ fetchedData: reviews }) {
-  const reviewList = reviews.map(review => {
+  const reviewList = reviews.map((review, i) => {
     const product = review.product;
     const buyer = review.buyer;
 
@@ -17,7 +17,7 @@ function ReviewList({ fetchedData: reviews }) {
         <header className={styles.header}>
           <Link href={`/users/${buyer.id}`}>
             <a>
-              <User imageUrl={buyer.image} name={buyer.name}>
+              <User imageUrl={buyer.image} name={buyer.name} priority>
                 <Stars count={review.rating} />
               </User>
             </a>
@@ -38,6 +38,7 @@ function ReviewList({ fetchedData: reviews }) {
               flexDirection="row"
               flexDirectionWhenExpanded="row"
               alignItems="flex-start"
+              priority={i === 0}
             >
               <h3>{product.title}</h3>
             </Product>

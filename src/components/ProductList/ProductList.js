@@ -14,24 +14,26 @@ function ProductList({
   ),
   fetchedData: products,
 }) {
-  const productList = products?.map(p => (
-    <div key={p.id}>
+  const productList = products?.map((product, i) => (
+    <div key={product.id}>
       {includeCategory && (
         <CategoryLink
-          id={p.category.id}
-          name={p.category.name}
-          image={p.category.image}
+          id={product.category.id}
+          name={product.category.name}
+          image={product.category.image}
+          priority={i === 0}
         />
       )}
-      <Link href={`/products/${p.id}`}>
+      <Link href={`/products/${product.id}`}>
         <a>
           <Product
             imageSize="10rem"
-            image={p.image}
-            price={p.price}
-            isSold={p.isSold}
+            price={product.price}
+            isSold={product.isSold}
+            image={product.image}
+            priority={i === 0}
           >
-            <h3>{p.title}</h3>
+            <h3>{product.title}</h3>
           </Product>
         </a>
       </Link>

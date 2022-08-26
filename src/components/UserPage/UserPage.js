@@ -49,7 +49,7 @@ function UserPage({ id, products, productFilter, fetchedData: user }) {
 
       <Subpage
         title={
-          <User name={<h1>{user.name}</h1>} imageUrl={user.image}>
+          <User name={<h1>{user.name}</h1>} imageUrl={user.image} priority>
             <Rating
               value={user.rating}
               reviewCount={user.reviewCount}
