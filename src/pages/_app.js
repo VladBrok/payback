@@ -42,7 +42,6 @@ export default function MyApp({ Component: Page, pageProps }) {
   }, [error]);
 
   useEffect(() => {
-    NotificationManager.removeAll();
     setError();
   }, [pathname]);
 
