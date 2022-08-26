@@ -2,6 +2,7 @@ import styles from "./withDataFetching.module.scss";
 import utilStyles from "styles/utils.module.scss";
 import Loading from "components/Loading";
 import { uniqueById } from "lib/db/uniqueById";
+import useFirstRender from "hooks/useFirstRender";
 import Error from "next/error";
 import { useEffect, useState } from "react";
 
@@ -14,13 +15,15 @@ export default function withDataFetching(
   renderAtTop = true
 ) {
   const Wrapper = ({ data, reset, ...props }) => {
-    const [fetchedData, setFetchedData] = useState(data?.pageData ?? data);
+    const initialData = data?.pageData ?? data;
+    const [fetchedData, setFetchedData] = useState(initialData);
     const [isLoaded, setIsLoaded] = useState(data != null);
     const [notFound, setNotFound] = useState(false);
     const [showMore, setShowMore] = useState(false);
     const [curPageCursor, setCurPageCursor] = useState(data?.pageCursor ?? "");
     const [prevPageCursor, setPrevPageCursor] = useState("");
     const [customState, setCustomState] = useState(customStateInit);
+    const isFirstRender = useFirstRender();
 
     const fetchDeps = getFetchDeps(props);
     const pageCursor = reset ? "" : showMore ? curPageCursor : prevPageCursor;
@@ -28,6 +31,11 @@ export default function withDataFetching(
       !showMore && fetchedData != undefined && curPageCursor != "";
 
     useEffect(() => {
+      if (isFirstRender && initialData != null) {
+        return;
+      }
+
+      console.log("fetching with cursor:", pageCursor);
       fetchCallback(fetchDeps, customState, pageCursor)
         .then(result => {
           if (result.pageData) {
@@ -53,7 +61,14 @@ export default function withDataFetching(
           setIsLoaded(true);
           setShowMore(false);
         });
-    }, [...Object.values(fetchDeps), customState, reset, pageCursor]);
+    }, [
+      ...Object.values(fetchDeps),
+      customState,
+      reset,
+      pageCursor,
+      isFirstRender,
+      initialData,
+    ]);
 
     useEffect(() => {
       if (showMore) {
