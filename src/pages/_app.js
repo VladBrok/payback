@@ -2,13 +2,16 @@ import "styles/globals.scss";
 import Menu from "components/Menu";
 import Container from "components/Container";
 import { SessionUserProvider } from "context/SessionUser";
-import ProgressBar from "@badrap/bar-of-progress";
+import {
+  startProgressAnimation,
+  finishProgressAnimation,
+} from "lib/progressBar";
 import router, { useRouter } from "next/router";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import { flushSync } from "react-dom";
 
-export default function MyApp({ Component: Page, pageProps }) {
+export default function App({ Component: Page, pageProps }) {
   const [error, setError] = useState();
   const [notificationContainer, setNotificationContainer] = useState();
   const pathname = useRouter().pathname;
@@ -75,9 +78,6 @@ export default function MyApp({ Component: Page, pageProps }) {
   );
 }
 
-const progress = new ProgressBar({
-  delay: 500,
-});
-router.events.on("routeChangeStart", progress.start);
-router.events.on("routeChangeComplete", progress.finish);
-router.events.on("routeChangeError", progress.finish);
+router.events.on("routeChangeStart", startProgressAnimation);
+router.events.on("routeChangeComplete", finishProgressAnimation);
+router.events.on("routeChangeError", finishProgressAnimation);
