@@ -9,7 +9,7 @@ export async function makePremiumPayment(onSuccess) {
     onSuccess,
   }).catch(err => {
     throw new PaybackError(
-      "Failed to buy premium status. Please try again later",
+      "Failed to buy a premium status. Please try again later",
       err
     );
   });
@@ -32,7 +32,7 @@ export async function makeProductPayment(product, onSuccess) {
 async function makePayment({ endpoint, description, image, onSuccess }) {
   const initialized = await initializeRazorpay();
   if (!initialized) {
-    throw new PaybackError("Payment gateway is failed to load");
+    throw new PaybackError("A payment gateway is failed to load");
   }
 
   const paymentData = await get(endpoint);

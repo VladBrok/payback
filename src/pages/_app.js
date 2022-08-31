@@ -63,7 +63,7 @@ export default function App({ Component: Page, pageProps }) {
         <link rel="icon" type="image/png" href="/images/logo-small.png" />
         <meta
           name="description"
-          content="Buy and sell products on Payback - fully-featured e-commerce store."
+          content="Buy and sell products on Payback - a fully-featured e-commerce store."
         />
       </Head>
 

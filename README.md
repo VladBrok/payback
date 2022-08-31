@@ -1,4 +1,4 @@
-# Payback — fully-featured e-commerce store
+# Payback — a fully-featured e-commerce store
 
 ![screenshot of the homepage](/public/images/self/home.png)
 
@@ -6,7 +6,7 @@
 
 - [Description](#description)
 - [Features](#features)
-  - [Real-time chat](#real-time-chat)
+  - [Messenger](#messenger)
   - [Buying products](#buying-products)
   - [Selling products](#selling-products)
   - [Leaving reviews](#leaving-reviews)
@@ -17,17 +17,17 @@
 
 ## Description
 
-Payback is an e-commerce site where people can [buy](#buying-products) and [sell](#selling-products) products. They can communicate with each other using build-in [real-time chat](#real-time-chat). To understand how reliable the seller is, users can view all [reviews](#leaving-reviews) about that particular seller (a review can be left only after the product has been purchased).  
+Payback is an e-commerce site where people can [buy](#buying-products) and [sell](#selling-products) products. Users can communicate with each other using build-in [messenger](#messenger). To understand how reliable a seller is, users can view all [reviews](#leaving-reviews) about that particular seller (a review can be left only after the product has been purchased).  
 Initially, access to the site is read-only. Users must [authenticate](#authentication) in order to perform any actions, such as buying or selling products.
 
-> _**Disclaimer**: Payback is a pet project. All users and products presented on the site are not real, their photos are obtained from public APIs.  
+> _**Disclaimer**: Payback is a pet project. All users and products presented on the site are not real, their photos, descriptions, etc. are obtained from public APIs.  
 > The payment system is working in test mode._
 
 ---
 
 ## Features
 
-### Real-time chat
+### Messenger
 
 You can communicate with other users directly on the site.
 
@@ -74,7 +74,7 @@ You can put your own product up for sale so other users can buy it.
 1. [Sign in](#to-sign-in)
 2. Go to [sell page]
 3. Specify product information:
-   1. Select category by clicking on it  
+   1. Select a category by clicking on it  
       ![screenshot of categories](/public/images/self/sell-step-categories.png)
    2. Upload a photo of your product by clicking "Upload". After the photo uploads, a "Continue" button appears. Click it to proceed.
       ![screenshot of upload photo](/public/images/self/sell-step-photo.png)
@@ -82,12 +82,12 @@ You can put your own product up for sale so other users can buy it.
       ![screenshot of title](/public/images/self/sell-step-title.png)
    4. Specify a description (optional), then click "Continue"
       ![screenshot of description](/public/images/self/sell-step-description.png)
-   5. Specify price, then click "Continue"
+   5. Specify a price, then click "Continue"
       ![screenshot of price](/public/images/self/sell-step-price.png)
    6. Select a product status by clicking on the appropriate button. If you want premium status, please refer to the [buying products](#buying-products) section for more information about how to make a payment  
       ![screenshot of product statuses](/public/images/self/sell-step-status.png)
 
-If everything goes well, you will be redirected to the [profile page] and your product will appear here. If your product has premium status, it will also appear on the [home page].  
+If everything goes well, you will be redirected to the [profile page] and your product will appear here. If your product has a premium status, it will also appear on the [home page].  
 ![screenshot of the uploaded product](/public/images/self/uploaded-product.png)
 
 ---
@@ -128,6 +128,10 @@ If everything goes well, you will be redirected to the [profile page].
 2. Click "Options"
 3. Click "Sign out"
 
+## License
+
+Payback is available under the [MIT license](https://opensource.org/licenses/MIT). Payback also includes external libraries that are available under a variety of licenses.
+
 <!-- keys -->
 
 [home page]: https://payback-store.vercel.app
@@ -137,7 +141,3 @@ If everything goes well, you will be redirected to the [profile page].
 [chats page]: https://payback-store.vercel.app/chats
 [product #35]: https://payback-store.vercel.app/products/35
 [sell page]: https://payback-store.vercel.app/sell
-
-## License
-
-Payback is available under the [MIT license](https://opensource.org/licenses/MIT). Payback also includes external libraries that are available under a variety of licenses.
