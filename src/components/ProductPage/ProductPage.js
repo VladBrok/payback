@@ -84,7 +84,6 @@ function ProductPage({
         <Product
           price={product.price}
           image={product.image}
-          priority
           imageSize="14rem"
           flexDirectionWhenExpanded="row"
         >
