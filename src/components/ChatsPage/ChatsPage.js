@@ -13,12 +13,34 @@ function ChatsPage({ fetchedData: chats, setFetchedData: setChats }) {
 
   useEffect(() => {
     function handleChat(chat) {
-      console.log("got a chat:", chat);
       setChats(cur => (cur ? [...cur, chat] : [chat]));
     }
 
-    return chatConnector?.connectToChats(userId, handleChat);
-  }, [userId, chatConnector, setChats]);
+    function handleMessage(message) {
+      setChats(cur =>
+        cur.map(chat => {
+          if (chat.id === message.chatId) {
+            return { ...chat, newMessageCount: chat.newMessageCount + 1 };
+          }
+
+          return chat;
+        })
+      );
+    }
+
+    const disposeChatConnection = chatConnector?.connectToChats(
+      userId,
+      handleChat
+    );
+    const messageConnections = chats?.map(chat =>
+      chatConnector?.connectToMessages(chat.id, handleMessage)
+    );
+
+    return () => {
+      disposeChatConnection?.();
+      messageConnections?.forEach(dispose => dispose?.());
+    };
+  }, [userId, chatConnector, setChats, chats]);
 
   const chatList = chats?.map(chat => (
     <li key={chat.id}>{<LinkToChat chat={chat} />}</li>

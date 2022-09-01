@@ -33,7 +33,6 @@ async function handlePost(req, res, sessionUser) {
   const { chat, userIds } = await createChat(chatId, +sessionUser.id);
 
   if (chat) {
-    console.log(userIds);
     await Promise.all(
       userIds.map(({ userId }) =>
         pusher.trigger(`${CHANNELS.ENCRYPTED_BASE}${userId}`, EVENTS.CHAT, chat)

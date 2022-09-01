@@ -35,7 +35,6 @@ export default function withDataFetching(
         return;
       }
 
-      console.log("fetching with cursor:", pageCursor);
       fetchCallback(fetchDeps, customState, pageCursor)
         .then(result => {
           if (result.pageData) {
