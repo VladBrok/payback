@@ -20,7 +20,10 @@ function ChatsPage({ fetchedData: chats, setFetchedData: setChats }) {
       setChats(cur =>
         cur.map(chat => {
           if (chat.id === message.chatId) {
-            return { ...chat, newMessageCount: chat.newMessageCount + 1 };
+            return {
+              ...chat,
+              newMessageCount: (chat.newMessageCount ?? 0) + 1,
+            };
           }
 
           return chat;
