@@ -6,8 +6,7 @@ import useSessionUser from "hooks/useSessionUser";
 import Head from "next/head";
 
 function ChatPage({ id, fetchedData: chat }) {
-  const sessionUser = useSessionUser();
-  const userId = sessionUser.id;
+  const userId = useSessionUser().id;
 
   return (
     <>

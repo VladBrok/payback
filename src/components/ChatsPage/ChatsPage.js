@@ -9,11 +9,11 @@ import { useEffect } from "react";
 
 function ChatsPage({ fetchedData: chats, setFetchedData: setChats }) {
   const chatConnector = useChatConnector();
-  const sessionUser = useSessionUser();
-  const userId = sessionUser.id;
+  const userId = useSessionUser().id;
 
   useEffect(() => {
     function handleChat(chat) {
+      console.log("got a chat:", chat);
       setChats(cur => (cur ? [...cur, chat] : [chat]));
     }
 

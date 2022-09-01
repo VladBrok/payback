@@ -24,6 +24,7 @@ export function connectToMessages(chatId, onMessage) {
 }
 
 export function connectToChats(userId, onChat) {
+  console.log(userId);
   const channelName = `${CHANNELS.ENCRYPTED_BASE}${userId}`;
   const chatChannel = pusher.subscribe(channelName);
   chatChannel.bind(EVENTS.SUBSCRIPTION_ERROR, throwSubscriptionError);

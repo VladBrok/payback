@@ -7,17 +7,35 @@ import { transaction } from "lib/db/transaction";
 export async function getChat(id, userId) {
   const chat = await prisma.chat.findFirst({
     where: { id },
-    include: {
-      users: {
-        where: { NOT: { userId } },
-        select: {
-          user: { select: { image: true, name: true, isVerified: true } },
-        },
-      },
-    },
+    include: getPayload(userId),
   });
 
   return mapChat(chat);
+}
+
+function getPayload(userId) {
+  return {
+    users: {
+      where: { NOT: { userId } },
+      select: {
+        user: { select: { image: true, name: true, isVerified: true } },
+      },
+    },
+  };
+}
+
+function mapChat(chat) {
+  if (!chat) {
+    return;
+  }
+
+  return {
+    id: chat.id,
+    newMessageCount: chat.messages?.length,
+    isVerified: chat.users[0].user.isVerified,
+    image: chat.users[0].user.image,
+    name: chat.users[0].user.name,
+  };
 }
 
 export async function getChats(pageCursor, userId) {
@@ -35,12 +53,7 @@ export async function getChats(pageCursor, userId) {
         messages: {
           where: { AND: [{ wasRead: false }, { NOT: { userId } }] },
         },
-        users: {
-          where: { NOT: { userId } },
-          select: {
-            user: { select: { image: true, name: true, isVerified: true } },
-          },
-        },
+        ...getPayload(userId),
       },
     },
     CHAT_PAGE_SIZE
@@ -50,21 +63,7 @@ export async function getChats(pageCursor, userId) {
   return result;
 }
 
-function mapChat(chat) {
-  if (!chat) {
-    return;
-  }
-
-  return {
-    id: chat.id,
-    newMessageCount: chat.messages?.length,
-    isVerified: chat.users[0].user.isVerified,
-    image: chat.users[0].user.image,
-    name: chat.users[0].user.name,
-  };
-}
-
-export async function createChat(id) {
+export async function createChat(id, userId) {
   const ids = getUserIdsFromChatId(id);
   const uniqueIds = new Set(ids);
 
@@ -78,9 +77,13 @@ export async function createChat(id) {
     chat: await transaction(prisma, async prisma => {
       if ((await prisma.chat.count({ where: { id } })) === 0) {
         const chat = await prisma.chat.create({
-          data: { id, users: { createMany: { data: userIds } } },
+          data: {
+            id,
+            users: { createMany: { data: userIds } },
+            include: getPayload(userId),
+          },
         });
-        return chat;
+        return mapChat(chat);
       }
 
       return null;
