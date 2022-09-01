@@ -80,8 +80,8 @@ export async function createChat(id, userId) {
           data: {
             id,
             users: { createMany: { data: userIds } },
-            include: getPayload(userId),
           },
+          include: getPayload(userId),
         });
         return mapChat(chat);
       }
