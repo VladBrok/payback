@@ -13,10 +13,11 @@ export async function getChat(id, userId) {
   return mapChat(chat);
 }
 
-function getPayload(userId) {
+function getPayload(userId, include = false) {
+  const filter = include ? { userId } : { NOT: { userId } };
   return {
     users: {
-      where: { NOT: { userId } },
+      where: filter,
       select: {
         user: { select: { image: true, name: true, isVerified: true } },
       },
@@ -63,7 +64,7 @@ export async function getChats(pageCursor, userId) {
   return result;
 }
 
-export async function createChat(id, userId) {
+export async function createChat(id, sessionUserId) {
   const ids = getUserIdsFromChatId(id);
   const uniqueIds = new Set(ids);
 
@@ -71,7 +72,9 @@ export async function createChat(id, userId) {
     throw new Error("Chat cannot contain duplicate users");
   }
 
-  const userIds = ids.map(x => ({ userId: +x }));
+  const userIds = ids
+    .filter(x => x != sessionUserId)
+    .map(x => ({ userId: +x }));
 
   return {
     chat: await transaction(prisma, async prisma => {
@@ -81,7 +84,7 @@ export async function createChat(id, userId) {
             id,
             users: { createMany: { data: userIds } },
           },
-          include: getPayload(userId),
+          include: getPayload(sessionUserId, true),
         });
         return mapChat(chat);
       }
