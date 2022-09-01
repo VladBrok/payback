@@ -72,9 +72,7 @@ export async function createChat(id, sessionUserId) {
     throw new Error("Chat cannot contain duplicate users");
   }
 
-  const userIds = ids
-    .filter(x => x != sessionUserId)
-    .map(x => ({ userId: +x }));
+  const userIds = ids.map(x => ({ userId: +x }));
 
   return {
     chat: await transaction(prisma, async prisma => {
@@ -91,6 +89,6 @@ export async function createChat(id, sessionUserId) {
 
       return null;
     }),
-    userIds,
+    userIds: userIds.filter(({ userId }) => userId != sessionUserId),
   };
 }
