@@ -71,7 +71,7 @@ export default function App({ Component: Page, pageProps }) {
         <meta property="og:type" content="website" />
         <meta
           property="og:image"
-          content="https://payback-git-dev-vladbrok.vercel.app/images/og-image.jpg"
+          content="https://payback-store.vercel.app/images/og-image.jpg"
         />
         <meta property="og:url" content="https://payback-store.vercel.app" />
       </Head>
