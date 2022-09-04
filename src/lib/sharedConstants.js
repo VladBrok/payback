@@ -10,3 +10,6 @@ export const PRODUCT_PAGE_SIZE = 15;
 export const REVIEW_PAGE_SIZE = 5;
 export const MESSAGE_PAGE_SIZE = 20;
 export const CHAT_PAGE_SIZE = 10;
+
+export const SITE_DESCRIPTION =
+  "Buy and sell products on Payback - a fully-featured e-commerce store.";
