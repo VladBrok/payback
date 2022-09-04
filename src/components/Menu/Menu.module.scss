@@ -3,7 +3,7 @@
 
 .container {
   position: fixed;
-  top: 100%;
+  bottom: 0;
   left: 0;
   z-index: 700;
   display: flex;
@@ -13,7 +13,6 @@
   color: c.$text-secondary;
   background: c.$background;
   box-shadow: 0 0 0.15rem 0 c.$text-secondary;
-  transform: translateY(-100%);
 
   .icon {
     font-size: 1.5rem;

@@ -7,7 +7,7 @@ export default function HomePage({ products, categories, productFilter }) {
   return (
     <>
       <Head>
-        <title>Payback — fully-featured e-commerce store</title>
+        <title>Payback — a fully-featured e-commerce store</title>
       </Head>
 
       <Header />

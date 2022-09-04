@@ -12,7 +12,7 @@ import { FcTemplate } from "react-icons/fc";
 
 export const STEP_DATA = [
   {
-    title: "Select category",
+    title: "Select a category",
     property: "category",
     component: (handle, { categories }) => (
       <CategorySearch
@@ -23,14 +23,14 @@ export const STEP_DATA = [
     ),
   },
   {
-    title: "Upload photo",
+    title: "Upload a photo",
     property: "photoBlob",
     component: handle => (
       <FileForm onSubmit={handle} submitButton={<ContinueButton />} />
     ),
   },
   {
-    title: "Specify title",
+    title: "Specify a title",
     property: "title",
     component: handle => (
       <InputForm
@@ -45,7 +45,7 @@ export const STEP_DATA = [
     ),
   },
   {
-    title: "Specify description",
+    title: "Specify a description",
     property: "description",
     component: handle => (
       <InputForm
@@ -65,7 +65,7 @@ export const STEP_DATA = [
     ),
   },
   {
-    title: "Specify price",
+    title: "Specify a price",
     property: "price",
     component: (handle, { minPrice, maxPrice, serviceChargesPercent }) => (
       <InputForm
@@ -83,7 +83,7 @@ export const STEP_DATA = [
     ),
   },
   {
-    title: "Select status",
+    title: "Select a status",
     property: "isPremium",
     component: (handle, { isMakingPayment, premiumCost }) => (
       <>

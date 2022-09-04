@@ -38,7 +38,6 @@ function ReviewList({ fetchedData: reviews }) {
               flexDirection="row"
               flexDirectionWhenExpanded="row"
               alignItems="flex-start"
-              priority={i === 0}
             >
               <h3>{product.title}</h3>
             </Product>

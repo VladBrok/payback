@@ -21,7 +21,6 @@ function ProductList({
           id={product.category.id}
           name={product.category.name}
           image={product.category.image}
-          priority={i === 0}
         />
       )}
       <Link href={`/products/${product.id}`}>
@@ -31,7 +30,6 @@ function ProductList({
             price={product.price}
             isSold={product.isSold}
             image={product.image}
-            priority={i === 0}
           >
             <h3>{product.title}</h3>
           </Product>
