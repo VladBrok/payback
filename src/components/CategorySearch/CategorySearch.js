@@ -11,6 +11,7 @@ export default function CategorySearch({
 }) {
   const [searchQuery, setSearchQuery] = useState();
 
+  // TODO: add debounce
   function handleSearchQueryChange(e) {
     setSearchQuery(e.target.value);
   }
