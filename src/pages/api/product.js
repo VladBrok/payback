@@ -44,7 +44,7 @@ handlePost.allowUnauthorized = true;
 export const config = {
   api: {
     bodyParser: {
-      sizeLimit: `${toMegabytes(MAX_FILE_SIZE_IN_BYTES + BYTES_IN_MEGABYTE)}mb`,
+      sizeLimit: "10mb",
     },
   },
 };
