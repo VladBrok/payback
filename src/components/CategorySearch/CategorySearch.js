@@ -27,7 +27,7 @@ export default function CategorySearch({
       </div>
       <CategoryList
         flexDirection="column"
-        nameSubstr={searchQuery}
+        searchQuery={searchQuery}
         fallback="Not found"
         category={category}
         data={categories}

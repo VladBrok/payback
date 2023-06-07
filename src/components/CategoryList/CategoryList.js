@@ -30,8 +30,10 @@ function CategoryList({
   );
 }
 
+// TODO: show loading indicator while fetching
+
 export default withDataFetching(
   CategoryList,
-  ({ nameSubstr }) => get(`/api/category?nameSubstr=${nameSubstr}`),
-  props => ({ nameSubstr: props.nameSubstr ?? "" })
+  ({ searchQuery }) => get(`/api/category?searchQuery=${searchQuery}`),
+  props => ({ searchQuery: props.searchQuery ?? "" })
 );
