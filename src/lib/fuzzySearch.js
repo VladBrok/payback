@@ -5,8 +5,6 @@ export function fuzzySearch(items, selector, searchQuery) {
     return items;
   }
 
-  // TODO: (in React component): "abcd".replaceAll(/[ac]/g, match => {return `<span>${match}</span>`})
-
   const pattern = new RegExp(
     `.*?${searchQuery
       .split("")

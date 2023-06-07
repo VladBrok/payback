@@ -32,6 +32,7 @@ export default function CategorySearch({
         fallback="Not found"
         category={category}
         data={categories}
+        highlightedChars={searchQuery}
       />
     </>
   );
