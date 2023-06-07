@@ -12,6 +12,7 @@
     "dbgen": "npx prisma generate"
   },
   "dependencies": {
+    "@babel/plugin-proposal-private-methods": "^7.18.6",
     "@badrap/bar-of-progress": "^0.2.1",
     "@prisma/client": "^4.15.0",
     "babel-plugin-superjson-next": "^0.4.4",
