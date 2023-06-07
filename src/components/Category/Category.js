@@ -11,18 +11,16 @@ export default function Category({
   highlightedChars = "",
 }) {
   const nameWithHighlightedChars = useMemo(() => {
-    let leftToHighlight = highlightedChars;
+    let leftToHighlight = highlightedChars.toLowerCase();
 
     const nameChars = name.props?.children
       ? [...name.props.children]
       : [...name];
 
     return nameChars.map((char, i) => {
-      const indexOf = leftToHighlight.indexOf(char);
-      if (indexOf >= 0) {
-        leftToHighlight =
-          leftToHighlight.slice(0, indexOf) +
-          leftToHighlight.slice(indexOf + 1);
+      const shouldHighlight = leftToHighlight && leftToHighlight[0] === char;
+      if (shouldHighlight) {
+        leftToHighlight = leftToHighlight.slice(1);
         return (
           <span key={i} className={`${styles.highlighted} ${styles.letter}`}>
             {char}
