@@ -5,6 +5,7 @@ import { uniqueById } from "lib/db/uniqueById";
 import useFirstRender from "hooks/useFirstRender";
 import Error from "next/error";
 import { useEffect, useState } from "react";
+import { getPreviouslyFocused } from "lib/focus";
 
 export default function withDataFetching(
   Component,
@@ -83,6 +84,10 @@ export default function withDataFetching(
     }, [reset]);
 
     function handleShowMoreClick() {
+      const prevFocused = getPreviouslyFocused();
+      if (prevFocused && typeof prevFocused.focus === "function") {
+        prevFocused?.focus();
+      }
       setShowMore(true);
     }
 
