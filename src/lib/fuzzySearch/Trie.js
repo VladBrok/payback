@@ -1,54 +1,61 @@
 class TrieNode {
-  constructor(letter, words, letterToChildNodeMap) {
-    this.letter = letter;
-    this.words = words;
+  constructor(itemIndexes, letterToChildNodeMap) {
+    this.itemIndexes = itemIndexes;
     this.letterToChildNodeMap = letterToChildNodeMap;
   }
 }
 
 export class Trie {
+  #root;
+  items;
+  #nodeCount;
+
   constructor() {
-    this.root = new TrieNode("", new Set(), new Map());
-    this.wordToItemMap = new Map();
+    this.#root = new TrieNode([], new Map());
+    this.items = [];
+    this.#nodeCount = 0;
   }
 
   insert(item, selector) {
-    let node = this.root;
+    let node = this.#root;
     const word = selector(item).toLowerCase();
-    this.wordToItemMap.set(word, item);
-    this.#insertRec(node, word, word);
+    this.items.push(item);
+    this.#insertRec(node, word, 0, this.items.length - 1);
   }
 
-  #insertRec(node, word, substr) {
-    for (let i = 0; i < substr.length; i++) {
-      const letter = substr[i];
+  #insertRec(node, word, letterIdx, itemIdx) {
+    for (let i = letterIdx; i < word.length; i++) {
+      const letter = word[i];
       const existingNode = node.letterToChildNodeMap.get(letter);
 
       if (existingNode) {
-        existingNode.words.add(word);
-        this.#insertRec(existingNode, word, substr.slice(i + 1));
+        existingNode.itemIndexes.push(itemIdx);
+        this.#insertRec(existingNode, word, i + 1, itemIdx);
       } else {
-        const newNode = new TrieNode(letter, new Set([word]), new Map());
+        const newNode = new TrieNode([itemIdx], new Map());
+        this.#nodeCount++;
         node.letterToChildNodeMap.set(letter, newNode);
-        this.#insertRec(newNode, word, substr.slice(i + 1));
+        this.#insertRec(newNode, word, i + 1, itemIdx);
       }
     }
   }
 
   find(query) {
+    console.log("node count:", this.#nodeCount); // TODO: remove
+
     if (!query) {
-      return [...this.wordToItemMap.values()];
+      return [...this.items.values()];
     }
 
     const lowerCaseQuery = query.toLowerCase();
-    const resultNode = this.#findRec(this.root, lowerCaseQuery, 0);
+    const resultNode = this.#findRec(this.#root, lowerCaseQuery, 0);
 
     if (!resultNode) {
       return [];
     }
 
-    const items = [...resultNode.words].map(word => {
-      const item = this.wordToItemMap.get(word);
+    const items = [...new Set(resultNode.itemIndexes)].map(idx => {
+      const item = this.items[idx];
       console.assert(item);
       return item;
     });
@@ -72,7 +79,9 @@ export class Trie {
   }
 
   printForDebug() {
-    this.#printRec(this.root);
+    console.log("node count:", this.#nodeCount);
+    // TODO
+    // this.#printRec(this.#root);
   }
 
   #printRec(node) {
@@ -86,14 +95,10 @@ export class Trie {
 
 // TODO: remove (it's for testing)
 const trie = new Trie();
-trie.insert({ banana: "coco", additional: true }, el => el.banana);
-trie.insert({ banana: "bobcz" }, el => el.banana);
-// trie.printForDebug();
-console.log(trie.find(""));
 
-// trie.insert({ banana: "abd" }, el => el.banana);
-// trie.insert({ banana: "aDd" }, el => el.banana);
-// // trie.printForDebug();
+trie.insert({ banana: "abcde" }, el => el.banana);
+trie.insert({ banana: "ecko" }, el => el.banana);
+trie.printForDebug();
 // console.log(trie.find("abd"));
 // console.log(trie.find("add"));
 // console.log(trie.find("Ad"));

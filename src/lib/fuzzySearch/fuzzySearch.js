@@ -1,3 +1,4 @@
+import { randomNumber } from "../random";
 import { escapeRegex } from "../escapeRegex";
 import { Trie } from "./Trie";
 
@@ -8,10 +9,6 @@ export function isFuzzySearchInitialized() {
 }
 
 export function initializeFuzzySearch(items, selector) {
-  if (isFuzzySearchInitialized()) {
-    return;
-  }
-
   trie = new Trie();
 
   for (const item of items) {
@@ -49,3 +46,86 @@ function trieImpl(searchQuery) {
 
   return trie.find(searchQuery);
 }
+
+function testPerformance() {
+  let wordCount = 10;
+  const TEST_COUNT = 3;
+  for (let i = 0; i < TEST_COUNT; i++) {
+    console.log(`test #${i + 1}`);
+
+    const words = getRandomWords(wordCount);
+    const searchQueries = getRandomSearchQueries(wordCount);
+
+    console.time("regex implementation");
+    for (const query of searchQueries) {
+      regexImpl(words, x => x, query);
+    }
+    console.timeEnd("regex implementation");
+
+    console.time("trie implementation");
+    initializeFuzzySearch(words, x => x);
+    for (const query of searchQueries) {
+      trieImpl(query);
+    }
+    console.timeEnd("trie implementation");
+    console.log();
+    // wordCount *= 2;
+  }
+}
+
+const MIN_WORD_LEN = 5;
+const MAX_WORD_LEN = 10;
+const LETTERS = [
+  "a",
+  "b",
+  "c",
+  "d",
+  "e",
+  "f",
+  "g",
+  "h",
+  "i",
+  "j",
+  "k",
+  "l",
+  "m",
+  "n",
+  "o",
+  "p",
+  "q",
+  "r",
+  "s",
+  "t",
+  "u",
+  "v",
+  "w",
+  "x",
+  "y",
+  "z",
+];
+
+function getRandomWords(count, minLen = MIN_WORD_LEN, maxLen = MAX_WORD_LEN) {
+  const words = Array(count)
+    .fill(null)
+    .map(() => "");
+
+  for (let i = 0; i < count; i++) {
+    const letterCount = randomNumber(minLen, maxLen);
+    for (let j = 0; j < letterCount; j++) {
+      const letterIdx = randomNumber(0, LETTERS.length);
+      words[i] += LETTERS[letterIdx];
+    }
+  }
+
+  return words;
+}
+
+function getRandomSearchQueries(count) {
+  return getRandomWords(
+    count,
+    Math.floor(MIN_WORD_LEN / 2),
+    Math.floor(MAX_WORD_LEN / 2)
+  );
+}
+
+// testPerformance();
