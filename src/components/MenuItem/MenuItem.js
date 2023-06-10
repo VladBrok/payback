@@ -7,6 +7,7 @@ export default function MenuItem({
   isActive,
   children,
   className,
+  tabIndex = undefined,
   ...props
 }) {
   return (
@@ -17,7 +18,7 @@ export default function MenuItem({
       {...props}
     >
       <Link href={href}>
-        <a className={styles.link}>
+        <a className={styles.link} tabIndex={tabIndex}>
           {children}
           {name}
         </a>
