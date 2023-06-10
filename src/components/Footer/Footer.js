@@ -9,7 +9,7 @@ export default function Footer() {
       <Section title="We on social media">
         <SocialMediaLinkList />
       </Section>
-      <p className={styles.copyright}>2022 © Payback. All rights reserved.</p>
+      <p className={styles.copyright}>2023 © Payback. All rights reserved.</p>
     </footer>
   );
 }
