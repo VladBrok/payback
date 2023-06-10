@@ -14,7 +14,7 @@ function ProductList({
   ),
   fetchedData: products,
 }) {
-  const productList = products?.map((product, i) => (
+  const productList = products?.map(product => (
     <div key={product.id}>
       {includeCategory && (
         <CategoryLink

@@ -8,7 +8,7 @@ import { get } from "lib/api/client";
 import Link from "next/link";
 
 function ReviewList({ fetchedData: reviews }) {
-  const reviewList = reviews.map((review, i) => {
+  const reviewList = reviews.map(review => {
     const product = review.product;
     const buyer = review.buyer;
 

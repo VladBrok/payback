@@ -6,7 +6,7 @@ import ProductList from "components/ProductList";
 import PremiumIcon from "components/PremiumIcon";
 import dynamic from "next/dynamic";
 import { FcFinePrint } from "react-icons/fc";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const CategorySearchModal = dynamic(
   () => import("components/CategorySearchModal"),
@@ -15,6 +15,8 @@ const CategorySearchModal = dynamic(
 
 export default function Main({ products, categories, productFilter }) {
   const [modalIsOpen, setIsOpen] = useState(false);
+  const [modalWasOpen, setModalWasOpen] = useState(false);
+  const categoriesRef = useRef(null);
 
   function openModal() {
     setIsOpen(true);
@@ -23,6 +25,19 @@ export default function Main({ products, categories, productFilter }) {
   function closeModal() {
     setIsOpen(false);
   }
+
+  useEffect(() => {
+    if (!modalWasOpen && modalIsOpen) {
+      setModalWasOpen(true);
+      return;
+    }
+
+    if (modalIsOpen || !modalWasOpen) {
+      return;
+    }
+
+    categoriesRef.current?.focus();
+  }, [modalIsOpen, modalWasOpen]);
 
   const searchBarLabel = "Find category";
 
@@ -37,7 +52,7 @@ export default function Main({ products, categories, productFilter }) {
         />
       )}
 
-      <Section title="Categories" Icon={FcFinePrint}>
+      <Section title="Categories" Icon={FcFinePrint} ref={categoriesRef}>
         <CategoryList data={categories} />
       </Section>
 
