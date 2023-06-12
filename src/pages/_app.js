@@ -6,16 +6,19 @@ import {
   startProgressAnimation,
   finishProgressAnimation,
 } from "lib/progressBar";
-import router, { useRouter } from "next/router";
+import globalRouter, { useRouter } from "next/router";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import { flushSync } from "react-dom";
 import { SITE_DESCRIPTION } from "lib/sharedConstants";
+import { RouterScrollProvider } from "@moxy/next-router-scroll";
+import ScrollFixer from "components/ScrollFixer";
 
 export default function App({ Component: Page, pageProps }) {
   const [error, setError] = useState();
   const [notificationContainer, setNotificationContainer] = useState();
-  const pathname = useRouter().pathname;
+  const router = useRouter();
+  const pathname = router.pathname;
 
   useEffect(() => {
     function handleError(e) {
@@ -76,17 +79,21 @@ export default function App({ Component: Page, pageProps }) {
         <meta property="og:url" content="https://payback-store.vercel.app" />
       </Head>
 
-      <SessionUserProvider value={pageProps.sessionUser}>
-        <Container>
-          <Page {...pageProps} />
-        </Container>
-        <Menu activePath={pathname} />
-        {notificationContainer}
-      </SessionUserProvider>
+      <RouterScrollProvider>
+        <ScrollFixer>
+          <SessionUserProvider value={pageProps.sessionUser}>
+            <Container>
+              <Page {...pageProps} />
+            </Container>
+            <Menu activePath={pathname} />
+            {notificationContainer}
+          </SessionUserProvider>
+        </ScrollFixer>
+      </RouterScrollProvider>
     </>
   );
 }
 
-router.events.on("routeChangeStart", startProgressAnimation);
-router.events.on("routeChangeComplete", finishProgressAnimation);
-router.events.on("routeChangeError", finishProgressAnimation);
+globalRouter.events.on("routeChangeStart", startProgressAnimation);
+globalRouter.events.on("routeChangeComplete", finishProgressAnimation);
+globalRouter.events.on("routeChangeError", finishProgressAnimation);
