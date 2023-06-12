@@ -1,4 +1,4 @@
-import { unstable_getServerSession } from "next-auth/next";
+import { getServerSession } from "next-auth/next";
 import { authOptions } from "pages/api/auth/[...nextauth]";
 import { stringify } from "superjson";
 
@@ -39,7 +39,7 @@ export async function withServerProps(getProps, context, requireAuth = false) {
 }
 
 export async function getSessionUser({ req, res }) {
-  const session = await unstable_getServerSession(req, res, authOptions);
+  const session = await getServerSession(req, res, authOptions);
   return session?.user ?? null;
 }
 
