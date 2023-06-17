@@ -13,7 +13,8 @@ export default function CategorySearch({
 
   // TODO: add debounce
   function handleSearchQueryChange(e) {
-    setSearchQuery(e.target.value);
+    const trimmed = e.target.value.trim();
+    setSearchQuery(trimmed);
   }
 
   return (
