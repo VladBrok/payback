@@ -9,7 +9,7 @@ export default async function handler(req, res) {
 
 async function handleGet(req, res) {
   const id = req.query.id == undefined ? undefined : +req.query.id;
-  const nameSubstr = req.query.nameSubstr;
+  const searchQuery = req.query.searchQuery;
 
   if (id != null) {
     const category = await getCategory(id);
@@ -19,7 +19,7 @@ async function handleGet(req, res) {
       res.status(200).json(category);
     }
   } else {
-    res.status(200).json(await getCategories(nameSubstr));
+    res.status(200).json(await getCategories(searchQuery));
   }
 }
 handleGet.allowUnauthorized = true;

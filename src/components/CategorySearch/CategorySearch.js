@@ -11,8 +11,10 @@ export default function CategorySearch({
 }) {
   const [searchQuery, setSearchQuery] = useState();
 
+  // TODO: add debounce
   function handleSearchQueryChange(e) {
-    setSearchQuery(e.target.value);
+    const trimmed = e.target.value.trim();
+    setSearchQuery(trimmed);
   }
 
   return (
@@ -27,10 +29,11 @@ export default function CategorySearch({
       </div>
       <CategoryList
         flexDirection="column"
-        nameSubstr={searchQuery}
+        searchQuery={searchQuery}
         fallback="Not found"
         category={category}
         data={categories}
+        highlightedChars={searchQuery}
       />
     </>
   );

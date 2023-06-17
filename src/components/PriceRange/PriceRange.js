@@ -2,6 +2,7 @@ import styles from "./PriceRange.module.scss";
 import PriceInput from "components/PriceInput";
 
 export default function PriceRange({ onMinChange, onMaxChange, min, max }) {
+  // TODO: display a loader while fetching
   return (
     <fieldset>
       <legend>

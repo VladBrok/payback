@@ -8,6 +8,7 @@ function CategoryList({
   flexDirection = "row",
   category = props => <CategoryLink {...props} />,
   fetchedData: categories,
+  highlightedChars = "",
 }) {
   const categoryFlexDirection = flexDirection === "row" ? "column" : "row";
   const categoryList = categories.map(d =>
@@ -18,6 +19,7 @@ function CategoryList({
       id: d.id,
       name: d.name,
       image: d.image,
+      highlightedChars,
       priority: true,
     })
   );
@@ -30,8 +32,10 @@ function CategoryList({
   );
 }
 
+// TODO: show loading indicator while fetching
+
 export default withDataFetching(
   CategoryList,
-  ({ nameSubstr }) => get(`/api/category?nameSubstr=${nameSubstr}`),
-  props => ({ nameSubstr: props.nameSubstr ?? "" })
+  ({ searchQuery }) => get(`/api/category?searchQuery=${searchQuery}`),
+  props => ({ searchQuery: props.searchQuery ?? "" })
 );

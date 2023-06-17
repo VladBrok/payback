@@ -1,5 +1,6 @@
 @use "styles/breakpoints" as b;
 @use "styles/mixins" as m;
+@use "styles/colors" as c;
 
 $img-size: 3.2rem;
 
@@ -27,6 +28,13 @@ $img-size: 3.2rem;
 
   .name {
     @include m.text-sm;
-    text-transform: capitalize;
+  }
+
+  .letter:first-child {
+    text-transform: uppercase;
+  }
+
+  .highlighted {
+    background-color: c.$search-match-highlight;
   }
 }

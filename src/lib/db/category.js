@@ -1,10 +1,18 @@
 import prisma from "lib/db/prisma";
+import { fuzzySearch } from "lib/fuzzySearch/fuzzySearch";
 
 export async function getCategory(id) {
   return await prisma.category.findFirst({ where: { id } });
 }
 
-export async function getCategories(nameSubstr = undefined) {
-  const args = nameSubstr && { where: { name: { contains: nameSubstr } } };
-  return await prisma.category.findMany(args);
+export async function getCategories(searchQuery = undefined) {
+  const categories = await prisma.category.findMany();
+
+  const filtered = fuzzySearch(
+    categories,
+    category => category.name,
+    searchQuery
+  );
+
+  return filtered;
 }
