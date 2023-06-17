@@ -69,7 +69,7 @@ function testPerformance() {
     }
     console.timeEnd("trie implementation");
     console.log();
-    // wordCount *= 2;
+    wordCount *= 2;
   }
 }
 

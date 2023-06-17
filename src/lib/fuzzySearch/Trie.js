@@ -41,8 +41,6 @@ export class Trie {
   }
 
   find(query) {
-    console.log("node count:", this.#nodeCount); // TODO: remove
-
     if (!query) {
       return [...this.items.values()];
     }
@@ -77,28 +75,14 @@ export class Trie {
 
     return this.#findRec(childNode, query, queryIdx + 1);
   }
-
-  printForDebug() {
-    console.log("node count:", this.#nodeCount);
-    // TODO
-    // this.#printRec(this.#root);
-  }
-
-  #printRec(node) {
-    console.log(node);
-    console.log();
-    for (const child of node.letterToChildNodeMap.values()) {
-      this.#printRec(child);
-    }
-  }
 }
 
 // TODO: remove (it's for testing)
+
 const trie = new Trie();
 
 trie.insert({ banana: "abcde" }, el => el.banana);
 trie.insert({ banana: "ecko" }, el => el.banana);
-trie.printForDebug();
 // console.log(trie.find("abd"));
 // console.log(trie.find("add"));
 // console.log(trie.find("Ad"));
