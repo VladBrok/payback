@@ -4,6 +4,5 @@
   ],
   "plugins": [
     "superjson-next",
-    "@babel/plugin-proposal-private-methods"
   ]
 }
