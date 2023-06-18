@@ -32,8 +32,6 @@ function CategoryList({
   );
 }
 
-// TODO: show loading indicator while fetching
-
 export default withDataFetching(
   CategoryList,
   ({ searchQuery }) => get(`/api/category?searchQuery=${searchQuery}`),
