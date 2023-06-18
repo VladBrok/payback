@@ -48,10 +48,10 @@ function ProductList({
 export default withDataFetching(
   ProductList,
   ({ filter, setIsLoading }, _, pageCursor) => {
-    setIsLoading(true);
+    setIsLoading?.(true);
     return post(`/api/product?pageCursor=${pageCursor}`, { filter })
       .then(res => res.json())
-      .finally(() => setIsLoading(false));
+      .finally(() => setIsLoading?.(false));
   },
   props => ({
     filter: props.filter,
