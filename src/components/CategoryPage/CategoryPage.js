@@ -13,6 +13,7 @@ function CategoryPage({ fetchedData: category, products }) {
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
   const [reset, setReset] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (reset) {
@@ -44,6 +45,11 @@ function CategoryPage({ fetchedData: category, products }) {
     [handleMaxPriceChange]
   );
 
+  const filter = useMemo(
+    () => byCategoryAndPrice(category.name, minPrice, maxPrice),
+    [category.name, maxPrice, minPrice]
+  );
+
   return (
     <>
       <Head>
@@ -58,12 +64,14 @@ function CategoryPage({ fetchedData: category, products }) {
         <PriceRange
           onMinChange={handleMinPriceChangeDebounced}
           onMaxChange={handleMaxPriceChangeDebounced}
+          isLoading={isLoading}
         />
         <ProductList
-          filter={byCategoryAndPrice(category.name, minPrice, maxPrice)}
+          filter={filter}
           data={products}
           includeCategory={false}
           reset={reset}
+          setIsLoading={setIsLoading}
         />
       </Subpage>
     </>

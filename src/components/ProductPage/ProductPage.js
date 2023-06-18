@@ -18,7 +18,7 @@ import { FcSearch } from "react-icons/fc";
 import Link from "next/link";
 import Head from "next/head";
 import dynamic from "next/dynamic";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 const ReviewModal = dynamic(() => import("components/ReviewModal"), {
   ssr: false,
@@ -53,6 +53,8 @@ function ProductPage({
         setIsBuying(false);
       });
   }
+
+  const filter = useMemo(() => bySimilar(product), [product]);
 
   return (
     <>
@@ -123,7 +125,7 @@ function ProductPage({
         </Section>
 
         <Section title="Similar products" Icon={FcSearch}>
-          <ProductList filter={bySimilar(product)} data={products} />
+          <ProductList filter={filter} data={products} />
         </Section>
       </Subpage>
     </>

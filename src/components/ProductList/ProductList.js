@@ -47,11 +47,14 @@ function ProductList({
 
 export default withDataFetching(
   ProductList,
-  ({ filter }, _, pageCursor) =>
-    post(`/api/product?pageCursor=${pageCursor}`, { filter }).then(res =>
-      res.json()
-    ),
+  ({ filter, setIsLoading }, _, pageCursor) => {
+    setIsLoading(true);
+    return post(`/api/product?pageCursor=${pageCursor}`, { filter })
+      .then(res => res.json())
+      .finally(() => setIsLoading(false));
+  },
   props => ({
     filter: props.filter,
+    setIsLoading: props.setIsLoading,
   })
 );
