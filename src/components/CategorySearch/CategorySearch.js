@@ -1,7 +1,8 @@
 import styles from "./CategorySearch.module.scss";
 import SearchBar from "components/SearchBar";
 import CategoryList from "components/CategoryList";
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { debounce } from "lib/debounce";
 
 export default function CategorySearch({
   children,
@@ -11,20 +12,17 @@ export default function CategorySearch({
 }) {
   const [searchQuery, setSearchQuery] = useState();
 
-  // TODO: add debounce
   function handleSearchQueryChange(e) {
     const trimmed = e.target.value.trim();
     setSearchQuery(trimmed);
   }
 
+  const debounced = useMemo(() => debounce(handleSearchQueryChange), []);
+
   return (
     <>
       <div className={styles["search-container"]}>
-        <SearchBar
-          label={searchBarLabel}
-          onChange={handleSearchQueryChange}
-          autoFocus
-        />
+        <SearchBar label={searchBarLabel} onChange={debounced} autoFocus />
         {children}
       </div>
       <CategoryList
