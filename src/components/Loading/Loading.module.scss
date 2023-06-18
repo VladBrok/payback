@@ -1,9 +1,16 @@
-$size: 2rem;
+.image-regular {
+  --loading-image-size: 2rem;
+  margin: 3rem auto;
+}
+
+.image-small {
+  --loading-image-size: 1.5rem;
+  margin: 0;
+}
 
 .image {
-  width: $size;
-  height: $size;
   display: block;
-  margin: 3rem auto;
+  width: var(--loading-image-size);
+  height: var(--loading-image-size);
   filter: brightness(48%);
 }

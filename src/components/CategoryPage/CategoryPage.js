@@ -6,12 +6,14 @@ import withDataFetching from "components/withDataFetching";
 import { get } from "lib/api/client";
 import { byCategoryAndPrice } from "lib/db/product/filters";
 import Head from "next/head";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
+import { debounce } from "lib/debounce";
 
 function CategoryPage({ fetchedData: category, products }) {
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
   const [reset, setReset] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (reset) {
@@ -19,18 +21,34 @@ function CategoryPage({ fetchedData: category, products }) {
     }
   }, [reset]);
 
-  function handleMinPriceChange(e) {
+  const handleMinPriceChange = useCallback(e => {
     handlePriceChange(setMinPrice, e);
-  }
+  }, []);
 
-  function handleMaxPriceChange(e) {
-    handlePriceChange(setMaxPrice, e);
-  }
+  const handleMaxPriceChange = useCallback(
+    e => handlePriceChange(setMaxPrice, e),
+    []
+  );
 
   function handlePriceChange(setter, e) {
-    setter(e.target.value);
+    setter(e.target.value.trim());
     setReset(true);
   }
+
+  const handleMinPriceChangeDebounced = useMemo(
+    () => debounce(handleMinPriceChange),
+    [handleMinPriceChange]
+  );
+
+  const handleMaxPriceChangeDebounced = useMemo(
+    () => debounce(handleMaxPriceChange),
+    [handleMaxPriceChange]
+  );
+
+  const filter = useMemo(
+    () => byCategoryAndPrice(category.name, minPrice, maxPrice),
+    [category.name, maxPrice, minPrice]
+  );
 
   return (
     <>
@@ -44,16 +62,16 @@ function CategoryPage({ fetchedData: category, products }) {
         }
       >
         <PriceRange
-          onMinChange={handleMinPriceChange}
-          onMaxChange={handleMaxPriceChange}
-          min={minPrice}
-          max={maxPrice}
+          onMinChange={handleMinPriceChangeDebounced}
+          onMaxChange={handleMaxPriceChangeDebounced}
+          isLoading={isLoading}
         />
         <ProductList
-          filter={byCategoryAndPrice(category.name, minPrice, maxPrice)}
+          filter={filter}
           data={products}
           includeCategory={false}
           reset={reset}
+          setIsLoading={setIsLoading}
         />
       </Subpage>
     </>

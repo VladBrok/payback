@@ -1,17 +1,18 @@
+import Loading from "components/Loading/Loading";
 import styles from "./PriceRange.module.scss";
 import PriceInput from "components/PriceInput";
 
-export default function PriceRange({ onMinChange, onMaxChange, min, max }) {
-  // TODO: display a loader while fetching
+export default function PriceRange({ onMinChange, onMaxChange, isLoading }) {
   return (
     <fieldset>
-      <legend>
+      <legend className={styles.header}>
         <h2>Price</h2>
+        {isLoading && <Loading small />}
       </legend>
       <div className={styles["input-container"]}>
-        <PriceInput placeholder="From" onChange={onMinChange} value={min} />
+        <PriceInput placeholder="From" onChange={e => onMinChange(e)} />
         <span>—</span>
-        <PriceInput placeholder="To" onChange={onMaxChange} value={max} />
+        <PriceInput placeholder="To" onChange={onMaxChange} />
       </div>
     </fieldset>
   );
