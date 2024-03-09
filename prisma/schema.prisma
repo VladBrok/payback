@@ -11,19 +11,19 @@ datasource db {
 }
 
 model Chat {
-  id       String     @id @unique(map: "id") @db.VarChar(70)
+  id       String     @id @unique(map: "id") 
   users    UserChat[]
   messages Message[]
 }
 
 model User {
   id         Int        @id @default(autoincrement())
-  name       String     @db.VarChar(255)
-  image      String     @db.VarChar(255)
-  rating     Float?     @default(0.0) @db.Float
-  email      String?    @unique(map: "email") @db.VarChar(255)
+  name       String     
+  image      String     
+  rating     Float?     @default(0.0)
+  email      String?    @unique(map: "email")
   isVerified Boolean?   @default(false)
-  money      Decimal?   @default(0.00) @db.Decimal(10, 2)
+  money      Decimal?   @default(0.00)
   chats      UserChat[]
   messages   Message[]
   reviews    Review[]
@@ -33,7 +33,7 @@ model User {
 model UserChat {
   id     Int    @id @default(autoincrement())
   userId Int
-  chatId String @db.VarChar(255)
+  chatId String 
   user   User   @relation(fields: [userId], references: [id])
   chat   Chat   @relation(fields: [chatId], references: [id])
 
@@ -43,41 +43,36 @@ model UserChat {
 
 model Message {
   id      Int       @id @default(autoincrement())
-  time    DateTime? @default(now()) @db.DateTime(0)
+  time    DateTime? @default(now()) 
   userId  Int
-  chatId  String    @db.VarChar(70)
-  text    String    @db.Text
+  chatId  String    
+  text    String    
   wasRead Boolean?  @default(false)
   user    User      @relation(fields: [userId], references: [id])
   chat    Chat      @relation(fields: [chatId], references: [id])
-
-  @@index([chatId], map: "chatIdIdx")
-  @@index([userId], map: "userIdIdx")
 }
 
 model Category {
   id       Int       @id @default(autoincrement())
-  name     String    @db.VarChar(255)
-  image    String    @db.VarChar(255)
+  name     String    
+  image    String    
   products Product[]
 }
 
 model Product {
   id          Int      @id @default(autoincrement())
-  title       String?  @db.VarChar(255)
-  description String?  @db.Text
+  title       String?  
+  description String? 
   categoryId  Int
   userId      Int
-  image       String?  @db.VarChar(255)
-  price       Decimal? @db.Decimal(10, 2)
+  image       String?  
+  price       Decimal? 
   isPremium   Boolean? @default(false)
   isSold      Boolean? @default(false)
   user        User     @relation(fields: [userId], references: [id])
   category    Category @relation(fields: [categoryId], references: [id])
   reviews     Review[]
 
-  @@index([categoryId], map: "categoryIdIdx")
-  @@index([userId], map: "userIdIdx")
 }
 
 model Review {
@@ -85,8 +80,8 @@ model Review {
   buyerId   Int
   productId Int
   rating    Int
-  text      String?   @db.Text
-  date      DateTime? @default(now()) @db.DateTime(0)
+  text      String?   
+  date      DateTime? @default(now())
   buyer     User      @relation(fields: [buyerId], references: [id])
   product   Product   @relation(fields: [productId], references: [id])
 
