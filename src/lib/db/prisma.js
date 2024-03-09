@@ -6,15 +6,16 @@ let prisma;
 
 function makeClient() {
   const libsql = createClient({
-    syncUrl: `${process.env.TURSO_DATABASE_URL}`,
-    url: "file:./prisma/dev.db",
+    // syncUrl: `${process.env.TURSO_DATABASE_URL}`,
+    // url: "file:./prisma/dev.db",
+    url: `${process.env.TURSO_DATABASE_URL}`,
     authToken: `${process.env.TURSO_AUTH_TOKEN}`,
   });
 
   const adapter = new PrismaLibSQL(libsql);
   const client = new PrismaClient({ adapter });
   client.$use(async (params, next) => {
-    await libsql.sync();
+    // await libsql.sync();
     const result = await next(params);
     return result;
   });
