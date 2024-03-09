@@ -41,5 +41,3 @@ yarn-error.log*
 .vercel
 
 /pscale_dump_*
-
-prisma/dev.db*
