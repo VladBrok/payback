@@ -1,12 +1,12 @@
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["referentialIntegrity", "interactiveTransactions"]
+  previewFeatures = ["referentialIntegrity", "interactiveTransactions", "driverAdapters"]
   engineType      = "binary"
 }
 
 datasource db {
-  provider             = "mysql"
-  url                  = env("DATABASE_URL")
+  provider             = "sqlite"
+  url      = "file:./dev.db"
   referentialIntegrity = "prisma"
 }
 
