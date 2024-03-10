@@ -1,24 +1,24 @@
-import styles from "./ProductPage.module.scss";
-import utilStyles from "styles/utils.module.scss";
-import Product from "components/Product";
-import Subpage from "components/Subpage";
+import AuthButton from "components/AuthButton";
 import CategoryLink from "components/CategoryLink";
-import Section from "components/Section";
-import User from "components/User";
+import Product from "components/Product";
 import ProductList from "components/ProductList";
 import Rating from "components/Rating";
-import AuthButton from "components/AuthButton";
+import Section from "components/Section";
+import Subpage from "components/Subpage";
 import TestPaymentNotice from "components/TestPaymentNotice";
+import User from "components/User";
 import withDataFetching from "components/withDataFetching";
+import useSessionUser from "hooks/useSessionUser";
+import { get, post } from "lib/api/client";
 import { bySimilar } from "lib/db/product/filters";
 import { makeProductPayment } from "lib/payment/client";
-import { get, post } from "lib/api/client";
-import useSessionUser from "hooks/useSessionUser";
-import { FcSearch } from "react-icons/fc";
-import Link from "next/link";
-import Head from "next/head";
 import dynamic from "next/dynamic";
+import Head from "next/head";
+import Link from "next/link";
 import { useMemo, useState } from "react";
+import { FcSearch } from "react-icons/fc";
+import utilStyles from "styles/utils.module.scss";
+import styles from "./ProductPage.module.scss";
 
 const ReviewModal = dynamic(() => import("components/ReviewModal"), {
   ssr: false,

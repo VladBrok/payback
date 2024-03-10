@@ -1,6 +1,6 @@
 import Rating from "components/Rating";
-import Subpage from "components/Subpage";
 import ReviewList from "components/ReviewList";
+import Subpage from "components/Subpage";
 import withDataFetching from "components/withDataFetching";
 import { get } from "lib/api/client";
 import Head from "next/head";

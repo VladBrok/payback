@@ -1,6 +1,6 @@
 import { handle } from "lib/api/server";
-import { createOrder } from "lib/payment/server";
 import { getProduct } from "lib/db/product";
+import { createOrder } from "lib/payment/server";
 
 export default async function handler(req, res) {
   await handle(req, res, {

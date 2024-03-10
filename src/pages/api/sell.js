@@ -1,11 +1,9 @@
-import { processOrder } from "lib/payment/server";
-import { formatMoneyFromRazorpay } from "lib/money";
+import { handle } from "lib/api/server";
 import prisma from "lib/db/prisma";
 import { transaction } from "lib/db/transaction";
+import { formatMoneyFromRazorpay } from "lib/money";
+import { processOrder } from "lib/payment/server";
 import { subtractPercent } from "lib/percentage";
-import { handle } from "lib/api/server";
-import { updateProduct } from "lib/db/product";
-import { updateUser } from "lib/db/user";
 
 export default async function handler(req, res) {
   await handle(req, res, {

@@ -44,6 +44,7 @@ async function makePayment({ endpoint, description, image, onSuccess }) {
     name: "Payback",
     currency: paymentData.currency,
     amount: paymentData.amount,
+    key: "rzp_test_s71yljuKa0OW5w",
     order_id: paymentData.id,
     description,
     image,

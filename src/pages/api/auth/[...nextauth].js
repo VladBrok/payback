@@ -1,7 +1,7 @@
 import { makeChatId } from "lib/chat/chatId";
-import { SUPPORT_ID } from "lib/sharedConstants";
-import { transaction } from "lib/db/transaction";
 import prisma from "lib/db/prisma";
+import { transaction } from "lib/db/transaction";
+import { SUPPORT_ID } from "lib/sharedConstants";
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import YandexProvider from "next-auth/providers/yandex";
@@ -9,6 +9,7 @@ import YandexProvider from "next-auth/providers/yandex";
 const TIMEOUT = { httpOptions: { timeout: 10000 } };
 
 export const authOptions = {
+  debug: true,
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_ID,

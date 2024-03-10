@@ -1,8 +1,8 @@
 import crypto from "crypto";
-import Razorpay from "razorpay";
-import { CURRENCY } from "lib/sharedConstants";
 import { formatMoneyForRazorpay } from "lib/money";
+import { CURRENCY } from "lib/sharedConstants";
 import { nanoid } from "nanoid";
+import Razorpay from "razorpay";
 
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY,
